@@ -55,11 +55,6 @@ def handle_login():
     token = create_access_token(identity=user.email)
     return jsonify({"message": "Login correcto", "id": user.id, "email": user.email, "token": token}), 200
 
-@api.route('/users')
-def get_users():
-    users = User.query.all()
-    users = list(map(lambda x: x.serialize(), users))
-    return jsonify(users), 200
 
 @api.route('/events', methods=['POST'])
 @jwt_required()
@@ -91,7 +86,56 @@ def get_event(event_id):
     if not event:
         return jsonify({"error": "Este evento no existe."}), 404
     return jsonify(event.serialize()), 200
+@api.route('/events/<int:id>', methods=['PUT'])
+@jwt_required()
+def update_event(id):
+    data = request.get_json()
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    if not user:
+        return jsonify({"error": "Usuario no encontrado o no autenticado."}), 401
+    event = Event.query.get(id)
+    if not event:
+        return jsonify({"error": "Evento no encontrado."}), 404
+    if event.user_id != user.id:
+        return jsonify({"error": "No tienes permiso para editar este evento."}), 401
+    if 'title' in data:
+        event.title = data['title']
+    if 'description' in data:
+        event.description = data['description']
+    if 'date' in data:
+        event.date = data['date']
+    if 'time' in data:
+        event.time = data['time']
+    if 'location' in data:
+        event.location = data['location']
+    try:
+        db.session.commit()
+        return jsonify({"message": "Evento actualizado correctamente."}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": "Error de servidor.", "detalles": str(e)}), 500
 
+@api.route('/events/<int:id>', methods=['DELETE'])
+@jwt_required()
+def delete_event(id):
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    if not user:
+        return jsonify({"error": "Usuario no encontrado o no autenticado."}), 401
+    event = Event.query.get(id)
+    if not event:
+        return jsonify({"error": "Evento no encontrado."}), 404
+    if event.user_id != user.id:
+        return jsonify({"error": "No tienes permiso para eliminar este evento."}), 401
+    try:
+        db.session.delete(event)
+        db.session.commit()
+        return jsonify({"message": "Evento eliminado correctamente."}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": "Error de servidor.", "detalles": str(e)}), 500
+    
 @api.route('/profile')
 @jwt_required()
 def get_profile():
@@ -100,3 +144,99 @@ def get_profile():
     if not user:
         return jsonify({"error": "Usuario no encontrado."}), 404
     return jsonify({"id": user.id, "is_active": user.is_active, "email": user.email, "First_name": user.first_name, "Last_name": user.last_name, "age": user.age, "gender": user.gender, "created_at": user.created_at, "updated_at": user.updated_at, "bio": user.bio, "image": user.image, "location": user.location}), 200
+
+@api.route('/users/<int:id>/favorites')
+@jwt_required()
+def get_favorites():
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    if not user:
+        return jsonify({"error": "No se encuentra el usuario."}), 404
+
+    favorites = Favorite.query.filter_by(user_id=user.id).all()
+    if not favorites:
+        return jsonify({"message": "El usuario no tiene favoritos."}), 404
+
+    favorites_list = list(map(lambda x: x.serialize(), favorites))
+    return jsonify({"favorites": favorites_list}), 200
+
+@api.route('/users/<int:id>/favorites', methods=['POST'])
+@jwt_required()
+def add_favorite():
+    data = request.get_json()
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    if 'event_id' not in data:
+        return jsonify({"error": "Evento no encontrado."}), 404
+    if not user:
+        return jsonify({"error": "Usuario no encontrado."}), 404
+    event = Event.query.get(data['event_id'])
+    favorite = Favorite(user_id=user.id, event_id=event.id)
+    try:
+        db.session.add(favorite)
+        db.session.commit()
+        return jsonify({"message": "Favorito añadido satisfactoriamente."})
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": "Error de servidor.", "detalles": str(e)})
+@api.route('/users/<int:id>/favorites', methods=['DELETE'])
+@jwt_required()
+def delete_favorite(id):
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    if not user or user.id != id:
+        return jsonify({"error": "Usuario no encontrado o no le pertenece este favorito."}), 404
+    favorite = Favorite.query.filter_by(user_id=user.id, event_id=id).first()
+    if not favorite:
+        return jsonify({"error": "Favorito no encontrado."}), 404
+    try:
+        db.session.delete(favorite)
+        db.session.commit()
+        return jsonify({"message": "Tarea eliminada satisfactoriamente."}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": "Error de servidor.", "detalles": str(e)}), 500
+@api.route('/users/<int:id>', methods=['PUT'])
+@jwt_required()
+def update_user(id):
+    data = request.get_json()
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    if not user:
+        return jsonify({"error": "Usuario no encontrado o no autenticado."}), 401
+    if user.id != id:
+        return jsonify({"error": "No tienes permiso para editar este usuario."}), 401
+    if 'email' in data:
+        user.email = data['email']
+    if 'password' in data:
+        user.password = generate_password_hash(data['password'])
+    if 'is_active' in data:
+        user.is_active = data['is_active']
+    if 'first_name' in data:
+        user.first_name = data['first_name']
+    if 'last_name' in data:
+        user.last_name = data['last_name']
+    if 'age' in data:
+        user.age = data['age']
+    try:
+        db.session.commit()
+        return jsonify({"message": "Usuario actualizado correctamente."}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": "Error de servidor.", "detalles": str(e)}), 500
+@api.route('/users/<int:id>', methods=['DELETE'])
+@jwt_required()
+def delete_user(id):
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    if not user:
+        return jsonify({"error": "Usuario no encontrado o no autenticado."}), 401
+    if user.id != id:
+        return jsonify({"error": "No tienes permiso para eliminar este usuario."}), 401
+    try:
+        db.session.delete(user)
+        db.session.commit()
+        return jsonify({"message": "Usuario eliminado correctamente."}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": "Error de servidor.", "detalles": str(e)}), 500
