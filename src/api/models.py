@@ -51,7 +51,7 @@ class Event(db.Model):
     image = db.Column(db.String(250), unique=False, nullable=True)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
     favorites = db.relationship('Favorite', backref='event', lazy=True)
 
     def __repr__(self):

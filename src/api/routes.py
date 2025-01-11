@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User
+from api.models import db, User, Event, Favorite
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 import re
@@ -61,9 +61,40 @@ def get_users():
     users = list(map(lambda x: x.serialize(), users))
     return jsonify(users), 200
 
-@api.route('/users/<int:id>')
+@api.route('/events', methods=['POST'])
 @jwt_required()
-def get_user():
+def create_event():
+    data = request.get_json()
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    if not user:
+        return jsonify({"error": "Usuario no existe o no está autenticado."}), 401
+    if not all([data['title'], data['description'], data['date'], data['time'], data['location']]):
+        return jsonify({"error": "Faltan datos obligatorios."}), 400
+    new_event = Event(title=data['title'], description=data['description'], date=data['date'], time=data['time'], location=data['location'], user_id=current_user_id)
+    try:
+        db.session.add(new_event)
+        db.session.commit()
+        return jsonify({"message": "Evento creado correctamente."})
+    except Exception as e:
+        return jsonify({"error": "Error de servidor", "details": str(e)})
+    
+@api.route('/events')
+def get_events():
+    events = Event.query.all()
+    events = list(map(lambda x: x.serialize(), events))
+    return jsonify(events), 200
+
+@api.route('/events/<int:event_id>')
+def get_event(event_id):
+    event = Event.query.get(event_id)
+    if not event:
+        return jsonify({"error": "Este evento no existe."}), 404
+    return jsonify(event.serialize()), 200
+
+@api.route('/profile')
+@jwt_required()
+def get_profile():
     current_user_id = get_jwt_identity()
     user = User.query.get(current_user_id)
     if not user:
