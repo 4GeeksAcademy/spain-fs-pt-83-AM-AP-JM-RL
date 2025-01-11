@@ -38,11 +38,6 @@ def create_user():
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
-@api.route('/users')
-def get_users():
-    users = User.query.all()
-    users = list(map(lambda x: x.serialize(), users))
-    return jsonify(users)
     
 @api.route('/users/<int:id>')
 def get_user(id):
