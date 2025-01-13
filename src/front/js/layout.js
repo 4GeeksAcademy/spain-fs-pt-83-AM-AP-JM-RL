@@ -11,6 +11,7 @@ import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
 import { ModalLogin } from "./component/ModalLogin";
 import { ModalRegister } from "./component/ModalRegister";
+import { ProfileDetails } from "./component/ProfileDetails";
 
 //create your first component
 const Layout = () => {
@@ -26,16 +27,17 @@ const Layout = () => {
     const handleRegisterModalOpen = () => setIsRegisterModalOpen(true);
     const handleRegisterModalClose = () => setIsRegisterModalOpen(false);
 
-    if(!process.env.BACKEND_URL || process.env.BACKEND_URL == "") return <BackendURL/ >;
+    if (!process.env.BACKEND_URL || process.env.BACKEND_URL == "") return <BackendURL />;
 
     return (
         <div>
             <BrowserRouter basename={basename}>
                 <ScrollToTop>
-                    <Navbar onLoginClick={handleModalOpen} onRegisterClick={handleRegisterModalOpen}/>
+                    <Navbar onLoginClick={handleModalOpen} onRegisterClick={handleRegisterModalOpen} />
                     <Routes>
                         <Route element={<Home />} path="/" />
                         <Route element={<Single />} path="/single/:theid" />
+                        <Route element={<ProfileDetails />} path="/profile" />
                         <Route element={<h1>Not found!</h1>} />
                     </Routes>
                     <Footer />
