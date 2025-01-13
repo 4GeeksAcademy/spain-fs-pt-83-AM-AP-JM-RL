@@ -4,7 +4,6 @@ import ScrollToTop from "./component/scrollToTop";
 import { BackendURL } from "./component/backendURL";
 
 import { Home } from "./pages/home";
-import { Single } from "./pages/single";
 import injectContext from "./store/appContext";
 
 import { Navbar } from "./component/navbar";
@@ -35,7 +34,6 @@ const Layout = () => {
                     <Navbar onLoginClick={handleModalOpen} onRegisterClick={handleRegisterModalOpen}/>
                     <Routes>
                         <Route element={<Home />} path="/" />
-                        <Route element={<Single />} path="/single/:theid" />
                         <Route element={<h1>Not found!</h1>} />
                     </Routes>
                     <Footer />
