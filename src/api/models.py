@@ -8,10 +8,10 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(250), unique=False, nullable=False)
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
-    first_name = db.Column(db.String(50), unique=False, nullable=True)
-    last_name = db.Column (db.String(80), unique=False, nullable=True)
+    first_name = db.Column(db.String(50), unique=False, nullable=False)
+    last_name = db.Column (db.String(80), unique=False, nullable=False)
     age = db.Column(db.Integer, unique=False, nullable=True)
-    gender = db.Column(db.String(80), unique=False, nullable=True)
+    rate = db.Column(db.Integer, unique=False, nullable=True)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
     bio = db.Column(db.String(250), unique=False, nullable=True)
@@ -33,7 +33,7 @@ class User(db.Model):
             "first_name": self.first_name,
             "last_name": self.last_name,
             "age": self.age,
-            "gender": self.gender,
+            "rate": self.rate,
             "created_at": self.created_at,
             "updated_at": self.updated_at,
             "bio": self.bio,
@@ -48,6 +48,7 @@ class Event(db.Model):
     date = db.Column(db.String(80), unique=False, nullable=False)
     time = db.Column(db.String(80), unique=False, nullable=False)
     location = db.Column(db.String(80), unique=False, nullable=False)
+    price = db.Column(db.Integer, unique=False, nullable=False)
     image = db.Column(db.String(250), unique=False, nullable=True)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
@@ -64,6 +65,7 @@ class Event(db.Model):
             "description": self.description,
             "date": self.date,
             "time": self.time,
+            "price": self.price,
             "location": self.location,
             "image": self.image,
             "created_at": self.created_at,
