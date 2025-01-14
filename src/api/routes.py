@@ -8,6 +8,7 @@ from flask_cors import CORS
 import re
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
+from datetime import datetime
 
 api = Blueprint('api', __name__)
 
@@ -64,9 +65,13 @@ def create_event():
     user = User.query.get(current_user_id)
     if not user:
         return jsonify({"error": "Usuario no existe o no está autenticado."}), 401
-    if not all([data['title'], data['description'], data['date'], data['time'], data['location']]):
+    if "title" not in data or "description" not in data or "date" not in data or "time" not in data or "price" not in data or "location" not in data or "price" not in data:
         return jsonify({"error": "Faltan datos obligatorios."}), 400
-    new_event = Event(title=data['title'], description=data['description'], date=data['date'], time=data['time'], location=data['location'], user_id=current_user_id)
+    date_str = data['date']
+    time_str = data['time']
+    date = datetime.strptime(date_str, '%Y-%m-%d')
+    time = datetime.strptime(time_str, '%H:%M').time()
+    new_event = Event(title=data['title'], description=data['description'], date=date, time=time, price=data['price'], location=data['location'], user_id=current_user_id)
     try:
         db.session.add(new_event)
         db.session.commit()
