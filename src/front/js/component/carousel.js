@@ -1,8 +1,18 @@
 import React, { useContext } from "react";
 import { Context } from "../store/appContext";
 
-export const Carousel = () => {
+export const Carousel = ({ filter, sort, title }) => {
   const { store, actions } = useContext(Context);
+
+
+  const prepareEvents = (events) => {
+    let filteredEvents = filter ? events.filter(filter) : events;
+    if (sort) {
+      filteredEvents = [...filteredEvents].sort(sort);
+    }
+    return filteredEvents;
+  };
+
 
   const groupEvents = (events, chunkSize) => {
     const chunks = [];
@@ -12,15 +22,15 @@ export const Carousel = () => {
     return chunks;
   };
 
-  const eventChunks = groupEvents(store.events || [], 4);
+  const eventChunks = groupEvents(prepareEvents(store.events || []), 4);
 
   return (
     <section className="pt-5 pb-5">
       <div className="container">
         <div className="row justify-content-between">
-          <div className="col-6">
+          {/* <div className="col-6">
             <h3 className="mb-3">Eventos</h3>
-          </div>
+          </div> */}
           <div className="col-6 text-right">
             <a
               className="btn btn-primary mb-3 mr-1"
@@ -63,6 +73,8 @@ export const Carousel = () => {
                               />
                               <div className="card-body">
                                 <h4 className="card-title">{event.title}</h4>
+                                <h6 className="card-description">{event.description}</h6>
+                                <p>At {event.location} on the {event.date} at {event.time}</p>
                               </div>
                             </div>
                           </div>
