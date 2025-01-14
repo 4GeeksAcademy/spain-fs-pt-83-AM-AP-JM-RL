@@ -13,7 +13,7 @@ export const ProfileDetails = () => {
                         className="img-fluid p-3 rounded-start"
                         alt="Profile"
                     />
-                    <p className="p-3 text-center mt-3"><strong>⭐⭐⭐⭐⭐</strong></p>
+                    <label className="col-12 col-lg-6 pb-4 text-center mt-3"><strong>⭐⭐⭐⭐⭐</strong></label>
                 </div>
                 <div className="col-md-6 d-flex align-items-center">
                     <div className="card-body p-4">
