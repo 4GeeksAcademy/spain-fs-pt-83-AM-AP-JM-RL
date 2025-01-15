@@ -17,6 +17,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 		  }
 		  console.log(store.events);
 		},
+
+		// addFavorite: (item) => {
+		// 	const { favorites } = getStore();
+		// 	if (!favorites.some(fav => fav.id === item.id && fav.type === item.type)) {
+		// 		setStore({ favorites: [...favorites, item] });
+		// 	}
+		// },
+		
+		// removeFavorite: (id, type) => {
+		// 	const { favorites } = getStore();
+		// 	setStore({ favorites: event.id});
+		// }
 	  },
 	};
   };

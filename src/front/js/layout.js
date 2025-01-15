@@ -11,6 +11,7 @@ import { Footer } from "./component/footer";
 import { ModalLogin } from "./component/ModalLogin";
 import { ModalRegister } from "./component/ModalRegister";
 import { ProfileDetails } from "./component/ProfileDetails";
+import { EventDetail } from "./pages/eventdetail";
 
 //create your first component
 const Layout = () => {
@@ -37,6 +38,8 @@ const Layout = () => {
                         <Route element={<Home />} path="/" />
 
                         <Route element={<ProfileDetails />} path="/profile" />
+
+                        <Route element={<EventDetail />} path="/events/:id" />
 
                         <Route element={<h1>Not found!</h1>} />
                     </Routes>
