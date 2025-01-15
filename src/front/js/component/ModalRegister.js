@@ -1,18 +1,19 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const ModalRegister = ({ show, onClose }) => {
     const { actions } = useContext(Context);
     const [ email, setEmail ] = useState();
     const [ password, setPassword ] = useState();
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         const success = await actions.register(email, password);
         if (success) {
-            Navigate('/')
+            navigate('/')
         }
     }
 

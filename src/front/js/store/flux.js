@@ -31,6 +31,33 @@ const getState = ({ getStore, getActions, setStore }) => {
 			}
 		},
 
+		login: async (email, password) => {
+			try {
+				const token = await fetch(`${process.env.BACKEND_URL}api/login`,
+					{
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify({email, password})
+					}
+				);
+
+				if (token.ok) {
+					const data = await token.json();
+					sessionStorage.setItem("access_token", data.access_token);
+					console.log("Usuario logeado:" , data);
+					return true;
+				} else {
+					const errorData = await token.json();
+					console.error("Error en el logeo:", errorData.msg);
+					return false;
+				}
+			} catch {
+				console.error('error')
+			}
+		},
+
 		getEvents: async () => {
 		  const store = getStore();
 		  if (!store.events.length) {
