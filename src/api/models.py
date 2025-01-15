@@ -46,7 +46,7 @@ class Event(db.Model):
     title = db.Column(db.String(120), unique=False, nullable=False)
     description = db.Column(db.String(250), unique=False, nullable=False)
     date = db.Column(db.DateTime, unique=False, nullable=False)
-    time = db.Column(db.DateTime, unique=False, nullable=False)
+    time = db.Column(db.Time, unique=False, nullable=False)
     location = db.Column(db.String(80), unique=False, nullable=False)
     price = db.Column(db.Integer, unique=False, nullable=False)
     image = db.Column(db.String(250), unique=False, nullable=True)
