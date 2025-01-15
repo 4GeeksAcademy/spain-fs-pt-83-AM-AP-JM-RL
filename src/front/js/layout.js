@@ -35,9 +35,7 @@ const Layout = () => {
                     <Navbar onLoginClick={handleModalOpen} onRegisterClick={handleRegisterModalOpen} />
                     <Routes>
                         <Route element={<Home />} path="/" />
-
                         <Route element={<ProfileDetails />} path="/profile" />
-
                         <Route element={<h1>Not found!</h1>} />
                     </Routes>
                     <Footer />
