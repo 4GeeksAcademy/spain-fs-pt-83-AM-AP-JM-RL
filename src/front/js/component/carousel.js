@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { Context } from "../store/appContext";
+import { Link } from "react-router-dom";
 
 export const Carousel = ({ filter, sort, title }) => {
   const { store, actions } = useContext(Context);
@@ -73,9 +74,11 @@ export const Carousel = ({ filter, sort, title }) => {
                               />
                               <div className="card-body">
                                 <h4 className="card-title">{event.title}</h4>
-                                <h6 className="card-description">{event.description}</h6>
-                                <p>At {event.location} on the {event.date} at {event.time}</p>
+                                <p>On the {event.date} at {event.time}</p>
                               </div>
+                              <Link to={`/events/${event.id}`} className="btn btn-primary">
+                                Details
+                              </Link>
                             </div>
                           </div>
                         ))}
