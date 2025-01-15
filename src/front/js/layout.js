@@ -11,6 +11,7 @@ import { Footer } from "./component/footer";
 import { ModalLogin } from "./component/ModalLogin";
 import { ModalRegister } from "./component/ModalRegister";
 import { ProfileDetails } from "./component/ProfileDetails";
+import { EventsForm } from "./component/EventsForm";
 
 //create your first component
 const Layout = () => {
@@ -36,7 +37,8 @@ const Layout = () => {
                     <Routes>
                         <Route element={<Home />} path="/" />
                         <Route element={<ProfileDetails />} path="/profile" />
-                        <Route element={<h1>Not found!</h1>} />
+                        <Route element={<EventsForm />} path="/events-form" />
+                        <Route element={<h1>Not found!</h1>} path="*" />
                     </Routes>
                     <Footer />
                 </ScrollToTop>

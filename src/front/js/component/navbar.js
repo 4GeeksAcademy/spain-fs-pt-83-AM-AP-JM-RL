@@ -1,12 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { EventsForm } from "./Events-form";
 
 export const Navbar = ({ onLoginClick, onRegisterClick }) => {
 	return (
 		<nav className="navbar navbar-light bg-light">
 			<div className="container d-flex flex-reverse">
-				<EventsForm />
+				<Link to='/events-form' className="btn btn-primary">Crear Evento</Link>
 				<Link to="/">
 					<span className="navbar-brand mb-0 h1">React Boilerplate</span>
 				</Link>
