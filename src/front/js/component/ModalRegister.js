@@ -1,6 +1,21 @@
-import React from "react";
+import React, { useContext, useState } from "react";
+import { Context } from "../store/appContext";
+import { Navigate } from "react-router-dom";
 
 export const ModalRegister = ({ show, onClose }) => {
+    const { actions } = useContext(Context);
+    const [ email, setEmail ] = useState();
+    const [ password, setPassword ] = useState();
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const success = await actions.register(email, password);
+        if (success) {
+            Navigate('/')
+        }
+    }
+
     if (!show) return null;
 
     return (
@@ -10,18 +25,14 @@ export const ModalRegister = ({ show, onClose }) => {
                     &times;
                 </button>
                 <h2>Register</h2>
-                <form>
-                    <div className="form-group">
-                        <label>Usuario:</label>
-                        <input type="text" className="form-control" placeholder="Enter username" />
-                    </div>
+                <form onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label>Email:</label>
-                        <input type="email" className="form-control" placeholder="Enter email" />
+                        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
                     </div>
                     <div className="form-group">
                         <label>Password:</label>
-                        <input type="password" className="form-control" placeholder="Enter password" />
+                        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                     </div>
                     <div className="modal-buttons">
                         <button type="submit" className="btn btn-primary">Register</button>
