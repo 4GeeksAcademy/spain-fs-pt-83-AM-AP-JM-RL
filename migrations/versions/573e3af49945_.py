@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 615994ebb744
+Revision ID: 573e3af49945
 Revises: 
-Create Date: 2025-01-14 18:13:34.395530
+Create Date: 2025-01-15 19:03:15.590428
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '615994ebb744'
+revision = '573e3af49945'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -23,8 +23,8 @@ def upgrade():
     sa.Column('email', sa.String(length=120), nullable=False),
     sa.Column('password', sa.String(length=250), nullable=False),
     sa.Column('is_active', sa.Boolean(), nullable=False),
-    sa.Column('first_name', sa.String(length=50), nullable=False),
-    sa.Column('last_name', sa.String(length=80), nullable=False),
+    sa.Column('first_name', sa.String(length=50), nullable=True),
+    sa.Column('last_name', sa.String(length=80), nullable=True),
     sa.Column('age', sa.Integer(), nullable=True),
     sa.Column('rate', sa.Integer(), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=False),
@@ -40,7 +40,7 @@ def upgrade():
     sa.Column('title', sa.String(length=120), nullable=False),
     sa.Column('description', sa.String(length=250), nullable=False),
     sa.Column('date', sa.DateTime(), nullable=False),
-    sa.Column('time', sa.DateTime(), nullable=False),
+    sa.Column('time', sa.Time(), nullable=False),
     sa.Column('location', sa.String(length=80), nullable=False),
     sa.Column('price', sa.Integer(), nullable=False),
     sa.Column('image', sa.String(length=250), nullable=True),
