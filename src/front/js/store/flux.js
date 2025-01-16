@@ -4,9 +4,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 		store: {
 			users: [],
 			events: [],
-			favorites: []
 		},
-
 
 		actions: {
 			register: async (email, password) => {
