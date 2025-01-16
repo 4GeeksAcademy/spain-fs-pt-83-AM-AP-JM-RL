@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 
 export const ModalLogin = ({ show, onClose }) => {
     const { actions } = useContext(Context);
-    const [ email, setEmail ] = useState();
-    const [ password, setPassword ] = useState();
+    const [email, setEmail] = useState();
+    const [password, setPassword] = useState();
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -21,7 +21,7 @@ export const ModalLogin = ({ show, onClose }) => {
         }
     }
 
-    if(!show) return null;
+    if (!show) return null;
 
     return (
         <div className="modal-overlay">
@@ -33,11 +33,11 @@ export const ModalLogin = ({ show, onClose }) => {
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label>Email:</label>
-                        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required/>
+                        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
                     </div>
                     <div className="form-group">
                         <label>Password:</label>
-                        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required/>
+                        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                     </div>
                     <button type="submit" className="btn btn-primary">Login</button>
                     <button type="button" className="btn btn-secondary" onClick={onClose}>Cerrar</button>

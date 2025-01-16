@@ -71,7 +71,7 @@ def create_event():
     time_str = data['time']
     date = datetime.strptime(date_str, '%Y-%m-%d')
     time = datetime.strptime(time_str, '%H:%M').time()
-    new_event = Event(title=data['title'], description=data['description'], date=date, time=time, price=data['price'], location=data['location'], user_id=current_user_id)
+    new_event = Event(title=data['title'], description=data['description'], date=date, time=time, price=data['price'], location=data['location'], image=data['image'], user_id=current_user_id)
     try:
         db.session.add(new_event)
         db.session.commit()

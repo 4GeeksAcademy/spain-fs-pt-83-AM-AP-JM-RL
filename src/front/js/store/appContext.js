@@ -26,7 +26,7 @@ const injectContext = PassedComponent => {
 			state.actions.getEvents();
 		}, []);
 
-	
+
 		return (
 			<Context.Provider value={state}>
 				<PassedComponent {...props} />
