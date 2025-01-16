@@ -7,7 +7,6 @@ import { Home } from "./pages/home";
 import injectContext from "./store/appContext";
 
 import { Navbar } from "./component/navbar";
-import { Footer } from "./component/footer";
 import { ModalLogin } from "./component/ModalLogin";
 import { ModalRegister } from "./component/ModalRegister";
 import { ProfileDetails } from "./component/ProfileDetails";
@@ -44,9 +43,8 @@ const Layout = () => {
                         <Route element={<h1>Not found!</h1>} path="*" />
                         <Route element={<EventDetail />} path="/events/:id" />
 
-                    
+
                     </Routes>
-                    <Footer />
                 </ScrollToTop>
                 <ModalLogin show={isModalOpen} onClose={handleModalClose} />
                 <ModalRegister show={isRegisterModalOpen} onClose={handleRegisterModalClose} />

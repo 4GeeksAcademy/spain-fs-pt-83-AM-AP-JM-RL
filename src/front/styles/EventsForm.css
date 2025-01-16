@@ -2,9 +2,3 @@
     position: relative;
     cursor: pointer;
 }
-
-.placeholder-image {
-    width: 100%;
-    height: auto;
-    display: block;
-}
