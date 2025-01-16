@@ -4,7 +4,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 	  store: {
 		users: [],
 		events: [],
-		favorites:[]
 	  },
 	  actions: {
 		register: async (email, password) => {
@@ -62,20 +61,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 						}
 					);
 
-					if (token.ok) {
-						const data = await token.json();
-						sessionStorage.setItem("access_token", data.access_token);
-						console.log("Usuario logeado:", data);
-						return true;
-					} else {
-						const errorData = await token.json();
-						console.error("Error en el logeo:", errorData.msg);
-						return false;
-					}
-				} catch {
-					console.error('error')
+				if (token.ok) {
+					const data = await token.json();
+					sessionStorage.setItem("access_token", data.access_token);
+					console.log("Usuario logeado:" , data);
+					return true;
+				} else {
+					const errorData = await token.json();
+					console.error("Error en el logeo:", errorData.msg);
+					return false;
 				}
-			},
+			} catch {
+				console.error('error')
+			}
+		},
 
 			getEvents: async () => {
 				const store = getStore();
