@@ -70,7 +70,7 @@ export const Carousel = ({ filter, sort, title }) => {
                               <img
                                 className="img-fluid"
                                 alt={event.title}
-                                src={event.image || "https://via.placeholder.com/300"}
+                                src={event.image || "https://www.svgrepo.com/show/508699/landscape-placeholder.svg"}
                               />
                               <div className="card-body">
                                 <h4 className="card-title">{event.title}</h4>
@@ -79,6 +79,21 @@ export const Carousel = ({ filter, sort, title }) => {
                               <Link to={`/events/${event.id}`} className="btn btn-primary">
                                 Details
                               </Link>
+                              {/* {
+                        store.favorites.some(fav => fav.id === params.id) ? (
+                            <i
+                                onClick={() => actions.removeFavorite(event.id)}
+                                className="fa-solid fa-star text-warning"
+                                style={{ cursor: "pointer" }}
+                            ></i>
+                        ) : (
+                            <i
+                                onClick={() => actions.addFavorite({ id: event.id })}
+                                className="fa-regular fa-star"
+                                style={{ cursor: "pointer" }}
+                            ></i>
+                        )
+                    } */}
                             </div>
                           </div>
                         ))}
