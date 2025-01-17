@@ -23,7 +23,6 @@ const injectContext = PassedComponent => {
 
 		useEffect(() => {
 			state.actions.getEvents();
-
 		  }, []);
 
 
