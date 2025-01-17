@@ -43,7 +43,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 					if (token.ok) {
 						const data = await token.json();
-						sessionStorage.setItem("access_token", data.access_token);
+						sessionStorage.setItem("access_token", data.token);
 						console.log("Usuario logeado:", data);
 						return true;
 					} else {
@@ -70,18 +70,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			createEvent: async ({ title, description, date, time, price, location, image }) => {
+			createEvent: async (formData) => {
 				const token = sessionStorage.getItem("access_token");
-				const formData = {
-					title,
-					description,
-					date,
-					time,
-					price,
-					location,
-					image,
-				}
-
 				try {
 					const response = await fetch(process.env.BACKEND_URL + "api/events", {
 						method: "POST",
