@@ -45,7 +45,7 @@ class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120), unique=False, nullable=False)
     description = db.Column(db.String(250), unique=False, nullable=False)
-    date = db.Column(db.DateTime, unique=False, nullable=False)
+    date = db.Column(db.Date, unique=False, nullable=False)
     time = db.Column(db.Time, unique=False, nullable=False)
     location = db.Column(db.String(80), unique=False, nullable=False)
     price = db.Column(db.Integer, unique=False, nullable=False)
@@ -63,8 +63,8 @@ class Event(db.Model):
             "id": self.id,
             "title": self.title,
             "description": self.description,
-            "date": self.date,
-            "time": self.time,
+            'date': self.date.strftime('%d-%m-%Y'),
+            'time': self.time.strftime('%H:%M:%S'),
             "price": self.price,
             "location": self.location,
             "image": self.image,
