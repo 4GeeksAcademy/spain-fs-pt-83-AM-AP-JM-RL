@@ -12,6 +12,7 @@ import { ModalRegister } from "./component/ModalRegister";
 import { ProfileDetails } from "./component/ProfileDetails";
 import { EventsForm } from "./component/EventsForm";
 import { EventDetail } from "./pages/eventdetail";
+import { SearchPage } from "./pages/searchpage";
 
 
 //create your first component
@@ -42,6 +43,7 @@ const Layout = () => {
                         <Route element={<EventsForm />} path="/events-form" />
                         <Route element={<h1>Not found!</h1>} path="*" />
                         <Route element={<EventDetail />} path="/events/:id" />
+                        <Route element={<SearchPage />} path="/results" />
 
 
                     </Routes>

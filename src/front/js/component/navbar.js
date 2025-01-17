@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { SearchBar } from "./searchbar";
 
 export const Navbar = ({ onLoginClick, onRegisterClick }) => {
 	return (
@@ -7,6 +8,7 @@ export const Navbar = ({ onLoginClick, onRegisterClick }) => {
 			<div className="container d-flex flex-reverse">
 				<Link to={'/events-form'} className="btn btn-primary">Crear Evento</Link>
 				<Link to={'/'} className="btn btn-primary">Home</Link >
+				<SearchBar />
 				<div className="ml-auto">
 					<button className="btn btn-primary" onClick={onLoginClick}>Login</button>
 					<button className="btn btn-secondary" onClick={onRegisterClick}>Register</button>

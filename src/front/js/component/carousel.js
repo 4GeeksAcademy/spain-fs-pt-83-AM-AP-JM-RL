@@ -69,7 +69,7 @@ export const Carousel = ({ filter, sort, title }) => {
                             <div className="card">
                               <img
                                 className="img-fluid"
-                                alt={event.title}
+                                alt={event.image}
                                 src={event.image || "https://www.svgrepo.com/show/508699/landscape-placeholder.svg"}
                               />
                               <div className="card-body">
