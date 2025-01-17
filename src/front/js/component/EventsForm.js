@@ -22,19 +22,19 @@ export const EventsForm = () => {
     const [error, setError] = useState('')
 
     const handleSubmit = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
 
-        const formData = {}
-        formData.title = title
-        formData.description = description
-        formData.date = date
-        formData.time = time
-        formData.price = price
-        formData.location = location
-        formData.image = image
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('description', description);
+        formData.append('date', date);
+        formData.append('time', time);
+        formData.append('price', price);
+        formData.append('location', location);
+        formData.append('image', fileInputRef.current.files[0]);
+
         try {
-            await actions.createEvent(formData)
-
+            await actions.createEvent(formData);
         } catch (error) {
             setError(`Ha ocurrido un error creando el evento, ${error}`)
             setMessage('')
