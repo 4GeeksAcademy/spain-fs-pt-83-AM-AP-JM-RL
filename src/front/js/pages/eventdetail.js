@@ -21,12 +21,12 @@ export const EventDetail = () => {
       <div className="col-lg-6 d-flex gap-3">
         <img
           className="img-fluid"
-          alt={event.title}
+          alt={event.image}
           src={
             event.image ||
             "https://www.svgrepo.com/show/508699/landscape-placeholder.svg"
           }
-        />a
+        />
         <div className="col-lg-6">
 
           <div className="d-flex align-items-center justify-content-between">

@@ -7,6 +7,7 @@ from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 import re
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 from datetime import datetime
 
@@ -61,8 +62,8 @@ def handle_login():
 @jwt_required()
 def create_event():
     data = request.get_json()
-    current_user_id = get_jwt_identity()
-    user = User.query.get(current_user_id)
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).first()
     if not user:
         return jsonify({"error": "Usuario no existe o no está autenticado."}), 401
     if "title" not in data or "description" not in data or "date" not in data or "time" not in data or "price" not in data or "location" not in data or "price" not in data:
@@ -71,12 +72,13 @@ def create_event():
     time_str = data['time']
     date = datetime.strptime(date_str, '%Y-%m-%d')
     time = datetime.strptime(time_str, '%H:%M').time()
-    new_event = Event(title=data['title'], description=data['description'], date=date, time=time, price=data['price'], location=data['location'], image=data['image'], user_id=current_user_id)
+    new_event = Event(title=data['title'], description=data['description'], date=date, time=time, price=data['price'], location=data['location'], image=data['image'], user_id=user.id)
     try:
         db.session.add(new_event)
         db.session.commit()
         return jsonify({"message": "Evento creado correctamente."})
     except Exception as e:
+        db.session.rollback()
         return jsonify({"error": "Error de servidor", "details": str(e)})
     
 @api.route('/events')
@@ -95,8 +97,8 @@ def get_event(event_id):
 @jwt_required()
 def update_event(id):
     data = request.get_json()
-    current_user_id = get_jwt_identity()
-    user = User.query.get(current_user_id)
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).first()
     if not user:
         return jsonify({"error": "Usuario no encontrado o no autenticado."}), 401
     event = Event.query.get(id)
@@ -124,8 +126,8 @@ def update_event(id):
 @api.route('/events/<int:id>', methods=['DELETE'])
 @jwt_required()
 def delete_event(id):
-    current_user_id = get_jwt_identity()
-    user = User.query.get(current_user_id)
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).first()
     if not user:
         return jsonify({"error": "Usuario no encontrado o no autenticado."}), 401
     event = Event.query.get(id)
@@ -144,8 +146,8 @@ def delete_event(id):
 @api.route('/profile')
 @jwt_required()
 def get_profile():
-    current_user_id = get_jwt_identity()
-    user = User.query.get(current_user_id)
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).first()
     if not user:
         return jsonify({"error": "Usuario no encontrado."}), 404
     return jsonify({"id": user.id, "is_active": user.is_active, "email": user.email, "First_name": user.first_name, "Last_name": user.last_name, "age": user.age, "gender": user.gender, "created_at": user.created_at, "updated_at": user.updated_at, "bio": user.bio, "image": user.image, "location": user.location}), 200
@@ -153,8 +155,8 @@ def get_profile():
 @api.route('/users/<int:id>/favorites')
 @jwt_required()
 def get_favorites():
-    current_user_id = get_jwt_identity()
-    user = User.query.get(current_user_id)
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).first()
     if not user:
         return jsonify({"error": "No se encuentra el usuario."}), 404
 
@@ -169,8 +171,8 @@ def get_favorites():
 @jwt_required()
 def add_favorite():
     data = request.get_json()
-    current_user_id = get_jwt_identity()
-    user = User.query.get(current_user_id)
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).first()
     if 'event_id' not in data:
         return jsonify({"error": "Evento no encontrado."}), 404
     if not user:
@@ -187,8 +189,8 @@ def add_favorite():
 @api.route('/users/<int:id>/favorites', methods=['DELETE'])
 @jwt_required()
 def delete_favorite(id):
-    current_user_id = get_jwt_identity()
-    user = User.query.get(current_user_id)
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).first()
     if not user or user.id != id:
         return jsonify({"error": "Usuario no encontrado o no le pertenece este favorito."}), 404
     favorite = Favorite.query.filter_by(user_id=user.id, event_id=id).first()
@@ -205,8 +207,8 @@ def delete_favorite(id):
 @jwt_required()
 def update_user(id):
     data = request.get_json()
-    current_user_id = get_jwt_identity()
-    user = User.query.get(current_user_id)
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).first()
     if not user:
         return jsonify({"error": "Usuario no encontrado o no autenticado."}), 401
     if user.id != id:
@@ -232,8 +234,8 @@ def update_user(id):
 @api.route('/users/<int:id>', methods=['DELETE'])
 @jwt_required()
 def delete_user(id):
-    current_user_id = get_jwt_identity()
-    user = User.query.get(current_user_id)
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).first()
     if not user:
         return jsonify({"error": "Usuario no encontrado o no autenticado."}), 401
     if user.id != id:

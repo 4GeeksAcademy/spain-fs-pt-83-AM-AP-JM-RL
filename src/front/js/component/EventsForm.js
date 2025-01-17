@@ -23,8 +23,17 @@ export const EventsForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+
+        const formData = {}
+        formData.title = title
+        formData.description = description
+        formData.date = date
+        formData.time = time
+        formData.price = price
+        formData.location = location
+        formData.image = image
         try {
-            await actions.createEvent({ title, description, date, time, price, location, image })
+            await actions.createEvent(formData)
 
         } catch (error) {
             setError(`Ha ocurrido un error creando el evento, ${error}`)
@@ -74,7 +83,7 @@ export const EventsForm = () => {
                 <div className="col-md-6">
                     <div className="image-upload-wrapper border rounded p-3" onClick={handleImageClick}>
                         <img src="https://via.placeholder.com/300" alt="Añadir foto" className="placeholder-image img-fluid mb-3" />
-                        <input type="file" className="form-control" id="imagen" ref={fileInputRef} style={{ display: 'none' }} required />
+                        <input type="file" className="form-control" id="imagen" ref={fileInputRef} style={{ display: 'none' }} />
                     </div>
                 </div>
                 <div className="col-12">
