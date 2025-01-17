@@ -43,7 +43,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 					if (token.ok) {
 						const data = await token.json();
-						sessionStorage.setItem("access_token", data.access_token);
+						sessionStorage.setItem("access_token", data.token);
 						console.log("Usuario logeado:", data);
 						return true;
 					} else {
