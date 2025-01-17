@@ -1,7 +1,7 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
-from flask import Flask, request, jsonify, url_for, Blueprint
+from flask import Flask, request, jsonify, url_for, Blueprint, current_app
 from api.models import db, User, Event, Favorite
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
@@ -10,6 +10,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 from datetime import datetime
+import os
 
 api = Blueprint('api', __name__)
 
@@ -61,18 +62,38 @@ def handle_login():
 @api.route('/events', methods=['POST'])
 @jwt_required()
 def create_event():
-    data = request.get_json()
     user_email = get_jwt_identity()
     user = User.query.filter_by(email=user_email).first()
     if not user:
         return jsonify({"error": "Usuario no existe o no está autenticado."}), 401
-    if "title" not in data or "description" not in data or "date" not in data or "time" not in data or "price" not in data or "location" not in data or "price" not in data:
+
+    title = request.form.get('title')
+    description = request.form.get('description')
+    date_str = request.form.get('date')
+    time_str = request.form.get('time')
+    price = request.form.get('price')
+    location = request.form.get('location')
+    image = request.files.get('image')
+
+    if not all([title, description, date_str, time_str, price, location, image]):
         return jsonify({"error": "Faltan datos obligatorios."}), 400
-    date_str = data['date']
-    time_str = data['time']
+
     date = datetime.strptime(date_str, '%Y-%m-%d')
     time = datetime.strptime(time_str, '%H:%M').time()
-    new_event = Event(title=data['title'], description=data['description'], date=date, time=time, price=data['price'], location=data['location'], image=data['image'], user_id=user.id)
+
+    filename = secure_filename(image.filename)
+    image.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
+
+    new_event = Event(
+        title=title,
+        description=description,
+        date=date,
+        time=time,
+        price=price,
+        location=location,
+        image=filename,
+        user_id=user.id
+    )
     try:
         db.session.add(new_event)
         db.session.commit()
