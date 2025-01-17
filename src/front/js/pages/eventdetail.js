@@ -16,7 +16,7 @@ export const EventDetail = () => {
 
   return (
     <div className="container">
-    {/* Top Section */}
+
     <div className="row mt-5">
       <div className="col-lg-6 d-flex gap-3">
         <img
@@ -28,7 +28,7 @@ export const EventDetail = () => {
           }
         />
         <div className="col-lg-6">
-          {/* Title and Favorite Icon Row */}
+
           <div className="d-flex align-items-center justify-content-between">
             <h1 className="mb-0">{event.title}</h1>
             <i
@@ -42,12 +42,12 @@ export const EventDetail = () => {
             ></i>
           </div>
   
-          {/* Description Row */}
+
           <div className="mt-2">
             <h3>{event.description}</h3>
           </div>
   
-          {/* Location, Date, and Time Row */}
+
           <div className="row mt-3">
             <div className="col-4">
               <p><strong>Location:</strong> {event.location}</p>
@@ -63,7 +63,7 @@ export const EventDetail = () => {
       </div>
     </div>
   
-    {/* Banner Section */}
+
     <div className="row">
       <div className="col-12">
         <img

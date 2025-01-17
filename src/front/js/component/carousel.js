@@ -79,7 +79,7 @@ export const Carousel = ({ filter, sort, title }) => {
                               <Link to={`/events/${event.id}`} className="btn btn-primary">
                                 Details
                               </Link>
-                              {/* {
+                              {
                         store.favorites.some(fav => fav.id === params.id) ? (
                             <i
                                 onClick={() => actions.removeFavorite(event.id)}
@@ -93,7 +93,7 @@ export const Carousel = ({ filter, sort, title }) => {
                                 style={{ cursor: "pointer" }}
                             ></i>
                         )
-                    } */}
+                    }
                             </div>
                           </div>
                         ))}

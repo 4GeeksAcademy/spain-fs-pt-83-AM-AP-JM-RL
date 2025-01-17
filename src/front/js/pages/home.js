@@ -10,7 +10,7 @@ export const Home = () => {
 	const filterFreeEvents = (event) => event.price === 0;
 
 	useEffect(() => {
-		actions.getEvents(); // Fetch events when the app loads
+		actions.getEvents(); 
 	  }, [actions]);
 
 	return (
