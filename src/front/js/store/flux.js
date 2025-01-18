@@ -76,9 +76,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const response = await fetch(process.env.BACKEND_URL + "api/events", {
 						method: "POST",
 						headers: {
-							Authorization: "Bearer " + token,
+							"Content-Type": "application/json",
+							"Authorization": "Bearer " + token,
 						},
-						body: formData,
+						body: JSON.stringify(formData),
 					});
 
 					if (response.ok) {

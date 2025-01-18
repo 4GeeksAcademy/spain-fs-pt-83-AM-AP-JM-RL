@@ -13,18 +13,24 @@ const injectContext = PassedComponent => {
 			getState({
 				getStore: () => state.store,
 				getActions: () => state.actions,
-				setStore: updatedStore =>
-					setState({
-						store: Object.assign(state.store, updatedStore),
-						actions: { ...state.actions }
-					})
+				setStore: updatedStore => {
+					setState(prevState => {
+						const newStore = { ...prevState.store, ...updatedStore };
+						if (JSON.stringify(prevState.store) !== JSON.stringify(newStore)) {
+							return {
+								store: newStore,
+								actions: { ...prevState.actions }
+							};
+						}
+						return prevState;
+					});
+				}
 			})
 		);
 
 		useEffect(() => {
 			state.actions.getEvents();
-		  }, []);
-
+		}, []);
 
 
 		return (
