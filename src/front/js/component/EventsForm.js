@@ -1,14 +1,9 @@
 import React, { useContext, useRef, useState } from "react";
 import '../../styles/EventsForm.css';
 import { Context } from "../store/appContext";
+import * as filestack from "filestack-js";
 
 export const EventsForm = () => {
-    const fileInputRef = useRef(null);
-
-    const handleImageClick = () => {
-        fileInputRef.current.click();
-    };
-
     const { actions } = useContext(Context)
 
     const [title, setTitle] = useState('')
@@ -21,17 +16,31 @@ export const EventsForm = () => {
     const [message, setMessage] = useState('')
     const [error, setError] = useState('')
 
+    const client = filestack.init('AVQNdAjjIRHW0xnKKEipvz')
+
+
+
+
+    const handleUploadImage = () => {
+        const options = {
+            onUploadDone: (res) => {
+                setImage(res.filesUploaded[0].url)
+            }
+        }
+        client.picker(options).open()
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const formData = new FormData();
-        formData.append('title', title);
-        formData.append('description', description);
-        formData.append('date', date);
-        formData.append('time', time);
-        formData.append('price', price);
-        formData.append('location', location);
-        formData.append('image', fileInputRef.current.files[0]);
+        const formData = {};
+        formData.title = title;
+        formData.description = description;
+        formData.date = date;
+        formData.time = time;
+        formData.price = price;
+        formData.location = location;
+        formData.image = image;
 
         try {
             await actions.createEvent(formData);
@@ -81,9 +90,8 @@ export const EventsForm = () => {
                     </div>
                 </div>
                 <div className="col-md-6">
-                    <div className="image-upload-wrapper border rounded p-3" onClick={handleImageClick}>
+                    <div onClick={handleUploadImage} className="image-upload-wrapper border rounded p-3">
                         <img src="https://via.placeholder.com/300" alt="Añadir foto" className="placeholder-image img-fluid mb-3" />
-                        <input type="file" className="form-control" id="imagen" ref={fileInputRef} style={{ display: 'none' }} />
                     </div>
                 </div>
                 <div className="col-12">

@@ -7,7 +7,6 @@ from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 import re
 from werkzeug.security import generate_password_hash, check_password_hash
-from werkzeug.utils import secure_filename
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 from datetime import datetime
 import os
@@ -67,13 +66,17 @@ def create_event():
     if not user:
         return jsonify({"error": "Usuario no existe o no está autenticado."}), 401
 
-    title = request.form.get('title')
-    description = request.form.get('description')
-    date_str = request.form.get('date')
-    time_str = request.form.get('time')
-    price = request.form.get('price')
-    location = request.form.get('location')
-    image = request.files.get('image')
+    data = request.get_json()
+    
+
+    title = data.get('title')
+    description = data.get('description')
+    date_str = data.get('date')
+    time_str = data.get('time')
+    price = data.get('price')
+    location = data.get('location')
+    image = data.get('image')
+    
 
     if not all([title, description, date_str, time_str, price, location, image]):
         return jsonify({"error": "Faltan datos obligatorios."}), 400
@@ -81,8 +84,6 @@ def create_event():
     date = datetime.strptime(date_str, '%Y-%m-%d')
     time = datetime.strptime(time_str, '%H:%M').time()
 
-    filename = secure_filename(image.filename)
-    image.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
 
     new_event = Event(
         title=title,
@@ -91,7 +92,7 @@ def create_event():
         time=time,
         price=price,
         location=location,
-        image=filename,
+        image=image,
         user_id=user.id
     )
     try:
@@ -107,6 +108,8 @@ def get_events():
     events = Event.query.all()
     events = list(map(lambda x: x.serialize(), events))
     return jsonify(events), 200
+
+
 
 @api.route('/events/<int:event_id>')
 def get_event(event_id):

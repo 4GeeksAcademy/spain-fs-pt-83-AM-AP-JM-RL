@@ -80,20 +80,20 @@ export const Carousel = ({ filter, sort, title }) => {
                                 Details
                               </Link>
                               {
-                        store.favorites.some(fav => fav.id === params.id) ? (
-                            <i
-                                onClick={() => actions.removeFavorite(event.id)}
-                                className="fa-solid fa-star text-warning"
-                                style={{ cursor: "pointer" }}
-                            ></i>
-                        ) : (
-                            <i
-                                onClick={() => actions.addFavorite({ id: event.id })}
-                                className="fa-regular fa-star"
-                                style={{ cursor: "pointer" }}
-                            ></i>
-                        )
-                    }
+                                store.favorites.some(fav => fav.id === params.id) ? (
+                                  <i
+                                    onClick={() => actions.removeFavorite(event.id)}
+                                    className="fa-solid fa-star text-warning"
+                                    style={{ cursor: "pointer" }}
+                                  ></i>
+                                ) : (
+                                  <i
+                                    onClick={() => actions.addFavorite({ id: event.id })}
+                                    className="fa-regular fa-star"
+                                    style={{ cursor: "pointer" }}
+                                  ></i>
+                                )
+                              }
                             </div>
                           </div>
                         ))}
