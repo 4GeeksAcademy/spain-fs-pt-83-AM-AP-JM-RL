@@ -1,0 +1,28 @@
+.container {
+    background-color: #f9f9f9;
+}
+
+h2 {
+    color: #4a4a4a;
+    font-family: 'Arial', sans-serif;
+}
+
+.form-label {
+    color: #333333;
+    font-weight: bold;
+}
+
+.form-control {
+    border-radius: 0.25rem;
+    border: 1px solid #ced4da;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}

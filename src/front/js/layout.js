@@ -13,6 +13,8 @@ import { ProfileDetails } from "./component/ProfileDetails";
 import { EventsForm } from "./component/EventsForm";
 import { EventDetail } from "./pages/eventdetail";
 import { ResultsPage } from "./pages/resultspage";
+import { UserForm } from "./component/UserForm";
+import { UserDetails } from "./component/UserDetails";
 
 
 //create your first component
@@ -39,8 +41,9 @@ const Layout = () => {
                     <Routes>
                         <Route element={<Home />} path="/" />
                         <Route element={<ProfileDetails />} path="/profile" />
-
+                        <Route element={<UserForm />} path="/user-form" />
                         <Route element={<EventsForm />} path="/events-form" />
+                        <Route element={<UserDetails />} path="/user-details" />
                         <Route element={<h1>Not found!</h1>} path="*" />
                         <Route element={<EventDetail />} path="/events/:id" />
                         <Route element={<ResultsPage />} path="/results" />

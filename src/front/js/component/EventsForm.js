@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useState } from "react";
 import '../../styles/EventsForm.css';
 import { Context } from "../store/appContext";
 import * as filestack from "filestack-js";
@@ -25,7 +25,8 @@ export const EventsForm = () => {
         const options = {
             onUploadDone: (res) => {
                 setImage(res.filesUploaded[0].url)
-            }
+            },
+            fromSources: ["local_file_system"]
         }
         client.picker(options).open()
     }
