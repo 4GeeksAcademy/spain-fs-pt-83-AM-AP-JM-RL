@@ -58,6 +58,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
+			logout: async () => {
+				sessionStorage.removeItem("access_token");
+				console.log("Sesion cerrada");
+			},
+
 			getEvents: async () => {
 				const store = getStore();
 				if (store.events.length === 0) {

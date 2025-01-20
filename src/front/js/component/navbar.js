@@ -1,8 +1,19 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Context } from "../store/appContext";
 import { SearchBar } from "./searchbar";
 
-export const Navbar = ({ onLoginClick, onRegisterClick }) => {
+export const Navbar = ({ onLoginClick }) => {
+	const { actions } = useContext(Context);
+	const navigate = useNavigate();
+
+	const handleLogout = () => {
+		actions.logout();
+		navigate("/");
+	};
+
+	const isAuthenticated = sessionStorage.getItem("access_token");
+
 	return (
 		<nav className="navbar navbar-light bg-light">
 			<div className="container d-flex flex-reverse">
@@ -14,6 +25,16 @@ export const Navbar = ({ onLoginClick, onRegisterClick }) => {
 					<button className="btn btn-primary" onClick={onLoginClick}>Login</button>
 					<button className="btn btn-secondary" onClick={onRegisterClick}>Register</button>
 					<Link className="btn btn-primary" to={'/profile'}>Profile</Link>
+					{
+						!isAuthenticated ? (
+							<button className="btn btn-primary" onClick={onLoginClick}>Login</button>
+						) : (
+							<>
+								<Link className="btn btn-primary" to={'/profile'}>Profile</Link>
+								<button className="btn btn-secondary" onClick={handleLogout}>Cerrar</button>
+							</>
+						)
+					}
 				</div>
 			</div>
 		</nav>

@@ -22,14 +22,25 @@ const Layout = () => {
     //the basename is used when your project is published in a subdirectory and not in the root of the domain
     // you can set the basename on the .env file located at the root of this project, E.g: BASENAME=/react-hello-webapp/
     const basename = process.env.BASENAME || "";
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
     const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
 
-    const handleModalOpen = () => setIsModalOpen(true);
-    const handleModalClose = () => setIsModalOpen(false);
+    const handleOpenLogin = () => {
+        setIsLoginModalOpen(true);
+    }
 
-    const handleRegisterModalOpen = () => setIsRegisterModalOpen(true);
-    const handleRegisterModalClose = () => setIsRegisterModalOpen(false);
+    const handleCloseLogin = () => {
+        setIsLoginModalOpen(false);
+    }
+    
+    const handleOpenRegister = () => {
+        setIsLoginModalOpen(false);
+        setIsRegisterModalOpen(true);
+    }
+
+    const handleCloseRegister = () => {
+        setIsRegisterModalOpen(false);
+    }
 
     if (!process.env.BACKEND_URL || process.env.BACKEND_URL == "") return <BackendURL />;
 
@@ -37,7 +48,7 @@ const Layout = () => {
         <div>
             <BrowserRouter basename={basename}>
                 <ScrollToTop>
-                    <Navbar onLoginClick={handleModalOpen} onRegisterClick={handleRegisterModalOpen} />
+                    <Navbar onLoginClick={handleOpenLogin} />
                     <Routes>
                         <Route element={<Home />} path="/" />
                         <Route element={<ProfileDetails />} path="/profile" />
@@ -51,8 +62,8 @@ const Layout = () => {
 
                     </Routes>
                 </ScrollToTop>
-                <ModalLogin show={isModalOpen} onClose={handleModalClose} />
-                <ModalRegister show={isRegisterModalOpen} onClose={handleRegisterModalClose} />
+                <ModalLogin show={isLoginModalOpen} onClose={handleCloseLogin} onRegisterClick={handleOpenRegister}/>
+                <ModalRegister show={isRegisterModalOpen} onClose={handleCloseRegister} />
             </BrowserRouter>
         </div>
     );

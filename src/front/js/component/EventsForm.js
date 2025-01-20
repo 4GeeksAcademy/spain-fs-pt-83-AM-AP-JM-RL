@@ -99,7 +99,7 @@ export const EventsForm = () => {
                     <button className="btn btn-success w-50">Crear evento</button>
                 </div>
             </form>
-            {message && <div><p>{message}</p></div>}
+            {message && <div><p>{message}</p></div >}
             {error && <div><p>{error}</p></div>}
         </div>
     )
