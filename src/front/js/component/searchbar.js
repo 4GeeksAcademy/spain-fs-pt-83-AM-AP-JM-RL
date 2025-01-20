@@ -1,31 +1,28 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
-import { Link } from "react-router-dom";
-import '../../styles/searchbar.css';
-
+import { Link, useNavigate } from "react-router-dom";
+import "../../styles/searchbar.css";
 
 export const SearchBar = () => {
   const [input, setInput] = useState("");
-  const [results, setResults] = useState([]); 
-  const [showDropdown, setShowDropdown] = useState(false); 
+  const [results, setResults] = useState([]);
+  const [showDropdown, setShowDropdown] = useState(false);
 
   const { store, actions } = useContext(Context);
+  const navigate = useNavigate();
 
-  const fetchData = async (value) => {
-    try {
-      const response = await fetch(`${process.env.BACKEND_URL}/api/events`);
-      if (!response.ok) {
-        throw new Error(`Error fetching events: ${response.statusText}`);
-      }
-      const json = await response.json();
-      const filteredResults = json.filter((event) =>
-        value && event?.title?.toLowerCase().includes(value.toLowerCase())
-      );
-      setResults(filteredResults);
-      setShowDropdown(filteredResults.length > 0);
-    } catch (error) {
-      console.error("Error in fetchData:", error);
+
+  const fetchData = (value) => {
+    if (store.events.length === 0) {
+      actions.getEvents();
     }
+
+    const filteredResults = store.events.filter((event) =>
+      value && event?.title?.toLowerCase().includes(value.toLowerCase())
+    );
+
+    setResults(filteredResults);
+    setShowDropdown(filteredResults.length > 0);
   };
 
   const handleInputChange = (value) => {
@@ -39,8 +36,14 @@ export const SearchBar = () => {
   };
 
   const handleResultClick = () => {
-    setInput(""); 
-    setShowDropdown(false); 
+    setInput("");
+    setShowDropdown(false);
+  };
+
+  const handleSearchIconClick = () => {
+    if (input.trim() !== "") {
+      navigate(`/results?query=${encodeURIComponent(input)}`);
+    }
   };
 
   return (
@@ -50,9 +53,13 @@ export const SearchBar = () => {
           placeholder="Search..."
           value={input}
           onChange={(e) => handleInputChange(e.target.value)}
-          onFocus={() => setShowDropdown(results.length > 0)} 
+          onFocus={() => setShowDropdown(results.length > 0)}
         />
-        <i className="fa-solid fa-magnifying-glass" />
+        <i
+          className="fa-solid fa-magnifying-glass"
+          onClick={handleSearchIconClick}
+          style={{ cursor: "pointer" }}
+        ></i>
       </div>
 
       {showDropdown && (
