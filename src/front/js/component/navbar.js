@@ -21,6 +21,10 @@ export const Navbar = ({ onLoginClick }) => {
 				<Link to={'/'} className="btn btn-primary">Home</Link >
 				<SearchBar />
 				<div className="ml-auto">
+					<Link className="btn btn-primary" to={'/user-details'}>Mi perfil</Link>
+					<button className="btn btn-primary" onClick={onLoginClick}>Login</button>
+					<button className="btn btn-secondary" onClick={onRegisterClick}>Register</button>
+					<Link className="btn btn-primary" to={'/profile'}>Profile</Link>
 					{
 						!isAuthenticated ? (
 							<button className="btn btn-primary" onClick={onLoginClick}>Login</button>

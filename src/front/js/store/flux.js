@@ -4,6 +4,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			users: [],
 			events: [],
 			favorites: [],
+			userDetails: []
 		},
 		actions: {
 			register: async (email, password) => {
@@ -111,6 +112,50 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 				}
 
+			},
+			getUserDetails: async () => {
+				const token = sessionStorage.getItem('access_token')
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "api/user-details", {
+						method: 'GET',
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": "Bearer " + token
+						}
+					})
+					if (response.ok) {
+						const data = await response.json()
+						setStore({ userDetails: data })
+					} else {
+						const errorData = await response.json()
+						console.error('Ha ocurrido un error', errorData)
+					}
+				} catch (error) {
+					console.error('error de servidor', error)
+				}
+			},
+			updateUser: async (formData) => {
+				const token = sessionStorage.getItem('access_token')
+				try {
+
+					const response = await fetch(process.env.BACKEND_URL + "api/update-user", {
+						method: 'PUT',
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": "Bearer " + token
+						},
+						body: JSON.stringify(formData)
+					})
+					if (response.ok) {
+						const data = await response.json()
+						setStore({ userDetails: data })
+					} else {
+						const errorData = await response.json()
+						console.error(errorData)
+					}
+				} catch (error) {
+					console.error("error de servidor", error)
+				}
 			},
 
 			// addFavorite: async (item) => {
