@@ -3,10 +3,10 @@ import { Context } from "../store/appContext";
 import { useNavigate } from "react-router-dom";
 
 
-export const ModalLogin = ({ show, onClose }) => {
+export const ModalLogin = ({ show, onClose, onRegisterClick }) => {
     const { actions } = useContext(Context);
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [ email, setEmail ] = useState("");
+    const [ password, setPassword ] = useState("");
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -41,6 +41,7 @@ export const ModalLogin = ({ show, onClose }) => {
                     </div>
                     <button type="submit" className="btn btn-primary">Login</button>
                     <button type="button" className="btn btn-secondary" onClick={onClose}>Cerrar</button>
+                    <h6>Aun no tienes cuenta, <button type="button" className="btn btn-secondary" onClick={onRegisterClick}>Register</button></h6>
                 </form>
             </div>
         </div>
