@@ -13,6 +13,7 @@ import { ProfileDetails } from "./component/ProfileDetails";
 import { EventsForm } from "./component/EventsForm";
 import { EventDetail } from "./pages/eventdetail";
 import { ResultsPage } from "./pages/resultspage";
+import { Footer } from "./component/footer";
 import { UserForm } from "./component/UserForm";
 import { UserDetails } from "./component/UserDetails";
 
@@ -45,7 +46,10 @@ const Layout = () => {
     if (!process.env.BACKEND_URL || process.env.BACKEND_URL == "") return <BackendURL />;
 
     return (
-        <div>
+
+        // style={{ backgroundColor: "#000000" }}
+
+        <div  >
             <BrowserRouter basename={basename}>
                 <ScrollToTop>
                     <Navbar onLoginClick={handleOpenLogin} />
@@ -65,6 +69,7 @@ const Layout = () => {
                 <ModalLogin show={isLoginModalOpen} onClose={handleCloseLogin} onRegisterClick={handleOpenRegister} />
                 <ModalRegister show={isRegisterModalOpen} onClose={handleCloseRegister} />
             </BrowserRouter>
+            <Footer />
         </div>
     );
 };

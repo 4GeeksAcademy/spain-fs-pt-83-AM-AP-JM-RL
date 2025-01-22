@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { Context } from "../store/appContext";
+import "../../styles/searchresults.css";
 
 export const SearchResults = () => {
     const location = useLocation();
@@ -16,7 +17,7 @@ export const SearchResults = () => {
     const itemsPerPage = 9;
     const query = new URLSearchParams(location.search).get("query");
 
-    // Apply the filters whenever they or the events change
+
     useEffect(() => {
         if (query) {
             if (!store.events.length) {
@@ -26,7 +27,7 @@ export const SearchResults = () => {
                     event?.title?.toLowerCase().includes(query.toLowerCase())
                 );
 
-                // Apply price filter
+
                 if (filters.priceRange.min) {
                     filtered = filtered.filter(
                         (event) =>
@@ -40,7 +41,7 @@ export const SearchResults = () => {
                     );
                 }
 
-                // Apply time filter
+
                 if (filters.timeRange.start && filters.timeRange.end) {
                     filtered = filtered.filter(
                         (event) =>
@@ -49,7 +50,7 @@ export const SearchResults = () => {
                     );
                 }
 
-                // Apply date filter
+
                 if (filters.dateRange.start && filters.dateRange.end) {
                     filtered = filtered.filter(
                         (event) =>
@@ -59,7 +60,7 @@ export const SearchResults = () => {
                 }
 
                 setPaginatedResults(filtered);
-                setCurrentPage(0); // Reset to the first page after filtering
+                setCurrentPage(0);
             }
         }
     }, [query, store.events, actions, filters]);
@@ -79,7 +80,7 @@ export const SearchResults = () => {
         }
     };
 
-    // Filter Change Handlers
+
     const handlePriceChange = (e) => {
         const { name, value } = e.target;
         setFilters((prev) => ({
@@ -108,12 +109,12 @@ export const SearchResults = () => {
         <section className="pt-5 pb-5">
             <div className="container">
                 <div className="row">
-                    {/* Filters Section */}
+
                     <div className="col-lg-4 mb-3">
                         <div className="filter-by">
                             <h4>Filter By</h4>
 
-                            {/* Price Filter */}
+
                             <div className="filter-group">
                                 <label>Price Range</label>
                                 <input
@@ -132,7 +133,7 @@ export const SearchResults = () => {
                                 />
                             </div>
 
-                            {/* Time Filter */}
+
                             <div className="filter-group">
                                 <label>Time Range</label>
                                 <input
@@ -149,7 +150,7 @@ export const SearchResults = () => {
                                 />
                             </div>
 
-                            {/* Date Filter */}
+
                             <div className="filter-group">
                                 <label>Date Range</label>
                                 <input
@@ -168,7 +169,6 @@ export const SearchResults = () => {
                         </div>
                     </div>
 
-                    {/* Results Section */}
                     <div className="col-lg-8">
                         <div className="row justify-content-between">
                             <div className="col-6">
@@ -176,14 +176,14 @@ export const SearchResults = () => {
                             </div>
                             <div className="col-6 text-right">
                                 <button
-                                    className="btn btn-primary mb-3 mr-1"
+                                    className="arrow-left btn btn-primary mb-3 mr-1"
                                     onClick={handlePrevious}
                                     disabled={currentPage === 0}
                                 >
                                     <i className="fa fa-arrow-left"></i>
                                 </button>
                                 <button
-                                    className="btn btn-primary mb-3"
+                                    className="arrow-right btn btn-primary mb-3"
                                     onClick={handleNext}
                                     disabled={(currentPage + 1) * itemsPerPage >= paginatedResults.length}
                                 >
@@ -195,7 +195,24 @@ export const SearchResults = () => {
                             {currentItems.length > 0 ? (
                                 currentItems.map((event) => (
                                     <div key={event.id} className="col-md-4 mb-3">
-                                        <div className="card">
+                                        <div className="search-card">
+                                            <div className="date-time">
+                                                {event.date && event.time
+                                                    ? (() => {
+                                                        const dateParts = event.date.split('-');
+                                                        const formattedDate = `${dateParts[0]}${dateParts[1]}${dateParts[2]}`;
+                                                        const dateObject = new Date(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`);
+                                                        const formattedTime = new Date(`1970-01-01T${event.time}Z`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                                                        return (
+                                                            <>
+                                                                <div>{dateObject.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}</div>
+                                                                <div>{formattedTime}</div>
+                                                            </>
+                                                        );
+                                                    })()
+                                                    : 'Invalid Date or Time'}
+                                            </div>
                                             <img
                                                 className="img-fluid"
                                                 alt={event.title}
@@ -204,28 +221,28 @@ export const SearchResults = () => {
                                                     "https://www.svgrepo.com/show/508699/landscape-placeholder.svg"
                                                 }
                                             />
-                                            <div className="card-body">
-                                                <h4 className="card-title">{event.title}</h4>
-                                                <p>
-                                                    On the {event.date} at {event.time}
-                                                </p>
+                                            <div className="search-card-body">
+                                                <h4 className="search-card-title">{event.title}</h4>
+
                                             </div>
-                                            <Link to={`/events/${event.id}`} className="btn btn-primary">
-                                                Details
-                                            </Link>
-                                            {store.favorites.some((fav) => fav.id === event.id) ? (
-                                                <i
-                                                    onClick={() => actions.removeFavorite(event.id)}
-                                                    className="fa-solid fa-star text-warning"
-                                                    style={{ cursor: "pointer" }}
-                                                ></i>
-                                            ) : (
-                                                <i
-                                                    onClick={() => actions.addFavorite({ id: event.id })}
-                                                    className="fa-regular fa-star"
-                                                    style={{ cursor: "pointer" }}
-                                                ></i>
-                                            )}
+                                            <div className="d-flex justify-content-between align-items-center mt-2">
+                                                <Link to={`/events/${event.id}`} className="btn btn-primary btn-sm">
+                                                    Details
+                                                </Link>
+                                                {store.favorites.some((fav) => fav.id === event.id) ? (
+                                                    <i
+                                                        onClick={() => actions.removeFavorite(event.id)}
+                                                        className="fa-solid fa-star text-warning"
+                                                        style={{ cursor: "pointer" }}
+                                                    ></i>
+                                                ) : (
+                                                    <i
+                                                        onClick={() => actions.addFavorite({ id: event.id })}
+                                                        className="fa-regular fa-star"
+                                                        style={{ cursor: "pointer" }}
+                                                    ></i>
+                                                )}
+                                            </div>
                                         </div>
                                     </div>
                                 ))
