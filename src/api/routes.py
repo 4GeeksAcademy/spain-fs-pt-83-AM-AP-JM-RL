@@ -8,7 +8,7 @@ from flask_cors import CORS
 import re
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
 
 api = Blueprint('api', __name__)
@@ -54,7 +54,7 @@ def handle_login():
         return jsonify({"error": "Usuario no encontrado."}), 404
     if not check_password_hash(user.password, data['password']):
         return jsonify({"error": "Contraseña incorrecta."}), 401
-    token = create_access_token(identity=user.email)
+    token = create_access_token(identity=user.email, expires_delta=timedelta(days=5))
     return jsonify({"message": "Login correcto", "id": user.id, "email": user.email, "token": token}), 200
 
 
@@ -76,9 +76,10 @@ def create_event():
     price = data.get('price')
     location = data.get('location')
     image = data.get('image')
+    type = data.get('type')
     
 
-    if not all([title, description, date_str, time_str, price, location, image]):
+    if not all([title, description, date_str, time_str, price, location, type]):
         return jsonify({"error": "Faltan datos obligatorios."}), 400
 
     date = datetime.strptime(date_str, '%Y-%m-%d')
@@ -93,6 +94,7 @@ def create_event():
         price=price,
         location=location,
         image=image,
+        type= type,
         user_id=user.id
     )
     try:
@@ -227,43 +229,47 @@ def delete_favorite(id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": "Error de servidor.", "detalles": str(e)}), 500
-@api.route('/users/<int:id>', methods=['PUT'])
+@api.route('/update-user', methods=['PUT'])
 @jwt_required()
-def update_user(id):
+def update_user():
     data = request.get_json()
     user_email = get_jwt_identity()
     user = User.query.filter_by(email=user_email).first()
     if not user:
-        return jsonify({"error": "Usuario no encontrado o no autenticado."}), 401
-    if user.id != id:
-        return jsonify({"error": "No tienes permiso para editar este usuario."}), 401
-    if 'email' in data:
+        return jsonify({"error": "Usuario no encontrado o no tienes permisos."}), 401
+    
+    if 'email' in data and data['email']:
         user.email = data['email']
-    if 'password' in data:
+    if 'password' in data and data['password']:
         user.password = generate_password_hash(data['password'])
-    if 'is_active' in data:
-        user.is_active = data['is_active']
-    if 'first_name' in data:
-        user.first_name = data['first_name']
-    if 'last_name' in data:
-        user.last_name = data['last_name']
-    if 'age' in data:
-        user.age = data['age']
+    if 'firstName' in data and data['firstName']:
+        user.first_name = data['firstName']
+    if 'lastName' in data and data['lastName']:
+        user.last_name = data['lastName']
+    if 'age' in data and data['age']:
+        try:
+            user.age = int(data['age'])
+        except ValueError:
+            return jsonify({"error": "La edad debe ser un número entero válido."}), 400
+    if 'bio' in data and data['bio']:
+        user.bio = data['bio']
+    if 'location' in data and data['location']:
+        user.location = data['location']
+    
     try:
         db.session.commit()
-        return jsonify({"message": "Usuario actualizado correctamente."}), 200
+        return jsonify([user.serialize()]), 200
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": "Error de servidor.", "detalles": str(e)}), 500
-@api.route('/users/<int:id>', methods=['DELETE'])
+
+@api.route('/delete-user/', methods=['DELETE'])
 @jwt_required()
-def delete_user(id):
+def delete_user():
     user_email = get_jwt_identity()
     user = User.query.filter_by(email=user_email).first()
     if not user:
-        return jsonify({"error": "Usuario no encontrado o no autenticado."}), 401
-    if user.id != id:
-        return jsonify({"error": "No tienes permiso para eliminar este usuario."}), 401
+        return jsonify({"error": "Usuario no encontrado o no tienes permisos."}), 401
     try:
         db.session.delete(user)
         db.session.commit()
@@ -271,3 +277,18 @@ def delete_user(id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": "Error de servidor.", "detalles": str(e)}), 500
+@api.route('/user-details')
+@jwt_required()
+def get_user():
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).first()
+    if not user:
+        return jsonify({"error": "Usuario no encontrado."}), 404
+    return jsonify([user.serialize()]), 200
+@api.route('/event-creator-details/<int:event_id>')
+def get_event_creator_details(event_id):
+    event = Event.query.get(event_id)
+    user = User.query.filter_by(id=event.user_id).first()
+    if not event:
+        return jsonify({"error": "Evento no encontrado"}), 404
+    return jsonify([user.serialize()])

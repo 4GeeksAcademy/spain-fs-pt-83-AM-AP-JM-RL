@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useState } from "react";
 import '../../styles/EventsForm.css';
 import { Context } from "../store/appContext";
 import * as filestack from "filestack-js";
@@ -14,6 +14,7 @@ export const EventsForm = () => {
     const [location, setLocation] = useState('')
     const [image, setImage] = useState('')
     const [message, setMessage] = useState('')
+    const [type, setType] = useState('')
     const [error, setError] = useState('')
 
     const client = filestack.init('AVQNdAjjIRHW0xnKKEipvz')
@@ -25,7 +26,8 @@ export const EventsForm = () => {
         const options = {
             onUploadDone: (res) => {
                 setImage(res.filesUploaded[0].url)
-            }
+            },
+            fromSources: ["local_file_system"]
         }
         client.picker(options).open()
     }
@@ -41,6 +43,7 @@ export const EventsForm = () => {
         formData.price = price;
         formData.location = location;
         formData.image = image;
+        formData.type = type;
 
         try {
             await actions.createEvent(formData);
@@ -67,6 +70,17 @@ export const EventsForm = () => {
                     <div className="mb-3">
                         <label htmlFor="titulo" className="form-label">Título</label>
                         <input onChange={(e) => setTitle(e.target.value)} value={title} type="text" className="form-control" id="titulo" placeholder="Título" required />
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="tipo" className="form-label">Tipo de evento</label>
+                        <select required value={type} onChange={(e) => setType(e.target.value)} className="form-select" aria-label="Default select example">
+                            <option value={''} disabled>De qué va tu evento?</option>
+                            <option value="concierto">Concierto</option>
+                            <option value="fiesta">Fiesta</option>
+                            <option value="cultural">Cultural</option>
+                            <option value="empresarial">Empresarial</option>
+                            <option value="otros">Otros</option>
+                        </select>
                     </div>
                     <div className="mb-3">
                         <label htmlFor="fecha" className="form-label">Fecha</label>
@@ -98,7 +112,7 @@ export const EventsForm = () => {
                     <button className="btn btn-success w-50">Crear evento</button>
                 </div>
             </form>
-            {message && <div><p>{message}</p></div>}
+            {message && <div><p>{message}</p></div >}
             {error && <div><p>{error}</p></div>}
         </div>
     )

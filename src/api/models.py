@@ -49,6 +49,7 @@ class Event(db.Model):
     time = db.Column(db.Time, unique=False, nullable=False)
     location = db.Column(db.String(80), unique=False, nullable=False)
     price = db.Column(db.Integer, unique=False, nullable=False)
+    type = db.Column(db.String(15), unique=False, nullable=False)
     image = db.Column(db.String(250), unique=False, nullable=True)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
@@ -68,6 +69,7 @@ class Event(db.Model):
             "price": self.price,
             "location": self.location,
             "image": self.image,
+            "user_id": self.user_id,
             "created_at": self.created_at,
             "updated_at": self.updated_at
         }
