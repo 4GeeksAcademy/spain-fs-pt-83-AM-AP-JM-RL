@@ -76,9 +76,10 @@ def create_event():
     price = data.get('price')
     location = data.get('location')
     image = data.get('image')
+    type = data.get('type')
     
 
-    if not all([title, description, date_str, time_str, price, location, image]):
+    if not all([title, description, date_str, time_str, price, location, type]):
         return jsonify({"error": "Faltan datos obligatorios."}), 400
 
     date = datetime.strptime(date_str, '%Y-%m-%d')
@@ -93,6 +94,7 @@ def create_event():
         price=price,
         location=location,
         image=image,
+        type= type,
         user_id=user.id
     )
     try:
@@ -283,3 +285,10 @@ def get_user():
     if not user:
         return jsonify({"error": "Usuario no encontrado."}), 404
     return jsonify([user.serialize()]), 200
+@api.route('/event-creator-details/<int:event_id>')
+def get_event_creator_details(event_id):
+    event = Event.query.get(event_id)
+    user = User.query.filter_by(id=event.user_id).first()
+    if not event:
+        return jsonify({"error": "Evento no encontrado"}), 404
+    return jsonify([user.serialize()])
