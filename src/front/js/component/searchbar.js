@@ -11,14 +11,17 @@ export const SearchBar = () => {
   const { store, actions } = useContext(Context);
   const navigate = useNavigate();
 
-
   const fetchData = (value) => {
     if (store.events.length === 0) {
       actions.getEvents();
     }
 
-    const filteredResults = store.events.filter((event) =>
-      value && event?.title?.toLowerCase().includes(value.toLowerCase())
+    const filteredResults = store.events.filter(
+      (event) =>
+        value &&
+        (event?.title?.toLowerCase().includes(value.toLowerCase()) ||
+          event?.description?.toLowerCase().includes(value.toLowerCase()) ||
+          event?.location?.toLowerCase().includes(value.toLowerCase()))
     );
 
     setResults(filteredResults);
@@ -43,6 +46,14 @@ export const SearchBar = () => {
   const handleSearchIconClick = () => {
     if (input.trim() !== "") {
       navigate(`/results?query=${encodeURIComponent(input)}`);
+      setInput("");
+      setShowDropdown(false); 
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSearchIconClick();
     }
   };
 
@@ -52,8 +63,9 @@ export const SearchBar = () => {
         <input
           placeholder="Search..."
           value={input}
+          onKeyDown={handleKeyDown} 
           onChange={(e) => handleInputChange(e.target.value)}
-          onFocus={() => setShowDropdown(results.length > 0)}
+          onFocus={() => setShowDropdown(results.length > 0)} 
         />
         <i
           className="fa-solid fa-magnifying-glass"

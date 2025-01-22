@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
+import "../../styles/carousel.css";
 
-export const Carousel = ({ filter, sort, title }) => {
+export const Carousel = ({ filter, sort, title, id }) => {
   const { store, actions } = useContext(Context);
-
 
   const prepareEvents = (events) => {
     let filteredEvents = filter ? events.filter(filter) : events;
@@ -13,7 +13,6 @@ export const Carousel = ({ filter, sort, title }) => {
     }
     return filteredEvents;
   };
-
 
   const groupEvents = (events, chunkSize) => {
     const chunks = [];
@@ -28,86 +27,94 @@ export const Carousel = ({ filter, sort, title }) => {
   return (
     <section className="pt-5 pb-5">
       <div className="container">
-        <div className="row justify-content-between">
-          {/* <div className="col-6">
-            <h3 className="mb-3">Eventos</h3>
-          </div> */}
-          <div className="col-6 text-right">
-            <a
-              className="btn btn-primary mb-3 mr-1"
-              href="#carouselExampleIndicators1"
-              role="button"
-              data-bs-slide="prev"
-            >
-              <i className="fa fa-arrow-left"></i>
-            </a>
-            <a
-              className="btn btn-primary mb-3"
-              href="#carouselExampleIndicators1"
-              role="button"
-              data-bs-slide="next"
-            >
-              <i className="fa fa-arrow-right"></i>
-            </a>
-          </div>
-          <div className="col-12">
-            <div
-              id="carouselExampleIndicators1"
-              className="carousel slide"
-              data-bs-ride="carousel"
-            >
-              <div className="carousel-inner">
-                {eventChunks.length > 0 ? (
-                  eventChunks.map((chunk, chunkIndex) => (
-                    <div
-                      key={chunkIndex}
-                      className={`carousel-item ${chunkIndex === 0 ? "active" : ""}`}
-                    >
-                      <div className="row">
-                        {chunk.map((event) => (
-                          <div key={event.id} className="col-md-3 mb-3">
-                            <div className="card">
-                              <img
-                                className="img-fluid"
-                                alt={event.image}
-                                src={event.image || "https://www.svgrepo.com/show/508699/landscape-placeholder.svg"}
-                              />
-                              <div className="card-body">
-                                <h4 className="card-title">{event.title}</h4>
-                                <p>On the {event.date} at {event.time}</p>
-                              </div>
+        <h3 className="mb-4">{title}</h3>
+        <div id={id} className="carousel slide" data-bs-ride="carousel">
+          <div className="carousel-inner">
+            {eventChunks.length > 0 ? (
+              eventChunks.map((chunk, chunkIndex) => (
+                <div
+                  key={chunkIndex}
+                  className={`carousel-item ${chunkIndex === 0 ? "active" : ""}`}
+                >
+                  <div className="row">
+                    {chunk.map((event) => (
+                      <div key={event.id} className="col-md-3 mb-3">
+                        <div className="card">
+                          <div className="date-time">
+                            {event.date && event.time
+                              ? (() => {
+                                const dateParts = event.date.split('-');
+                                const formattedDate = `${dateParts[0]}${dateParts[1]}${dateParts[2]}`;
+                                const dateObject = new Date(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`);
+                                const formattedTime = new Date(`1970-01-01T${event.time}Z`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                                return (
+                                  <>
+                                    <div>{dateObject.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}</div>
+                                    <div>{formattedTime}</div>
+                                  </>
+                                );
+                              })()
+                              : 'Invalid Date or Time'}
+                          </div>
+                          <img
+                            className="img-fluid"
+                            alt={event.image}
+                            src={event.image || "https://www.svgrepo.com/show/508699/landscape-placeholder.svg"}
+                          />
+                          <div className="card-body">
+                            <h4 className="card-title">{event.title}</h4>
+                            <div className="d-flex justify-content-between align-items-center">
                               <Link to={`/events/${event.id}`} className="btn btn-primary">
                                 Details
                               </Link>
-                              {
-                                store.favorites.some(fav => fav.id === params.id) ? (
-                                  <i
-                                    onClick={() => actions.removeFavorite(event.id)}
-                                    className="fa-solid fa-star text-warning"
-                                    style={{ cursor: "pointer" }}
-                                  ></i>
-                                ) : (
-                                  <i
-                                    onClick={() => actions.addFavorite({ id: event.id })}
-                                    className="fa-regular fa-star"
-                                    style={{ cursor: "pointer" }}
-                                  ></i>
-                                )
-                              }
+                              {store.favorites.some((fav) => fav.event_id === event.id) ? (
+                                <i
+                                  onClick={() => actions.removeFavorite(store.favorites.find((fav) => fav.event_id === event.id).id)}
+                                  className="fa-solid fa-star text-warning"
+                                  style={{ cursor: "pointer" }}
+                                ></i>
+                              ) : (
+                                <i
+                                  onClick={() => actions.addFavorite(store.user.id, event.id)}
+                                  className="fa-regular fa-star"
+                                  style={{ cursor: "pointer" }}
+                                ></i>
+                              )}
                             </div>
                           </div>
-                        ))}
+                        </div>
+
                       </div>
-                    </div>
-                  ))
-                ) : (
-                  <div className="carousel-item active">
-                    <p>No events available</p>
+                    ))}
                   </div>
-                )}
+                </div>
+              ))
+            ) : (
+              <div className="carousel-item active">
+                <p>No events available</p>
               </div>
-            </div>
+            )}
           </div>
+
+          <button
+            className="carousel-control-prev"
+            type="button"
+            data-bs-target={`#${id}`}
+            data-bs-slide="prev"
+          >
+            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span className="visually-hidden">Previous</span>
+          </button>
+          <button
+            className="carousel-control-next"
+            type="button"
+            data-bs-target={`#${id}`}
+            data-bs-slide="next"
+          >
+            <span className="carousel-control-next-icon" aria-hidden="true"></span>
+            <span className="visually-hidden">Next</span>
+          </button>
         </div>
       </div>
     </section>

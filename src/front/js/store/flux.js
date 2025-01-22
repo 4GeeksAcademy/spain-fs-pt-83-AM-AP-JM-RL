@@ -108,88 +108,62 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			},
 
-			// addFavorite: async (item) => {
-			// 	const { favorites } = getStore();
-			// 	if (!favorites.length) {
-			// 		try {
-			// 		  const resp = await fetch(process.env.BACKEND_URL + "/api/favorites");
-			// 		  const respJson = await resp.json();
-			// 		  setStore({ events: respJson });
-			// 		} catch (error) {
-			// 		  console.error("Error fetching events:", error);
-			// 		}
-			// 	  }
-			// },
-
-			removeFavorite: (id) => {
-				const { favorites } = getStore();
-				setStore({ favorites: event.id });
-
+			addFavorite: async (user_id, event_id) => {
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/favorite`, {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json"
+						},
+						body: JSON.stringify({
+							user_id: user_id,
+							event_id: event_id
+						})
+					});
+			
+					if (!response.ok) {
+						throw new Error(`Failed to add favorite: ${response.statusText}`);
+					}
+			
+					const newFavorite = await response.json();
+			
+					
+					const store = getStore();
+					setStore({ favorites: [...store.favorites, newFavorite] });
+			
+					return newFavorite;
+				} catch (error) {
+					console.error("Error adding favorite:", error);
+					throw error;
+				}
+			},
+			
+			removeFavorite: async (id) => {
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/favorite/${id}`, {
+						method: "DELETE"
+					});
+			
+					if (!response.ok) {
+						throw new Error(`Failed to remove favorite: ${response.statusText}`);
+					}
+			
+					const store = getStore();
+					const updatedFavorites = store.favorites.filter((fav) => fav.id !== id);
+					setStore({ favorites: updatedFavorites });
+			
+					return id; 
+				} catch (error) {
+					console.error("Error removing favorite:", error);
+					throw error;
+				}
 			}
-			// addFavorite: (item) => {
-			// 	const { favorites } = getStore();
-			// 	if (!favorites.some(fav => fav.id === item.id && fav.type === item.type)) {
-			// 		setStore({ favorites: [...favorites, item] });
-			// 	}
-			// },
-
-			// removeFavorite: (id, type) => {
-			// 	const { favorites } = getStore();
-			// 	setStore({ favorites: event.id});
-			// }
 
 		},
 
 
-		addFavorite: async (user_id, event_id) => {
-			try {
-				const response = await fetch(`${process.env.BACKEND_URL}api/favorites`, {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json"
-					},
-					body: JSON.stringify({
-						user_id: user_id,
-						event_id: event_id
-					})
-				});
-
-				if (!response.ok) {
-					throw new Error(`Failed to add favorite: ${response.statusText}`);
-				}
-
-				const data = await response.json();
-				return data;
-			} catch (error) {
-				console.error("Error adding favorite:", error);
-				throw error;
-			}
-
-		},
-
-		removeFavorite: async (id) => {
-			try {
-
-				const response = await fetch(`${process.env.BACKEND_URL}api/favorites/${id}`, {
-					method: "DELETE",
-				});
-
-
-				if (!response.ok) {
-					throw new Error(`Failed to remove favorite: ${response.statusText}`);
-				}
-
-
-				const store = getStore();
-				const updatedFavorites = store.favorites.filter(fav => fav.id !== id);
-
-				// Update the state/store
-				setStore({ favorites: updatedFavorites });
-			} catch (error) {
-				console.error("Error removing favorite:", error);
-				throw error;
-			}
-		}
+		
+		
 
 	}
 }

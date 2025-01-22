@@ -1,0 +1,20 @@
+.event-card {
+    margin: auto;
+}
+
+.event-card img {
+    padding: 10px;
+}
+
+.title-icon h1 {
+    font-size: 54px;
+}
+
+.title-icon i {
+    font-size: 36px;
+    justify-self: end;
+}
+
+.event-date-time {
+    
+}

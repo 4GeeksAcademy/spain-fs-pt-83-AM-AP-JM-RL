@@ -1,0 +1,12 @@
+.navbar .btn {
+    margin: 5px;
+    height: 40px;
+    width: auto;
+    max-width: 150px;
+}
+
+.navbar {
+    height: 60px;
+    padding: 10px;
+    background-color: #ffffff;
+}

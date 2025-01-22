@@ -13,6 +13,7 @@ import { ProfileDetails } from "./component/ProfileDetails";
 import { EventsForm } from "./component/EventsForm";
 import { EventDetail } from "./pages/eventdetail";
 import { ResultsPage } from "./pages/resultspage";
+import { Footer } from "./component/footer";
 
 
 //create your first component
@@ -32,7 +33,10 @@ const Layout = () => {
     if (!process.env.BACKEND_URL || process.env.BACKEND_URL == "") return <BackendURL />;
 
     return (
-        <div>
+
+        // style={{ backgroundColor: "#000000" }}
+
+        <div  >
             <BrowserRouter basename={basename}>
                 <ScrollToTop>
                     <Navbar onLoginClick={handleModalOpen} onRegisterClick={handleRegisterModalOpen} />
@@ -51,6 +55,7 @@ const Layout = () => {
                 <ModalLogin show={isModalOpen} onClose={handleModalClose} />
                 <ModalRegister show={isRegisterModalOpen} onClose={handleRegisterModalClose} />
             </BrowserRouter>
+            <Footer />
         </div>
     );
 };
