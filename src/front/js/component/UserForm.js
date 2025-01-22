@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import "../../styles/UserForm.css"
+import { useNavigate } from "react-router-dom";
 
 export const UserForm = () => {
 
@@ -11,6 +12,7 @@ export const UserForm = () => {
     const [age, setAge] = useState('')
     const [bio, setBio] = useState('')
     const [location, setLocation] = useState('')
+    const navigate = useNavigate()
 
     const { actions } = useContext(Context)
 
@@ -26,6 +28,7 @@ export const UserForm = () => {
         }
         e.preventDefault()
         actions.updateUser(formData)
+        navigate('/user-details')
     }
 
 

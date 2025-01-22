@@ -12,7 +12,7 @@ export const UserDetails = () => {
 
     useEffect(() => {
         actions.getUserDetails()
-    }, [store.userDetails])
+    }, [])
 
     return (
         <div className="container w-50 mt-5 shadow p-4 rounded">
