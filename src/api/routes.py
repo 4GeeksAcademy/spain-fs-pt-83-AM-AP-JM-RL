@@ -256,7 +256,7 @@ def update_user():
     
     try:
         db.session.commit()
-        return jsonify(user.serialize()), 200
+        return jsonify([user.serialize()]), 200
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": "Error de servidor.", "detalles": str(e)}), 500
