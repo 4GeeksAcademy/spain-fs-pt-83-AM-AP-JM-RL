@@ -32,7 +32,7 @@ const Layout = () => {
     const handleCloseLogin = () => {
         setIsLoginModalOpen(false);
     }
-    
+
     const handleOpenRegister = () => {
         setIsLoginModalOpen(false);
         setIsRegisterModalOpen(true);
@@ -51,7 +51,7 @@ const Layout = () => {
                     <Navbar onLoginClick={handleOpenLogin} />
                     <Routes>
                         <Route element={<Home />} path="/" />
-                        <Route element={<ProfileDetails />} path="/profile" />
+                        <Route element={<ProfileDetails />} path="/profile/:id" />
                         <Route element={<UserForm />} path="/user-form" />
                         <Route element={<EventsForm />} path="/events-form" />
                         <Route element={<UserDetails />} path="/user-details" />
@@ -62,7 +62,7 @@ const Layout = () => {
 
                     </Routes>
                 </ScrollToTop>
-                <ModalLogin show={isLoginModalOpen} onClose={handleCloseLogin} onRegisterClick={handleOpenRegister}/>
+                <ModalLogin show={isLoginModalOpen} onClose={handleCloseLogin} onRegisterClick={handleOpenRegister} />
                 <ModalRegister show={isRegisterModalOpen} onClose={handleCloseRegister} />
             </BrowserRouter>
         </div>

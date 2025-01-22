@@ -69,6 +69,7 @@ class Event(db.Model):
             "price": self.price,
             "location": self.location,
             "image": self.image,
+            "user_id": self.user_id,
             "created_at": self.created_at,
             "updated_at": self.updated_at
         }

@@ -27,7 +27,6 @@ export const Navbar = ({ onLoginClick }) => {
 						) : (
 							<>
 								<Link className="btn btn-primary" to={'/user-details'}>Mi perfil</Link>
-								<Link className="btn btn-primary" to={'/profile'}>Profile</Link>
 								<button className="btn btn-secondary" onClick={handleLogout}>Cerrar</button>
 							</>
 						)
