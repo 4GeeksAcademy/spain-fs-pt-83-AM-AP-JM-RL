@@ -4,10 +4,10 @@ import { useParams } from "react-router-dom";
 
 export const ProfileDetails = () => {
     const { store, actions } = useContext(Context);
-    const { id } = useParams()
+    const { event_id } = useParams()
 
     useEffect(() => {
-        actions.getEventCreatorDetails(id)
+        actions.getEventCreatorData(event_id)
     }, [])
 
     return (

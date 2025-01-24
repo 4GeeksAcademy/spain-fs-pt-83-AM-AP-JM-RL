@@ -33,9 +33,8 @@ export const EventDetail = () => {
           <div className="title-icon d-flex align-items-center justify-content-between">
             <h1 className="mb-0">{event.title}</h1>
             <i
-              className={`fa-regular ${
-                isFavorite ? "fa-solid fa-star text-warning" : "fa-star"
-              }`}
+              className={`fa-regular ${isFavorite ? "fa-solid fa-star text-warning" : "fa-star"
+                }`}
               onClick={() =>
                 isFavorite
                   ? actions.removeFavorite(store.favorites.find((fav) => fav.event_id === parseInt(id)).id)
@@ -94,7 +93,7 @@ export const EventDetail = () => {
             )}
           </div>
           <div className="mt-3">
-            <Link to={`/profile/${event.creator_id}`}>
+            <Link to={`/profile/${event.id}`}>
               Ir al perfil del creador
             </Link>
           </div>
