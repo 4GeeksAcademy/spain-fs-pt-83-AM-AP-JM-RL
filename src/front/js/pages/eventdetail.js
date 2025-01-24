@@ -99,7 +99,7 @@ export const EventDetail = () => {
             )}
           </div>
           <div className="mt-3">
-            <Link to={`/profile/${event.creator_id}`}>
+            <Link to={`/profile/${event.id}`}>
               Ir al perfil del creador
             </Link>
           </div>
