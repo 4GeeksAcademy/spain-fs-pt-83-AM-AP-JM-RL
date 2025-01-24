@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import { useNavigate } from "react-router-dom";
+import "../../styles/modal.css";
 
 
 export const ModalLogin = ({ show, onClose, onRegisterClick }) => {
@@ -25,25 +26,37 @@ export const ModalLogin = ({ show, onClose, onRegisterClick }) => {
 
     return (
         <div className="modal-overlay">
-            <div className="modal-content">
-                <button className="close-btn" onClick={onClose}>
-                    &times;
-                </button>
-                <h2>Login</h2>
-                <form onSubmit={handleSubmit}>
-                    <div className="form-group">
-                        <label>Email:</label>
-                        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                    </div>
-                    <div className="form-group">
-                        <label>Password:</label>
-                        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-                    </div>
-                    <button type="submit" className="btn btn-primary">Login</button>
-                    <button type="button" className="btn btn-secondary" onClick={onClose}>Cerrar</button>
-                    <h6>Aun no tienes cuenta, <button type="button" className="btn btn-secondary" onClick={onRegisterClick}>Register</button></h6>
-                </form>
+    <div className="background">
+       
+     
+        <form className="modal-form" onSubmit={handleSubmit}>
+            <h3>Login</h3>
+            <div className="form-group">
+                <input 
+                    className="modal-input" 
+                    type="email" 
+                    placeholder="Email" 
+                    value={email} 
+                    onChange={(e) => setEmail(e.target.value)} 
+                    required 
+                />
             </div>
-        </div>
+            <div className="form-group">
+                <input 
+                    className="modal-input" 
+                    type="password" 
+                    placeholder="Password" 
+                    value={password} 
+                    onChange={(e) => setPassword(e.target.value)} 
+                    required 
+                />
+            </div>
+            <button type="submit" className="btn btn-primary">Login</button>
+            <button type="button" className="btn btn-secondary" onClick={onClose}>Close</button>
+            <h6>Don't have an account?</h6>
+            <button type="button" className="btn btn-secondary" onClick={onRegisterClick}>Register</button>
+        </form>
+    </div>
+</div>
     )
 }
