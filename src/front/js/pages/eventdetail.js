@@ -1,12 +1,18 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import { useParams } from "react-router-dom";
 import "../../styles/eventdetail.css";
 import { Link } from "react-router-dom";
+import { MapContainer, TileLayer, Polygon, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
 
 export const EventDetail = () => {
   const { store, actions } = useContext(Context);
   const { id } = useParams();
+
+  const [polygonCoords] = useState([
+    [40.96548, -5.66443], [40.96527, -5.66338], [40.96451, -5.66373], [40.9647, -5.66468]
+  ]);
 
   const event = store.events.find((ev) => ev.id === parseInt(id));
 
@@ -101,12 +107,20 @@ export const EventDetail = () => {
       </div>
       <div className="row mt-5">
         <div className="col-12">
-          <img
-            className="img-fluid w-100"
-            alt="Map Banner"
-            style={{ height: "20vh", objectFit: "cover" }}
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Location_map_Madrid.png/671px-Location_map_Madrid.png"
-          />
+          <MapContainer center={[40.965, -5.664]} zoom={15} style={{ height: '400px', width: '100%' }}>
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            />
+            <Polygon
+              positions={polygonCoords}
+              pathOptions={{ color: 'blue' }}
+            >
+              <Popup>
+                <p>Plaza mayor de Salamanca</p>
+              </Popup>
+            </Polygon>
+          </MapContainer>
         </div>
       </div>
     </div>
