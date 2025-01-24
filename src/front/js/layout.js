@@ -55,7 +55,7 @@ const Layout = () => {
                     <Navbar onLoginClick={handleOpenLogin} />
                     <Routes>
                         <Route element={<Home />} path="/" />
-                        <Route element={<ProfileDetails />} path="/profile/:id" />
+                        <Route element={<ProfileDetails />} path="/profile/:event_id" />
                         <Route element={<UserForm />} path="/user-form" />
                         <Route element={<EventsForm />} path="/events-form" />
                         <Route element={<UserDetails />} path="/user-details" />
@@ -69,7 +69,7 @@ const Layout = () => {
                 <ModalLogin show={isLoginModalOpen} onClose={handleCloseLogin} onRegisterClick={handleOpenRegister} />
                 <ModalRegister show={isRegisterModalOpen} onClose={handleCloseRegister} />
             </BrowserRouter>
-            
+
             <Footer />
         </div>
     );
