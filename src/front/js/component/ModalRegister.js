@@ -47,8 +47,8 @@ export const ModalRegister = ({ show, onClose }) => {
                             required
                         />
                     </div>
-                    <button type="submit" className="btn btn-primary">Register</button>
-                    <button type="button" className="btn btn-secondary" onClick={onClose}>Close</button>
+                    <button type="submit" className="modal-button btn btn-primary">Register</button>
+                    <button type="button" className="modal-button btn btn-secondary" onClick={onClose}>Close</button>
                 </form>
             </div>
         </div>
