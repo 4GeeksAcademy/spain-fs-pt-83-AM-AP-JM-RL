@@ -1,5 +1,7 @@
 .carousel-container {
 
+  margin-top: 50px;
+  margin-bottom: 50px;
   }
   
 
@@ -74,11 +76,11 @@
   }
   
   .carousel-control-prev {
-  
+  left: -75px;
   }
   
   .carousel-control-next {
-
+    right: -75px; 
   }
   
 

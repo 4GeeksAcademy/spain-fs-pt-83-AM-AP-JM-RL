@@ -25,8 +25,8 @@ export const Carousel = ({ filter, sort, title, id }) => {
   const eventChunks = groupEvents(prepareEvents(store.events || []), 4);
 
   return (
-    <section className="pt-5 pb-5">
-      <div className="container">
+    <section className="pt-5 pb-5 d-flex carousel-container">
+      <div className="container position-relative">
         <h3 className="mb-4">{title}</h3>
         <div id={id} className="carousel slide" data-bs-ride="carousel">
           <div className="carousel-inner">

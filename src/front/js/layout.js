@@ -47,9 +47,9 @@ const Layout = () => {
 
     return (
 
-        // style={{ backgroundColor: "#000000" }}
 
-        <div  >
+
+        <div>
             <BrowserRouter basename={basename}>
                 <ScrollToTop>
                     <Navbar onLoginClick={handleOpenLogin} />
@@ -69,6 +69,7 @@ const Layout = () => {
                 <ModalLogin show={isLoginModalOpen} onClose={handleCloseLogin} onRegisterClick={handleOpenRegister} />
                 <ModalRegister show={isRegisterModalOpen} onClose={handleCloseRegister} />
             </BrowserRouter>
+            
             <Footer />
         </div>
     );

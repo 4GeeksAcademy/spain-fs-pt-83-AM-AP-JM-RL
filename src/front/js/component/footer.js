@@ -7,7 +7,7 @@ export const Footer = () => {
         className="text-center text-lg-start text-black"
         style={{ backgroundColor: "#ffffff" }} 
       >
-        <div className="container p-4 pb-0">
+        <div>
           <section>
             <div className="row">
               <div className="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">

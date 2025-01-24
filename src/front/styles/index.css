@@ -38,3 +38,15 @@
     justify-content: space-between;
     margin-top: 20px;
 }
+
+footer {
+    margin: 0; 
+    padding: 0; 
+    width: 100%;
+    box-sizing: border-box; 
+  }
+
+  footer hr,
+footer section {
+  margin: 0;
+}
