@@ -8,6 +8,7 @@ export const SearchResults = () => {
     const { store, actions } = useContext(Context);
     const [currentPage, setCurrentPage] = useState(0);
     const [paginatedResults, setPaginatedResults] = useState([]);
+    const [selectedType, setSelectedType] = useState("");
     const [filters, setFilters] = useState({
         priceRange: { min: "", max: "" },
         timeRange: { start: "", end: "" },
@@ -16,7 +17,7 @@ export const SearchResults = () => {
 
     const itemsPerPage = 9;
     const query = new URLSearchParams(location.search).get("query");
-
+    const types = ["fiesta", "concierto", "cultural", "empresarial", "otros"]; 
 
     useEffect(() => {
         if (query) {
@@ -24,7 +25,11 @@ export const SearchResults = () => {
                 actions.getEvents();
             } else {
                 let filtered = store.events.filter((event) =>
-                    event?.title?.toLowerCase().includes(query.toLowerCase())
+                    event?.title?.toLowerCase().includes(query.toLowerCase()) ||
+                event?.location?.toLowerCase().includes(query.toLowerCase()) ||
+                event?.description?.toLowerCase().includes(query.toLowerCase()) ||
+                event?.type?.toLowerCase().includes(query.toLowerCase())
+
                 );
 
 
@@ -41,7 +46,7 @@ export const SearchResults = () => {
                     );
                 }
 
-
+        
                 if (filters.timeRange.start && filters.timeRange.end) {
                     filtered = filtered.filter(
                         (event) =>
@@ -50,7 +55,7 @@ export const SearchResults = () => {
                     );
                 }
 
-
+       
                 if (filters.dateRange.start && filters.dateRange.end) {
                     filtered = filtered.filter(
                         (event) =>
@@ -59,27 +64,25 @@ export const SearchResults = () => {
                     );
                 }
 
+
+                if (selectedType) {
+                    console.log("Filtering by type:", selectedType);
+                    filtered = filtered.filter((event) => {
+                        console.log("Event type:", event.type);
+                        return event.type && event.type.toLowerCase() === selectedType.toLowerCase();
+                    });
+                }
+
                 setPaginatedResults(filtered);
                 setCurrentPage(0);
             }
         }
-    }, [query, store.events, actions, filters]);
+    }, [query, store.events, actions, filters, selectedType]);
 
-    const startIndex = currentPage * itemsPerPage;
-    const currentItems = paginatedResults.slice(startIndex, startIndex + itemsPerPage);
-
-    const handlePrevious = () => {
-        if (currentPage > 0) {
-            setCurrentPage(currentPage - 1);
-        }
+    const handleTypeSelect = (type) => {
+        console.log("Type selected:", type, "Previous selectedType:", selectedType);
+        setSelectedType((prev) => (prev === type ? "" : type)); 
     };
-
-    const handleNext = () => {
-        if ((currentPage + 1) * itemsPerPage < paginatedResults.length) {
-            setCurrentPage(currentPage + 1);
-        }
-    };
-
 
     const handlePriceChange = (e) => {
         const { name, value } = e.target;
@@ -105,17 +108,17 @@ export const SearchResults = () => {
         }));
     };
 
+    const startIndex = currentPage * itemsPerPage;
+    const currentItems = paginatedResults.slice(startIndex, startIndex + itemsPerPage);
+
     return (
         <section className="pt-5 pb-5">
             <div className="container">
                 <div className="row">
-
                     <div className="col-lg-4 mb-3">
                         <div className="filter-by">
                             <h4>Filter By</h4>
-
-
-                            <div className="filter-group">
+                            <div className="row filter-group">
                                 <label>Price Range</label>
                                 <input
                                     type="number"
@@ -132,9 +135,7 @@ export const SearchResults = () => {
                                     onChange={handlePriceChange}
                                 />
                             </div>
-
-
-                            <div className="filter-group">
+                            <div className="row filter-group">
                                 <label>Time Range</label>
                                 <input
                                     type="time"
@@ -149,9 +150,7 @@ export const SearchResults = () => {
                                     onChange={handleTimeChange}
                                 />
                             </div>
-
-
-                            <div className="filter-group">
+                            <div className="row filter-group">
                                 <label>Date Range</label>
                                 <input
                                     type="date"
@@ -167,24 +166,41 @@ export const SearchResults = () => {
                                 />
                             </div>
                         </div>
+                        <div className="filter-buttons">
+                            <label>Type</label>
+                            {types.map((type) => (
+                                <button
+                                    key={type}
+                                    className={`type-button ${selectedType === type ? "active" : ""}`}
+                                    onClick={() => handleTypeSelect(type)}
+                                >
+                                    {type.charAt(0).toLowerCase() + type.slice(1)}
+                                </button>
+                            ))}
+                        </div>
                     </div>
-
                     <div className="col-lg-8">
                         <div className="row justify-content-between">
                             <div className="col-6">
                                 <h3 className="mb-3">Search Results for "{query}"</h3>
                             </div>
-                            <div className="col-6 text-right">
+                            <div className="col-3 text-left justify-content-end">
                                 <button
                                     className="arrow-left btn btn-primary mb-3 mr-1"
-                                    onClick={handlePrevious}
+                                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}
                                     disabled={currentPage === 0}
                                 >
                                     <i className="fa fa-arrow-left"></i>
                                 </button>
                                 <button
                                     className="arrow-right btn btn-primary mb-3"
-                                    onClick={handleNext}
+                                    onClick={() =>
+                                        setCurrentPage((prev) =>
+                                            (prev + 1) * itemsPerPage < paginatedResults.length
+                                                ? prev + 1
+                                                : prev
+                                        )
+                                    }
                                     disabled={(currentPage + 1) * itemsPerPage >= paginatedResults.length}
                                 >
                                     <i className="fa fa-arrow-right"></i>
@@ -200,7 +216,6 @@ export const SearchResults = () => {
                                                 {event.date && event.time
                                                     ? (() => {
                                                         const dateParts = event.date.split('-');
-                                                        const formattedDate = `${dateParts[0]}${dateParts[1]}${dateParts[2]}`;
                                                         const dateObject = new Date(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`);
                                                         const formattedTime = new Date(`1970-01-01T${event.time}Z`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
@@ -223,21 +238,18 @@ export const SearchResults = () => {
                                             />
                                             <div className="search-card-body">
                                                 <h4 className="search-card-title">{event.title}</h4>
-
-                                            </div>
-                                            <div className="d-flex justify-content-between align-items-center mt-2">
                                                 <Link to={`/events/${event.id}`} className="btn btn-primary btn-sm">
                                                     Details
                                                 </Link>
-                                                {store.favorites.some((fav) => fav.id === event.id) ? (
+                                                {store.favorites.some((fav) => fav.event_id === event.id) ? (
                                                     <i
-                                                        onClick={() => actions.removeFavorite(event.id)}
+                                                        onClick={() => actions.removeFavorite(store.favorites.find((fav) => fav.event_id === event.id).id)}
                                                         className="fa-solid fa-star text-warning"
                                                         style={{ cursor: "pointer" }}
                                                     ></i>
                                                 ) : (
                                                     <i
-                                                        onClick={() => actions.addFavorite({ id: event.id })}
+                                                        onClick={() => actions.addFavorite(store.user.id, event.id)}
                                                         className="fa-regular fa-star"
                                                         style={{ cursor: "pointer" }}
                                                     ></i>

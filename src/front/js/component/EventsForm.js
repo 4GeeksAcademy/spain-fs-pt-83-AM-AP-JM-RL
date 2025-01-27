@@ -59,6 +59,7 @@ export const EventsForm = () => {
         setPrice('')
         setLocation('')
         setImage('')
+        setType('')
 
         console.log("Ubicación seleccionada:", location);
         console.log("Coordenadas asignadas:", citiesCoordinates[location]);

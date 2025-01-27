@@ -14,6 +14,7 @@ export const Carousel = ({ filter, sort, title, id }) => {
     return filteredEvents;
   };
 
+
   const groupEvents = (events, chunkSize) => {
     const chunks = [];
     for (let i = 0; i < events.length; i += chunkSize) {
@@ -70,17 +71,26 @@ export const Carousel = ({ filter, sort, title, id }) => {
                               </Link>
                               {store.favorites.some((fav) => fav.event_id === event.id) ? (
                                 <i
-                                  onClick={() => actions.removeFavorite(store.favorites.find((fav) => fav.event_id === event.id).id)}
+                                  onClick={() => {
+
+                                    const favorite = store.favorites.find((fav) => fav.event_id === event.id);
+                                    if (favorite && event.id) {
+                                      actions.addFavorite(event.id);
+                                    }
+                                  }}
                                   className="fa-solid fa-star text-warning"
                                   style={{ cursor: "pointer" }}
                                 ></i>
                               ) : (
                                 <i
-                                  onClick={() => actions.addFavorite(store.user.id, event.id)}
+                                  onClick={() => {
+                                    actions.removeFavorite(event.id);
+                                  }}
                                   className="fa-regular fa-star"
                                   style={{ cursor: "pointer" }}
                                 ></i>
                               )}
+
                             </div>
                           </div>
                         </div>
