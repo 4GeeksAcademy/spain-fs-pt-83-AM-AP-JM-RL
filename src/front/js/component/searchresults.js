@@ -8,7 +8,7 @@ export const SearchResults = () => {
     const { store, actions } = useContext(Context);
     const [currentPage, setCurrentPage] = useState(0);
     const [paginatedResults, setPaginatedResults] = useState([]);
-    const [selectedType, setSelectedType] = useState(""); 
+    const [selectedType, setSelectedType] = useState("");
     const [filters, setFilters] = useState({
         priceRange: { min: "", max: "" },
         timeRange: { start: "", end: "" },
@@ -17,7 +17,7 @@ export const SearchResults = () => {
 
     const itemsPerPage = 9;
     const query = new URLSearchParams(location.search).get("query");
-    const types = ["Fiesta", "Concierto", "Cultural", "Empresarial", "Otros"]; 
+    const types = ["fiesta", "concierto", "cultural", "empresarial", "otros"]; 
 
     useEffect(() => {
         if (query) {
@@ -27,6 +27,7 @@ export const SearchResults = () => {
                 let filtered = store.events.filter((event) =>
                     event?.title?.toLowerCase().includes(query.toLowerCase())
                 );
+
 
                 if (filters.priceRange.min) {
                     filtered = filtered.filter(
@@ -41,7 +42,7 @@ export const SearchResults = () => {
                     );
                 }
 
-
+        
                 if (filters.timeRange.start && filters.timeRange.end) {
                     filtered = filtered.filter(
                         (event) =>
@@ -50,7 +51,7 @@ export const SearchResults = () => {
                     );
                 }
 
-
+       
                 if (filters.dateRange.start && filters.dateRange.end) {
                     filtered = filtered.filter(
                         (event) =>
@@ -59,9 +60,13 @@ export const SearchResults = () => {
                     );
                 }
 
- 
+
                 if (selectedType) {
-                    filtered = filtered.filter((event) => event.type === selectedType);
+                    console.log("Filtering by type:", selectedType);
+                    filtered = filtered.filter((event) => {
+                        console.log("Event type:", event.type);
+                        return event.type && event.type.toLowerCase() === selectedType.toLowerCase();
+                    });
                 }
 
                 setPaginatedResults(filtered);
@@ -71,7 +76,8 @@ export const SearchResults = () => {
     }, [query, store.events, actions, filters, selectedType]);
 
     const handleTypeSelect = (type) => {
-        setSelectedType((prev) => (prev === type ? "" : type)); // Toggle selection
+        console.log("Type selected:", type, "Previous selectedType:", selectedType);
+        setSelectedType((prev) => (prev === type ? "" : type)); 
     };
 
     const handlePriceChange = (e) => {
@@ -103,17 +109,11 @@ export const SearchResults = () => {
 
     return (
         <section className="pt-5 pb-5">
-            {/* Floating type filter buttons */}
-            
-
             <div className="container">
                 <div className="row">
-                    {/* Sidebar filters */}
                     <div className="col-lg-4 mb-3">
                         <div className="filter-by">
                             <h4>Filter By</h4>
-
-                            {/* Price Range */}
                             <div className="row filter-group">
                                 <label>Price Range</label>
                                 <input
@@ -131,8 +131,6 @@ export const SearchResults = () => {
                                     onChange={handlePriceChange}
                                 />
                             </div>
-
-                            {/* Time Range */}
                             <div className="row filter-group">
                                 <label>Time Range</label>
                                 <input
@@ -148,8 +146,6 @@ export const SearchResults = () => {
                                     onChange={handleTimeChange}
                                 />
                             </div>
-
-                            {/* Date Range */}
                             <div className="row filter-group">
                                 <label>Date Range</label>
                                 <input
@@ -164,25 +160,21 @@ export const SearchResults = () => {
                                     value={filters.dateRange.end}
                                     onChange={handleDateChange}
                                 />
-
-
                             </div>
                         </div>
                         <div className="filter-buttons">
                             <label>Type</label>
-                {types.map((type) => (
-                    <button
-                        key={type}
-                        className={`type-button ${selectedType === type ? "active" : ""}`}
-                        onClick={() => handleTypeSelect(type)}
-                    >
-                        {type}
-                    </button>
-                ))}
-            </div>
+                            {types.map((type) => (
+                                <button
+                                    key={type}
+                                    className={`type-button ${selectedType === type ? "active" : ""}`}
+                                    onClick={() => handleTypeSelect(type)}
+                                >
+                                    {type.charAt(0).toLowerCase() + type.slice(1)}
+                                </button>
+                            ))}
+                        </div>
                     </div>
-
-                    {/* Results */}
                     <div className="col-lg-8">
                         <div className="row justify-content-between">
                             <div className="col-6">
@@ -216,6 +208,22 @@ export const SearchResults = () => {
                                 currentItems.map((event) => (
                                     <div key={event.id} className="col-md-4 mb-3">
                                         <div className="search-card">
+                                            <div className="date-time">
+                                                {event.date && event.time
+                                                    ? (() => {
+                                                        const dateParts = event.date.split('-');
+                                                        const dateObject = new Date(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`);
+                                                        const formattedTime = new Date(`1970-01-01T${event.time}Z`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                                                        return (
+                                                            <>
+                                                                <div>{dateObject.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}</div>
+                                                                <div>{formattedTime}</div>
+                                                            </>
+                                                        );
+                                                    })()
+                                                    : 'Invalid Date or Time'}
+                                            </div>
                                             <img
                                                 className="img-fluid"
                                                 alt={event.title}
@@ -229,6 +237,19 @@ export const SearchResults = () => {
                                                 <Link to={`/events/${event.id}`} className="btn btn-primary btn-sm">
                                                     Details
                                                 </Link>
+                                                {store.favorites.some((fav) => fav.event_id === event.id) ? (
+                                                    <i
+                                                        onClick={() => actions.removeFavorite(store.favorites.find((fav) => fav.event_id === event.id).id)}
+                                                        className="fa-solid fa-star text-warning"
+                                                        style={{ cursor: "pointer" }}
+                                                    ></i>
+                                                ) : (
+                                                    <i
+                                                        onClick={() => actions.addFavorite(store.user.id, event.id)}
+                                                        className="fa-regular fa-star"
+                                                        style={{ cursor: "pointer" }}
+                                                    ></i>
+                                                )}
                                             </div>
                                         </div>
                                     </div>

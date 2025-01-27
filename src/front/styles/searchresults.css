@@ -54,6 +54,7 @@ left: -5px;
     gap: 10px;
     z-index: 1000;
     width: 80px;
+    background-color: #fff;
 }
 
 .type-button {

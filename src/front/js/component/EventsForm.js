@@ -17,9 +17,7 @@ export const EventsForm = () => {
     const [type, setType] = useState('')
     const [error, setError] = useState('')
 
-    const client = filestack.init('AVQNdAjjIRHW0xnKKEipvz')
-
-
+    const client = filestack.init('AVQNdAjjIRHW0xnKKEipvz') 
 
 
     const handleUploadImage = () => {
@@ -59,6 +57,7 @@ export const EventsForm = () => {
         setPrice('')
         setLocation('')
         setImage('')
+        setType('')
 
     }
 
@@ -96,7 +95,13 @@ export const EventsForm = () => {
                     </div>
                     <div className="mb-3">
                         <label htmlFor="ubicacion" className="form-label">Ubicación</label>
-                        <input value={location} onChange={(e) => setLocation(e.target.value)} type="text" className="form-control" id="ubicacion" placeholder="Ubicación" />
+                        <select required value={location} onChange={(e) => setLocation(e.target.value)} className="form-select" aria-label="Default select example"> 
+                        <option value={''} disabled>¿Donde es el evento?</option>
+                            <option value="barcelona">Barcelona</option>
+                            <option value="madrid">Madrid</option>
+                            <option value="sevilla">Sevilla</option>
+                            <option value="valencia">Valencia</option>
+                        </select>
                     </div>
                     <div className="mb-3">
                         <label htmlFor="description" className="form-label">Descripción del evento</label>
