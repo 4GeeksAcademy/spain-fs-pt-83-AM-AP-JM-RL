@@ -77,7 +77,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			createEvent: async (formData) => {
+			createEvent: async (eventData) => {
 				const token = sessionStorage.getItem("access_token");
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}api/events`, {
@@ -86,7 +86,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 							"Content-Type": "application/json",
 							Authorization: `Bearer ${token}`,
 						},
-						body: JSON.stringify(formData),
+						body: JSON.stringify(eventData),
 					});
 
 					if (response.ok) {

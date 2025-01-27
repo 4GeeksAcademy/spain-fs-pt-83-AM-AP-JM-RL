@@ -176,7 +176,7 @@ def get_profile():
     user = User.query.filter_by(email=user_email).first()
     if not user:
         return jsonify({"error": "Usuario no encontrado."}), 404
-    return jsonify({"id": user.id, "is_active": user.is_active, "email": user.email, "First_name": user.first_name, "Last_name": user.last_name, "age": user.age, "gender": user.gender, "created_at": user.created_at, "updated_at": user.updated_at, "bio": user.bio, "image": user.image, "location": user.location}), 200
+    return jsonify(user.serialize()), 200
 
 @api.route('/events/<int:id>/favorites', methods=['POST'])
 @jwt_required()
@@ -214,6 +214,24 @@ def delete_favorite(id):
         db.session.rollback()
         return jsonify({"error": "Error de servidor.", "detalles": str(e)}), 500
 
+@api.route('/rate', methods=['POST'])
+@jwt_required()
+def rate_user(user_id):
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "Debes seleccionar un usuario válido."}), 400
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).first()
+    if not user:
+        return jsonify({"error": "Necesitas estar logado"}), 401
+    new_rate = User(rate=data['rate'])
+    try:
+        db.session.add(new_rate)
+        db.session.commit()
+        return jsonify({"message": "Puntuación registrada correctamente"})
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)})
 
 @api.route('/users/<int:id>/favorites')
 @jwt_required()
@@ -222,11 +240,9 @@ def get_favorites():
     user = User.query.filter_by(email=user_email).first()
     if not user:
         return jsonify({"error": "No se encuentra el usuario."}), 404
-
     favorites = Favorite.query.filter_by(user_id=user.id).all()
     if not favorites:
         return jsonify({"message": "El usuario no tiene favoritos."}), 404
-
     favorites_list = list(map(lambda x: x.serialize(), favorites))
     return jsonify({"favorites": favorites_list}), 200
 
@@ -256,6 +272,8 @@ def update_user():
         user.bio = data['bio']
     if 'location' in data and data['location']:
         user.location = data['location']
+    if 'image' in data and data['image']:
+        user.image = data['image']
     
     try:
         db.session.commit()

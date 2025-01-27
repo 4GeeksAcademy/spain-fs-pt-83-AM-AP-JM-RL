@@ -19,7 +19,6 @@ export const EventsForm = () => {
 
     const client = filestack.init('AVQNdAjjIRHW0xnKKEipvz') 
 
-
     const handleUploadImage = () => {
         const options = {
             onUploadDone: (res) => {
@@ -33,18 +32,21 @@ export const EventsForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const formData = {};
-        formData.title = title;
-        formData.description = description;
-        formData.date = date;
-        formData.time = time;
-        formData.price = price;
-        formData.location = location;
-        formData.image = image;
-        formData.type = type;
+        const formData = {
+            title,
+            description,
+            date,
+            time,
+            price,
+            location,
+            image,
+            type,
+        };
 
         try {
             await actions.createEvent(formData);
+            setMessage('Evento creado exitosamente');
+            setError('')
         } catch (error) {
             setError(`Ha ocurrido un error creando el evento, ${error}`)
             setMessage('')
@@ -59,6 +61,8 @@ export const EventsForm = () => {
         setImage('')
         setType('')
 
+        console.log("Ubicación seleccionada:", location);
+        console.log("Coordenadas asignadas:", citiesCoordinates[location]);
     }
 
     return (
