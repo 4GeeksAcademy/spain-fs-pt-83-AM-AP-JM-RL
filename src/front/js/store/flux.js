@@ -175,9 +175,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			  },
 			  
 			  removeFavorite: async (id) => {
-				try {
 				  const token = sessionStorage.getItem("access_token");
-				  const response = await fetch(`${process.env.BACKEND_URL}/api/favorites/${id}`, {
+				try {
+				  const response = await fetch(`${process.env.BACKEND_URL}/api/events/${id}/favorites/`, {
 					method: "DELETE",
 					headers: {
 					  "Content-Type": "application/json",

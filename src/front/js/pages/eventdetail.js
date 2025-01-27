@@ -22,12 +22,12 @@ export const EventDetail = () => {
     madrid: [40.4165, -3.70256],
     sevilla: [37.38283, -5.97317],
     valencia: [39.47391, -0.37966],
-};
+  };
 
-const legalIcon = new  Icon ({ 
-  iconUrl : 'https://img.icons8.com/?size=100&id=13800&format=png&color=000000' , 
-  iconSize : [ 35 , 35 ],
- }) 
+  const legalIcon = new Icon({
+    iconUrl: 'https://img.icons8.com/?size=100&id=13800&format=png&color=000000',
+    iconSize: [35, 35],
+  })
 
   const isFavorite = store.favorites.some((fav) => fav.event_id === parseInt(id));
 
@@ -39,7 +39,7 @@ const legalIcon = new  Icon ({
       <div className="row mt-5">
         <div className="col-lg-6">
           <img
-            className="img-fluid"
+            className="img-fluid rounded-start"
             alt={event.title}
             src={
               event.image ||
@@ -119,7 +119,7 @@ const legalIcon = new  Icon ({
       </div>
       <div className="row mt-5">
         <div className="col-12">
-        <MapContainer center={citiesCoordinates[event.location] || [0, 0]} zoom={15} style={{ height: "400px", width: "100%" }}>
+          <MapContainer center={citiesCoordinates[event.location] || [0, 0]} zoom={15} style={{ height: "400px", width: "100%" }}>
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
             {citiesCoordinates[event.location] && (
               <Marker position={citiesCoordinates[event.location]} icon={legalIcon}>
