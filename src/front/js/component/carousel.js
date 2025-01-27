@@ -74,8 +74,8 @@ export const Carousel = ({ filter, sort, title, id }) => {
                                   onClick={() => {
 
                                     const favorite = store.favorites.find((fav) => fav.event_id === event.id);
-                                    if (favorite && favorite.id) {
-                                      actions.addFavorite(favorite.id);
+                                    if (favorite && event.id) {
+                                      actions.addFavorite(event.id);
                                     }
                                   }}
                                   className="fa-solid fa-star text-warning"
@@ -84,7 +84,7 @@ export const Carousel = ({ filter, sort, title, id }) => {
                               ) : (
                                 <i
                                   onClick={() => {
-                                    actions.removeFavorite(store.user.id, event.id);
+                                    actions.removeFavorite(event.id);
                                   }}
                                   className="fa-regular fa-star"
                                   style={{ cursor: "pointer" }}
