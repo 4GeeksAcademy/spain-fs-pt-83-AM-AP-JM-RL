@@ -18,7 +18,6 @@ class User(db.Model):
     image = db.Column(db.String(250), unique=False, nullable=True)
     location = db.Column(db.String(80), unique=False, nullable=True)
     events = db.relationship('Event', backref='user', lazy=True)
-    favorites = db.relationship('Favorite', backref='user', lazy=True)
 
 
 
@@ -54,7 +53,6 @@ class Event(db.Model):
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    favorites = db.relationship('Favorite', backref='event', lazy=True)
 
     def __repr__(self):
         return f'<Event {self.title}>'
@@ -78,6 +76,8 @@ class Favorite(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     event_id = db.Column(db.Integer, db.ForeignKey('event.id'), nullable=False)
+    user = db.relationship('User', backref='user_favorites')
+    event = db.relationship('Event', backref='event_favorites')
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
 
     def __repr__(self):
