@@ -3,16 +3,13 @@ import { Context } from "../store/appContext";
 import { useParams } from "react-router-dom";
 import "../../styles/eventdetail.css";
 import { Link } from "react-router-dom";
-import { MapContainer, TileLayer, Polygon, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { Icon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 export const EventDetail = () => {
   const { store, actions } = useContext(Context);
   const { id } = useParams();
-
-  const [polygonCoords] = useState([
-    [40.96548, -5.66443], [40.96527, -5.66338], [40.96451, -5.66373], [40.9647, -5.66468]
-  ]);
 
   const event = store.events.find((ev) => ev.id === parseInt(id));
 
@@ -20,7 +17,22 @@ export const EventDetail = () => {
     return <p>Event not found or still loading...</p>;
   }
 
+  const citiesCoordinates = {
+    barcelona: [41.38879, 2.15899],
+    madrid: [40.4165, -3.70256],
+    sevilla: [37.38283, -5.97317],
+    valencia: [39.47391, -0.37966],
+};
+
+const legalIcon = new  Icon ({ 
+  iconUrl : 'https://img.icons8.com/?size=100&id=13800&format=png&color=000000' , 
+  iconSize : [ 35 , 35 ],
+ }) 
+
   const isFavorite = store.favorites.some((fav) => fav.event_id === parseInt(id));
+
+  console.log("Evento seleccionado:", event);
+  console.log("Coordenadas del evento:", citiesCoordinates[event.location]);
 
   return (
     <div className="event-card container">
@@ -107,19 +119,13 @@ export const EventDetail = () => {
       </div>
       <div className="row mt-5">
         <div className="col-12">
-          <MapContainer center={[40.965, -5.664]} zoom={15} style={{ height: '400px', width: '100%' }}>
-            <TileLayer
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            />
-            <Polygon
-              positions={polygonCoords}
-              pathOptions={{ color: 'blue' }}
-            >
-              <Popup>
-                <p>Plaza mayor de Salamanca</p>
-              </Popup>
-            </Polygon>
+        <MapContainer center={citiesCoordinates[event.location] || [0, 0]} zoom={15} style={{ height: "400px", width: "100%" }}>
+            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+            {citiesCoordinates[event.location] && (
+              <Marker position={citiesCoordinates[event.location]} icon={legalIcon}>
+                <Popup>{event.title}</Popup>
+              </Marker>
+            )}
           </MapContainer>
         </div>
       </div>
