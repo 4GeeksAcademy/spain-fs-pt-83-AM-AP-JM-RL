@@ -178,6 +178,43 @@ def get_profile():
         return jsonify({"error": "Usuario no encontrado."}), 404
     return jsonify({"id": user.id, "is_active": user.is_active, "email": user.email, "First_name": user.first_name, "Last_name": user.last_name, "age": user.age, "gender": user.gender, "created_at": user.created_at, "updated_at": user.updated_at, "bio": user.bio, "image": user.image, "location": user.location}), 200
 
+@api.route('/events/<int:id>/favorites', methods=['POST'])
+@jwt_required()
+def add_favorite(id):
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).first()
+    if not user:
+        return jsonify({"error": "Usuario no encontrado."}), 404
+    event = Event.query.get(id)
+    if not event:
+        return jsonify({"error": "Evento no encontrado."}), 404
+    favorite = Favorite(user_id=user.id, event_id=event.id)
+    try:
+        db.session.add(favorite)
+        db.session.commit()
+        return jsonify({"message": "Favorito añadido satisfactoriamente."})
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": "Error de servidor.", "detalles": str(e)})
+@api.route('/events/<int:id>/favorites', methods=['DELETE'])
+@jwt_required()
+def delete_favorite(id):
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).first()
+    if not user:
+        return jsonify({"error": "Usuario no encontrado."}), 404
+    favorite = Favorite.query.filter_by(user_id=user.id, event_id=id).first()
+    if not favorite:
+        return jsonify({"error": "Favorito no encontrado."}), 404
+    try:
+        db.session.delete(favorite)
+        db.session.commit()
+        return jsonify({"message": "Favorito eliminado satisfactoriamente."}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": "Error de servidor.", "detalles": str(e)}), 500
+
+
 @api.route('/users/<int:id>/favorites')
 @jwt_required()
 def get_favorites():
@@ -193,42 +230,6 @@ def get_favorites():
     favorites_list = list(map(lambda x: x.serialize(), favorites))
     return jsonify({"favorites": favorites_list}), 200
 
-@api.route('/users/<int:id>/favorites', methods=['POST'])
-@jwt_required()
-def add_favorite():
-    data = request.get_json()
-    user_email = get_jwt_identity()
-    user = User.query.filter_by(email=user_email).first()
-    if 'event_id' not in data:
-        return jsonify({"error": "Evento no encontrado."}), 404
-    if not user:
-        return jsonify({"error": "Usuario no encontrado."}), 404
-    event = Event.query.get(data['event_id'])
-    favorite = Favorite(user_id=user.id, event_id=event.id)
-    try:
-        db.session.add(favorite)
-        db.session.commit()
-        return jsonify({"message": "Favorito añadido satisfactoriamente."})
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({"error": "Error de servidor.", "detalles": str(e)})
-@api.route('/users/<int:id>/favorites', methods=['DELETE'])
-@jwt_required()
-def delete_favorite(id):
-    user_email = get_jwt_identity()
-    user = User.query.filter_by(email=user_email).first()
-    if not user or user.id != id:
-        return jsonify({"error": "Usuario no encontrado o no le pertenece este favorito."}), 404
-    favorite = Favorite.query.filter_by(user_id=user.id, event_id=id).first()
-    if not favorite:
-        return jsonify({"error": "Favorito no encontrado."}), 404
-    try:
-        db.session.delete(favorite)
-        db.session.commit()
-        return jsonify({"message": "Tarea eliminada satisfactoriamente."}), 200
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({"error": "Error de servidor.", "detalles": str(e)}), 500
 @api.route('/update-user', methods=['PUT'])
 @jwt_required()
 def update_user():
