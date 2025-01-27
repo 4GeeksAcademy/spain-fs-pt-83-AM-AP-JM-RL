@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import "../../styles/UserForm.css"
 import { useNavigate } from "react-router-dom";
+import * as filestack from "filestack-js";
 
 export const UserForm = () => {
 
@@ -12,9 +13,22 @@ export const UserForm = () => {
     const [age, setAge] = useState('')
     const [bio, setBio] = useState('')
     const [location, setLocation] = useState('')
+    const [image, setImage] = useState('')
     const navigate = useNavigate()
 
     const { actions } = useContext(Context)
+
+    const client = filestack.init('AVQNdAjjIRHW0xnKKEipvz')
+
+    const handleUploadImage = () => {
+        const options = {
+            onUploadDone: (res) => {
+                setImage(res.filesUploaded[0].url)
+            },
+            fromSources: ["local_file_system"]
+        }
+        client.picker(options).open()
+    }
 
     const handleSubmit = (e) => {
         const formData = {
@@ -24,7 +38,8 @@ export const UserForm = () => {
             lastName,
             age,
             bio,
-            location
+            location,
+            image
         }
         e.preventDefault()
         actions.updateUser(formData)
@@ -63,6 +78,12 @@ export const UserForm = () => {
                 <div className="mb-3">
                     <label htmlFor="inputLocation" className="form-label">Ubicación</label>
                     <input value={location} onChange={(e) => setLocation(e.target.value)} type="text" className="form-control" id="inputLocation" placeholder="Introduce tu ubicación" />
+                </div>
+                <div className="mb-3">
+                    <label className="form-label">Foto de perfil</label>
+                    <div onClick={handleUploadImage} className="image-upload-wrapper border rounded p-3">
+                        <img src="https://via.placeholder.com/300" alt="Añadir" className="placeholder-image img-fluid mb-3" />
+                    </div>
                 </div>
                 <button type="submit" className="btn btn-primary w-100">Guardar</button>
             </form>

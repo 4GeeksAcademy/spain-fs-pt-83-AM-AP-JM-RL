@@ -272,6 +272,8 @@ def update_user():
         user.bio = data['bio']
     if 'location' in data and data['location']:
         user.location = data['location']
+    if 'image' in data and data['image']:
+        user.image = data['image']
     
     try:
         db.session.commit()
