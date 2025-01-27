@@ -25,7 +25,11 @@ export const SearchResults = () => {
                 actions.getEvents();
             } else {
                 let filtered = store.events.filter((event) =>
-                    event?.title?.toLowerCase().includes(query.toLowerCase())
+                    event?.title?.toLowerCase().includes(query.toLowerCase()) ||
+                event?.location?.toLowerCase().includes(query.toLowerCase()) ||
+                event?.description?.toLowerCase().includes(query.toLowerCase()) ||
+                event?.type?.toLowerCase().includes(query.toLowerCase())
+
                 );
 
 
