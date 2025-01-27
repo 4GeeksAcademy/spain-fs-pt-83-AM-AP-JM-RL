@@ -21,6 +21,9 @@ export const UserDetails = () => {
                 {store.userDetails.map(user => (
                     <div key={user.id}>
                         <li className="list-group-item">
+                            <strong>Imagen:</strong> <img src={user.image}></img>
+                        </li>
+                        <li className="list-group-item">
                             <strong>Email:</strong> {user.email}
                         </li>
                         <li className="list-group-item">
