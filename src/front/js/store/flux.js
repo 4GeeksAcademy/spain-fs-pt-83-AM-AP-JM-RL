@@ -149,22 +149,22 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			addFavorite: async ( eventId) => {
+			addFavorite: async (eventId) => {
 				const token = sessionStorage.getItem("access_token");
 				try {
 				  const response = await fetch(`${process.env.BACKEND_URL}/api/events/${eventId}/favorites`, {
 					method: "POST",
-					headers: { "Content-Type": "application/json",
-						Authorization: `Bearer ${token}`
-					 },
-					
+					headers: { 
+					  "Content-Type": "application/json",
+					  Authorization: `Bearer ${token}`
+					},
 				  });
 			  
 				  if (response.ok) {
 					const newFavorite = await response.json();
 					const store = getStore();
-					setStore({ favorites: [...store.favorites, newFavorite] });
-					return newFavorite; 
+					setStore({ favorites: [...store.favorites, newFavorite] }); 
+					return newFavorite;
 				  } else {
 					const errorData = await response.json();
 					console.error("Error adding favorite:", errorData.msg);
@@ -174,9 +174,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			  },
 			  
+			  
 			  removeFavorite: async (id) => {
+				const token = sessionStorage.getItem("access_token");
 				try {
-				  const token = sessionStorage.getItem("access_token");
 				  const response = await fetch(`${process.env.BACKEND_URL}/api/favorites/${id}`, {
 					method: "DELETE",
 					headers: {
@@ -188,7 +189,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				  if (response.ok) {
 					const store = getStore();
 					setStore({
-					  favorites: store.favorites.filter((fav) => fav.id !== id),
+					  favorites: store.favorites.filter((fav) => fav.id !== id), 
 					});
 				  } else {
 					const errorData = await response.json();
@@ -198,6 +199,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				  console.error("Error removing favorite:", error);
 				}
 			  },
+			  
 			  
 
 			getEventCreatorData: async (event_id) => {

@@ -189,6 +189,8 @@ def add_favorite(id):
     if not event:
         return jsonify({"error": "Evento no encontrado."}), 404
     favorite = Favorite(user_id=user.id, event_id=event.id)
+    if favorite:
+        return jsonify({"error": "Ya existe este favorito"}), 400
     try:
         db.session.add(favorite)
         db.session.commit()

@@ -40,13 +40,13 @@
 }
 
 footer {
-    margin: 0; 
-    padding: 0; 
+    margin: 0;
+    padding: 0;
     width: 100%;
-    box-sizing: border-box; 
-  }
+    box-sizing: border-box;
+}
 
-  footer hr,
+footer hr,
 footer section {
-  margin: 0;
+    margin: 0;
 }

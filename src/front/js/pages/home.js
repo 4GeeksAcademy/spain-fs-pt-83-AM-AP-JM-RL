@@ -7,9 +7,9 @@ export const Home = () => {
   const { store, actions } = useContext(Context);
   const sortByMostRecent = (a, b) => new Date(b.created_at) - new Date(a.created_at);
   const sortByUpcoming = (a, b) => {
-    // Ensure both dates are valid
-    const dateA = a.date ? new Date(a.date.split('-').reverse().join('-')) : new Date(0); // fallback to epoch if invalid
-    const dateB = b.date ? new Date(b.date.split('-').reverse().join('-')) : new Date(0); // fallback to epoch if invalid
+    
+    const dateA = a.date ? new Date(a.date.split('-').reverse().join('-')) : new Date(0); 
+    const dateB = b.date ? new Date(b.date.split('-').reverse().join('-')) : new Date(0); 
   
     return dateA - dateB;
   };

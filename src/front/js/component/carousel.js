@@ -14,7 +14,6 @@ export const Carousel = ({ filter, sort, title, id }) => {
     return filteredEvents;
   };
 
-
   const groupEvents = (events, chunkSize) => {
     const chunks = [];
     for (let i = 0; i < events.length; i += chunkSize) {
@@ -70,28 +69,28 @@ export const Carousel = ({ filter, sort, title, id }) => {
                                 Details
                               </Link>
                               {store.favorites.some((fav) => fav.event_id === event.id) ? (
-  <i
-    onClick={() => {
-      // Find the favorite using event_id and remove it
-      const favorite = store.favorites.find((fav) => fav.event_id === event.id);
-      if (favorite && favorite.id) {
-        // Remove the favorite using the id of the favorite, not the event
-        actions.removeFavorite(favorite.id); 
-      }
-    }}
-    className="fa-solid fa-star text-warning"
-    style={{ cursor: "pointer" }}
-  ></i>
-) : (
-  <i
-    onClick={() => {
-      // Add the favorite using event.id (not the favorite id here)
-      actions.addFavorite(event.id);
-    }}
-    className="fa-regular fa-star"
-    style={{ cursor: "pointer" }}
-  ></i>
-)}
+                                <i
+                                  onClick={() => {
+                         
+                                    const favorite = store.favorites.find((fav) => fav.event_id === event.id);
+                                    if (favorite && favorite.id) {
+                                  
+                                      actions.removeFavorite(favorite.id);
+                                    }
+                                  }}
+                                  className="fa-solid fa-star text-warning"
+                                  style={{ cursor: "pointer" }}
+                                ></i>
+                              ) : (
+                                <i
+                                  onClick={() => {
+                                   
+                                    actions.addFavorite(event.id);
+                                  }}
+                                  className="fa-regular fa-star"
+                                  style={{ cursor: "pointer" }}
+                                ></i>
+                              )}
 
 
                             </div>
