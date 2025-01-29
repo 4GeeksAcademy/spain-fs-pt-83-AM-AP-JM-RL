@@ -52,7 +52,11 @@ class Event(db.Model):
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+<<<<<<< HEAD
     favorites = db.relationship('Favorite', backref='event', lazy=True)
+=======
+ 
+>>>>>>> main
 
     def __repr__(self):
         return f'<Event {self.title}>'
