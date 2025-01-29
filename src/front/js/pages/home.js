@@ -18,6 +18,10 @@ export const Home = () => {
   const filterFreeEvents = (event) => event.price === 0;
 
   useEffect(() => {
+    actions.loadFavorites();
+}, []);
+
+  useEffect(() => {
     actions.getEvents();
   }, [actions]);
 
@@ -30,19 +34,19 @@ export const Home = () => {
       
       <Carousel
         id="recentCarousel"
-        title="Most Recently Added Events"
+        title="Recently Added"
         sort={sortByMostRecent}
       />
     
       <Carousel
         id="upcomingCarousel"
-        title="Upcoming Events"
+        title="Upcoming"
         sort={sortByUpcoming}
       />
     
       <Carousel
         id="freeCarousel"
-        title="Free Events"
+        title="Free"
         filter={filterFreeEvents}
       />
     </div>
