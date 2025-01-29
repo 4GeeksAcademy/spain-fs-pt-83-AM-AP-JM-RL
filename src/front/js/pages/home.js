@@ -6,8 +6,20 @@ import "../../styles/home.css";
 export const Home = () => {
   const { store, actions } = useContext(Context);
   const sortByMostRecent = (a, b) => new Date(b.created_at) - new Date(a.created_at);
-  const sortByUpcoming = (a, b) => new Date(a.date) - new Date(b.date);
+  const sortByUpcoming = (a, b) => {
+    
+    const dateA = a.date ? new Date(a.date.split('-').reverse().join('-')) : new Date(0); 
+    const dateB = b.date ? new Date(b.date.split('-').reverse().join('-')) : new Date(0); 
+  
+    return dateA - dateB;
+  };
+  
+
   const filterFreeEvents = (event) => event.price === 0;
+
+  useEffect(() => {
+    actions.loadFavorites();
+}, []);
 
   useEffect(() => {
     actions.getEvents();
@@ -22,19 +34,19 @@ export const Home = () => {
       
       <Carousel
         id="recentCarousel"
-        title="Most Recently Added Events"
+        title="Recently Added"
         sort={sortByMostRecent}
       />
     
       <Carousel
         id="upcomingCarousel"
-        title="Upcoming Events"
+        title="Upcoming"
         sort={sortByUpcoming}
       />
     
       <Carousel
         id="freeCarousel"
-        title="Free Events"
+        title="Free"
         filter={filterFreeEvents}
       />
     </div>

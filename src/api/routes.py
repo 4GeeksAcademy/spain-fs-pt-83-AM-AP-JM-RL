@@ -168,7 +168,18 @@ def delete_event(id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": "Error de servidor.", "detalles": str(e)}), 500
+
     
+@api.route('/filtered_events', methods=['POST'])
+def get_filtered_event():
+    data = request.get_json()
+    events = Event.query.all()  
+    if data.get('type'):
+        events = Event.query.filter_by(type=data['type']).all()
+    events = list(map(lambda x: x.serialize(), events))
+    return jsonify(events), 200
+
+
 @api.route('/profile')
 @jwt_required()
 def get_profile():
@@ -189,6 +200,9 @@ def add_favorite(id):
     if not event:
         return jsonify({"error": "Evento no encontrado."}), 404
     favorite = Favorite(user_id=user.id, event_id=event.id)
+    existing_favorite = Favorite.query.filter_by(user_id=user.id, event_id=event.id).first()
+    if existing_favorite:
+        return jsonify({"error": "Este favorito ya existe"}), 400
     try:
         db.session.add(favorite)
         db.session.commit()
@@ -214,26 +228,7 @@ def delete_favorite(id):
         db.session.rollback()
         return jsonify({"error": "Error de servidor.", "detalles": str(e)}), 500
 
-@api.route('/rate', methods=['POST'])
-@jwt_required()
-def rate_user(user_id):
-    data = request.get_json()
-    if not data:
-        return jsonify({"error": "Debes seleccionar un usuario válido."}), 400
-    user_email = get_jwt_identity()
-    user = User.query.filter_by(email=user_email).first()
-    if not user:
-        return jsonify({"error": "Necesitas estar logado"}), 401
-    new_rate = User(rate=data['rate'])
-    try:
-        db.session.add(new_rate)
-        db.session.commit()
-        return jsonify({"message": "Puntuación registrada correctamente"})
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({"error": str(e)})
-
-@api.route('/users/<int:id>/favorites')
+@api.route('/users/favorites', methods=['GET']) 
 @jwt_required()
 def get_favorites():
     user_email = get_jwt_identity()
@@ -241,9 +236,7 @@ def get_favorites():
     if not user:
         return jsonify({"error": "No se encuentra el usuario."}), 404
     favorites = Favorite.query.filter_by(user_id=user.id).all()
-    if not favorites:
-        return jsonify({"message": "El usuario no tiene favoritos."}), 404
-    favorites_list = list(map(lambda x: x.serialize(), favorites))
+    favorites_list = [fav.serialize() for fav in favorites]
     return jsonify({"favorites": favorites_list}), 200
 
 @api.route('/update-user', methods=['PUT'])
@@ -311,3 +304,9 @@ def get_event_creator_details(event_id):
     if not event:
         return jsonify({"error": "Evento no encontrado"}), 404
     return jsonify([user.serialize()])
+
+@api.route('/rating', methods=['POST'])
+def add_rate(creator_id):
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).first()
+    

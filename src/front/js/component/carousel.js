@@ -64,23 +64,22 @@ export const Carousel = ({ filter, sort, title, id }) => {
                           />
                           <div className="card-body">
                             <h4 className="card-title">{event.title}</h4>
+                            <p>{event.location}</p>
                             <div className="d-flex justify-content-between align-items-center">
+                              
                               <Link to={`/events/${event.id}`} className="btn btn-primary">
                                 Details
                               </Link>
-                              {store.favorites.some((fav) => fav.event_id === event.id) ? (
-                                <i
-                                  onClick={() => actions.removeFavorite(store.favorites.find((fav) => fav.event_id === event.id).id)}
-                                  className="fa-solid fa-star text-warning"
-                                  style={{ cursor: "pointer" }}
-                                ></i>
-                              ) : (
-                                <i
-                                  onClick={() => actions.addFavorite(store.user.id, event.id)}
-                                  className="fa-regular fa-star"
-                                  style={{ cursor: "pointer" }}
-                                ></i>
-                              )}
+                               
+                              <i
+  onClick={() => {
+    const isFavorite = store.favorites.some((fav) => fav.event_id === event.id);
+    isFavorite ? actions.removeFavorite(event.id) : actions.addFavorite(event.id);
+  }}
+  className={`fa-${store.favorites.some((fav) => fav.event_id === event.id) ? "solid text-warning" : "regular"} fa-star`}
+  style={{ cursor: "pointer" }}
+></i>
+
                             </div>
                           </div>
                         </div>

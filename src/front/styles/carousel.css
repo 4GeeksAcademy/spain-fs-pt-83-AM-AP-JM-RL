@@ -5,25 +5,6 @@
   }
   
 
-  .carousel {
-
-  }
-  
-
-  .carousel-inner {
-
-  }
-  
-
-  .carousel-item {
-
-  }
-  
-  .carousel-item.active {
-
-  }
-  
-
   .card {
     position: relative; 
   }
@@ -49,15 +30,7 @@
     text-transform: lowercase; 
   }
   
-  .card-body {
 
-  }
-  
-  .card-title {
-
-  }
-  
-  
   .card-body .btn {
     font-size: 12px;
     padding: 5px 10px; 
@@ -69,11 +42,6 @@
     margin-left: 10px;
   }
   
-
-  .carousel-control-prev,
-  .carousel-control-next {
-
-  }
   
   .carousel-control-prev {
   left: -75px;

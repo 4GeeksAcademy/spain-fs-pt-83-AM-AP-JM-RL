@@ -21,7 +21,8 @@ export const SearchBar = () => {
         value &&
         (event?.title?.toLowerCase().includes(value.toLowerCase()) ||
           event?.description?.toLowerCase().includes(value.toLowerCase()) ||
-          event?.location?.toLowerCase().includes(value.toLowerCase()))
+          event?.location?.toLowerCase().includes(value.toLowerCase()) ||
+          event?.type?.toLowerCase().includes(value.toLowerCase()))
     );
 
     setResults(filteredResults);

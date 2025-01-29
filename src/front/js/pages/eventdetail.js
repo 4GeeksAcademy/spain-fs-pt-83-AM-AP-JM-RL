@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useStat, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { useParams } from "react-router-dom";
 import "../../styles/eventdetail.css";
@@ -8,11 +8,18 @@ import { Icon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 export const EventDetail = () => {
+
+
   const { store, actions } = useContext(Context);
   const { id } = useParams();
 
   const event = store.events.find((ev) => ev.id === parseInt(id));
 
+  useEffect(() => {
+    if (store.favorites.length === 0) {
+      actions.loadFavorites();
+    }
+  }, [store.favorites.length]); 
   if (!event) {
     return <p>Event not found or still loading...</p>;
   }
@@ -22,14 +29,15 @@ export const EventDetail = () => {
     madrid: [40.4165, -3.70256],
     sevilla: [37.38283, -5.97317],
     valencia: [39.47391, -0.37966],
-};
+  };
 
-const legalIcon = new  Icon ({ 
-  iconUrl : 'https://img.icons8.com/?size=100&id=13800&format=png&color=000000' , 
-  iconSize : [ 35 , 35 ],
- }) 
+  const legalIcon = new Icon({
+    iconUrl: 'https://img.icons8.com/?size=100&id=13800&format=png&color=000000',
+    iconSize: [35, 35],
+  })
 
   const isFavorite = store.favorites.some((fav) => fav.event_id === parseInt(id));
+
 
   console.log("Evento seleccionado:", event);
   console.log("Coordenadas del evento:", citiesCoordinates[event.location]);
@@ -39,7 +47,7 @@ const legalIcon = new  Icon ({
       <div className="row mt-5">
         <div className="col-lg-6">
           <img
-            className="img-fluid"
+            className="img-fluid rounded-start"
             alt={event.title}
             src={
               event.image ||
@@ -51,15 +59,17 @@ const legalIcon = new  Icon ({
           <div className="title-icon d-flex align-items-center justify-content-between">
             <h1 className="mb-0">{event.title}</h1>
             <i
-              className={`fa-regular ${isFavorite ? "fa-solid fa-star text-warning" : "fa-star"
-                }`}
-              onClick={() =>
-                isFavorite
-                  ? actions.removeFavorite(store.favorites.find((fav) => fav.event_id === parseInt(id)).id)
-                  : actions.addFavorite(store.user.id, parseInt(id))
-              }
-              style={{ cursor: "pointer" }}
-            ></i>
+  className={`fa-star ${isFavorite ? "fa-solid text-warning" : "fa-regular"}`}
+  onClick={() => {
+    if (isFavorite) {
+      actions.removeFavorite(parseInt(id));
+    } else {
+      actions.addFavorite(parseInt(id)); 
+    }
+  }}
+  style={{ cursor: "pointer" }}
+></i>
+
           </div>
           <div className="mt-2">
             <h3>{event.description}</h3>
@@ -119,7 +129,7 @@ const legalIcon = new  Icon ({
       </div>
       <div className="row mt-5">
         <div className="col-12">
-        <MapContainer center={citiesCoordinates[event.location] || [0, 0]} zoom={15} style={{ height: "400px", width: "100%" }}>
+          <MapContainer center={citiesCoordinates[event.location] || [0, 0]} zoom={15} style={{ height: "400px", width: "100%" }}>
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
             {citiesCoordinates[event.location] && (
               <Marker position={citiesCoordinates[event.location]} icon={legalIcon}>
