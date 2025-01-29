@@ -10,4 +10,21 @@
     padding: 10px;
     background-color: #ffffff;
     opacity: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.navbar .user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+.navbar .user-profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
 }
