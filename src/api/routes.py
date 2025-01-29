@@ -111,19 +111,6 @@ def get_events():
     events = list(map(lambda x: x.serialize(), events))
     return jsonify(events), 200
 
-@api.route('/filtered_events', methods=['POST'])
-def get_filtered_event():
-    data = request.get_json()
-    events = []
-    if data.get('type') and data.get('title'):
-        events = Event.query.filter_by(type=data['type'], title=data['title']).all()
-    if data.get('type') and not data.get('title'):
-        events = Event.query.filter_by(type=data['type']).all()
-    if not data.get('type') and data.get('title'):
-        events = Event.query.filter_by(title=data['title']).all()
-    events = list(map(lambda x: x.serialize(), events))
-    return jsonify(events), 200
-
 
 
 @api.route('/events/<int:event_id>')

@@ -200,23 +200,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error removing favorite:", error);
 				}
 			},
-			searchEvents: async (formData) => {
-				try {
-					const response = await fetch(process.env.BACKEND_URL + '/api/filtered_events', {
-						method: 'POST',
-						headers: {
-							"Content-Type": "application/json"
-						},
-						body: JSON.stringify(formData)
-					})
-					if (response.ok) {
-						const data = await response.json()
-						setStore({ filteredEvents: data })
-					}
-				} catch (error) {
-					console.error('Error en servidor', error.message)
-				}
-			},
 
 
 			getEventCreatorData: async (event_id) => {
