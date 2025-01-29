@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useStat, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { useParams } from "react-router-dom";
 import "../../styles/eventdetail.css";
@@ -8,11 +8,18 @@ import { Icon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 export const EventDetail = () => {
+
+
   const { store, actions } = useContext(Context);
   const { id } = useParams();
 
   const event = store.events.find((ev) => ev.id === parseInt(id));
 
+  useEffect(() => {
+    if (store.favorites.length === 0) {
+      actions.loadFavorites();
+    }
+  }, [store.favorites.length]); 
   if (!event) {
     return <p>Event not found or still loading...</p>;
   }
@@ -30,6 +37,7 @@ export const EventDetail = () => {
   })
 
   const isFavorite = store.favorites.some((fav) => fav.event_id === parseInt(id));
+
 
   console.log("Evento seleccionado:", event);
   console.log("Coordenadas del evento:", citiesCoordinates[event.location]);
@@ -51,15 +59,17 @@ export const EventDetail = () => {
           <div className="title-icon d-flex align-items-center justify-content-between">
             <h1 className="mb-0">{event.title}</h1>
             <i
-              className={`fa-regular ${isFavorite ? "fa-solid fa-star text-warning" : "fa-star"
-                }`}
-              onClick={() =>
-                isFavorite
-                  ? actions.removeFavorite(store.favorites.find((fav) => fav.event_id === parseInt(id)).id)
-                  : actions.addFavorite(store.user.id, parseInt(id))
-              }
-              style={{ cursor: "pointer" }}
-            ></i>
+  className={`fa-star ${isFavorite ? "fa-solid text-warning" : "fa-regular"}`}
+  onClick={() => {
+    if (isFavorite) {
+      actions.removeFavorite(parseInt(id));
+    } else {
+      actions.addFavorite(parseInt(id)); 
+    }
+  }}
+  style={{ cursor: "pointer" }}
+></i>
+
           </div>
           <div className="mt-2">
             <h3>{event.description}</h3>

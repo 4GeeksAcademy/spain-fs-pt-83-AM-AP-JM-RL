@@ -169,6 +169,16 @@ def delete_event(id):
         db.session.rollback()
         return jsonify({"error": "Error de servidor.", "detalles": str(e)}), 500
     
+@api.route('/filtered_events', methods=['POST'])
+def get_filtered_event():
+    data = request.get_json()
+    events = Event.query.all()  
+    if data.get('type'):
+        events = Event.query.filter_by(type=data['type']).all()
+    events = list(map(lambda x: x.serialize(), events))
+    return jsonify(events), 200
+
+
 @api.route('/profile')
 @jwt_required()
 def get_profile():
@@ -217,8 +227,7 @@ def delete_favorite(id):
         db.session.rollback()
         return jsonify({"error": "Error de servidor.", "detalles": str(e)}), 500
 
-
-@api.route('/users/<int:id>/favorites')
+@api.route('/users/favorites', methods=['GET']) 
 @jwt_required()
 def get_favorites():
     user_email = get_jwt_identity()
@@ -226,9 +235,7 @@ def get_favorites():
     if not user:
         return jsonify({"error": "No se encuentra el usuario."}), 404
     favorites = Favorite.query.filter_by(user_id=user.id).all()
-    if not favorites:
-        return jsonify({"message": "El usuario no tiene favoritos."}), 404
-    favorites_list = list(map(lambda x: x.serialize(), favorites))
+    favorites_list = [fav.serialize() for fav in favorites]
     return jsonify({"favorites": favorites_list}), 200
 
 @api.route('/update-user', methods=['PUT'])
