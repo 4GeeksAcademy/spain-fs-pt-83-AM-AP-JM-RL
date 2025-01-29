@@ -189,8 +189,9 @@ def add_favorite(id):
     if not event:
         return jsonify({"error": "Evento no encontrado."}), 404
     favorite = Favorite(user_id=user.id, event_id=event.id)
-    if favorite:
-        return jsonify({"error": "Ya existe este favorito"}), 400
+    existing_favorite = Favorite.query.filter_by(user_id=user.id, event_id=event.id).first()
+    if existing_favorite:
+        return jsonify({"error": "Este favorito ya existe"}), 400
     try:
         db.session.add(favorite)
         db.session.commit()
@@ -216,24 +217,6 @@ def delete_favorite(id):
         db.session.rollback()
         return jsonify({"error": "Error de servidor.", "detalles": str(e)}), 500
 
-@api.route('/rate', methods=['POST'])
-@jwt_required()
-def rate_user(user_id):
-    data = request.get_json()
-    if not data:
-        return jsonify({"error": "Debes seleccionar un usuario válido."}), 400
-    user_email = get_jwt_identity()
-    user = User.query.filter_by(email=user_email).first()
-    if not user:
-        return jsonify({"error": "Necesitas estar logado"}), 401
-    new_rate = User(rate=data['rate'])
-    try:
-        db.session.add(new_rate)
-        db.session.commit()
-        return jsonify({"message": "Puntuación registrada correctamente"})
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({"error": str(e)})
 
 @api.route('/users/<int:id>/favorites')
 @jwt_required()
