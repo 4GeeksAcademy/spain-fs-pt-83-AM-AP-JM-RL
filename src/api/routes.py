@@ -297,3 +297,9 @@ def get_event_creator_details(event_id):
     if not event:
         return jsonify({"error": "Evento no encontrado"}), 404
     return jsonify([user.serialize()])
+
+@api.route('/rating', methods=['POST'])
+def add_rate(creator_id):
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).first()
+    
