@@ -168,6 +168,7 @@ def delete_event(id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": "Error de servidor.", "detalles": str(e)}), 500
+
     
 @api.route('/filtered_events', methods=['POST'])
 def get_filtered_event():
@@ -303,3 +304,9 @@ def get_event_creator_details(event_id):
     if not event:
         return jsonify({"error": "Evento no encontrado"}), 404
     return jsonify([user.serialize()])
+
+@api.route('/rating', methods=['POST'])
+def add_rate(creator_id):
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).first()
+    

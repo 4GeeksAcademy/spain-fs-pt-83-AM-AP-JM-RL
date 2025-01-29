@@ -32,7 +32,7 @@ export const Navbar = ({ onLoginClick, onRegisterClick }) => {
 				) : (
 					<>
 						<Link className="btn btn-primary" to="/user-details">Mi perfil</Link>
-						<button className="btn btn-secondary" onClick={handleLogout}>Cerrar</button>
+						<button className="btn btn-danger" onClick={handleLogout}>Cerrar Sesión</button>
 					</>
 				)}
 			</div>

@@ -21,7 +21,7 @@ export const ProfileDetails = () => {
                                     src={user.image || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9HCXwTbNqx8X6h1gkiBjs6dh2OtqYY-takA&s"}
                                     className="img-fluid p-3"
                                     alt="Profile"
-                                    style={{ objectFit: 'cover', width: '150px', height: '150px' }}
+                                    style={{ objectFit: 'cover', width: '200px', height: '200px' }}
                                 />
                             </div>
 
@@ -38,6 +38,10 @@ export const ProfileDetails = () => {
                                             <li><strong>Apellido:</strong> {user.last_name}</li>
                                         </ul>
                                     </div>
+                                    <p>¿Te gustaría puntuar a este creador?</p>
+                                    <form>
+                                        <input min={0} max={5} className="form-control w-75" type="number" placeholder="Puntuar"></input>
+                                    </form>
                                 </div>
                             </div>
                         </div>
