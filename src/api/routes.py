@@ -169,6 +169,16 @@ def delete_event(id):
         db.session.rollback()
         return jsonify({"error": "Error de servidor.", "detalles": str(e)}), 500
     
+@api.route('/filtered_events', methods=['POST'])
+def get_filtered_event():
+    data = request.get_json()
+    events = Event.query.all()  
+    if data.get('type'):
+        events = Event.query.filter_by(type=data['type']).all()
+    events = list(map(lambda x: x.serialize(), events))
+    return jsonify(events), 200
+
+
 @api.route('/profile')
 @jwt_required()
 def get_profile():

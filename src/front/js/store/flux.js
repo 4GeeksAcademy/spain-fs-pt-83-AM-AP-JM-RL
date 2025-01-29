@@ -5,9 +5,32 @@ const getState = ({ getStore, getActions, setStore }) => {
 			events: [],
 			favorites: [],
 			userDetails: [],
-			eventCreatorData: []
+			eventCreatorData: [],
+			filteredEvents: []
+
+	
 		},
 		actions: {
+			searchEvents: async (formData) => {
+				try {
+					const response = await fetch(process.env.BACKEND_URL + '/api/filtered_events', {
+						method: 'POST',
+						headers: {
+							"Content-Type": "application/json"
+						},
+						body: JSON.stringify(formData)
+					})
+					if (response.ok) {
+						const data = await response.json()
+						setStore({ filteredEvents: data })
+					}
+				} catch (error) {
+					console.error('Error en servidor', error.message)
+				}
+			},
+			
+
+
 			register: async (email, password) => {
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}api/users`, {
@@ -163,9 +186,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (response.ok) {
 						console.log("Favorite added successfully!");
 						const store = getStore();
-						const newFavorites = [...store.favorites, { event_id }]; // Create a **new array**
-						setStore({ favorites: newFavorites }); // 🔥 This forces React to recognize a state change
-			
+						const newFavorites = [...store.favorites, { event_id }];
+						setStore({ favorites: newFavorites });
 						console.log("Updated store favorites:", newFavorites);
 					} else {
 						const errorData = await response.json();
@@ -190,8 +212,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 			
 					if (response.ok) {
+						console.log("getStore:",getStore());
+						
 						const store = getStore();
-						const updatedFavorites = store.favorites.filter((fav) => fav.event_id !== event_id); // Only remove the one item
+						const {favorites} = store;
+						console.log("store.favorites:", favorites);
+						
+						const updatedFavorites = favorites.filter((fav) => fav.event_id !== event_id); 
+						console.log("updated favorites:", updatedFavorites);
+						
 						setStore({ favorites: updatedFavorites });
 			
 						console.log("Removed favorite, updated list:", updatedFavorites);
