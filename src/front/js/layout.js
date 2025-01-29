@@ -16,6 +16,7 @@ import { ResultsPage } from "./pages/resultspage";
 import { Footer } from "./component/footer";
 import { UserForm } from "./component/UserForm";
 import { UserDetails } from "./component/UserDetails";
+import { SearchResults2 } from "./component/SearchResults2";
 
 
 //create your first component
@@ -62,6 +63,7 @@ const Layout = () => {
                         <Route element={<h1>Not found!</h1>} path="*" />
                         <Route element={<EventDetail />} path="/events/:id" />
                         <Route element={<ResultsPage />} path="/results" />
+                        <Route element={<SearchResults2 />} path="/search" />
 
 
                     </Routes>

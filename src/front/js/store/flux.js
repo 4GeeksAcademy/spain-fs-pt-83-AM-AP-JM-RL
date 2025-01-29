@@ -5,7 +5,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			events: [],
 			favorites: [],
 			userDetails: [],
-			eventCreatorData: []
+			eventCreatorData: [],
+			filteredEvents: []
 		},
 		actions: {
 			register: async (email, password) => {
@@ -67,7 +68,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						const response = await fetch(`${process.env.BACKEND_URL}/api/events`);
 						if (response.ok) {
 							const data = await response.json();
-							setStore({ events: data });
+							setStore({ events: data, filteredEvents: data });
 						} else {
 							console.error("Error fetching events");
 						}
@@ -197,6 +198,23 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 				} catch (error) {
 					console.error("Error removing favorite:", error);
+				}
+			},
+			searchEvents: async (formData) => {
+				try {
+					const response = await fetch(process.env.BACKEND_URL + '/api/filtered_events', {
+						method: 'POST',
+						headers: {
+							"Content-Type": "application/json"
+						},
+						body: JSON.stringify(formData)
+					})
+					if (response.ok) {
+						const data = await response.json()
+						setStore({ filteredEvents: data })
+					}
+				} catch (error) {
+					console.error('Error en servidor', error.message)
 				}
 			},
 

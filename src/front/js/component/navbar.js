@@ -19,7 +19,8 @@ export const Navbar = ({ onLoginClick, onRegisterClick }) => {
 		<nav className="navbar navbar-light bg-light d-flex">
 			<Link to="/" className="btn btn-primary">Home</Link>
 			<Link to="/events-form" className="btn btn-primary">Crear Evento</Link>
-			<SearchBar />
+			{/* <SearchBar /> */}
+			<Link className="btn btn-primary" to={'/search'}>Buscar evento</Link>
 			<div className="ml-auto">
 				{!isAuthenticated ? (
 					<>
@@ -31,7 +32,7 @@ export const Navbar = ({ onLoginClick, onRegisterClick }) => {
 				) : (
 					<>
 						<Link className="btn btn-primary" to="/user-details">Mi perfil</Link>
-						<button className="btn btn-secondary" onClick={handleLogout}>Cerrar</button>
+						<button className="btn btn-danger" onClick={handleLogout}>Cerrar Sesión</button>
 					</>
 				)}
 			</div>
