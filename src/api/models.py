@@ -12,6 +12,8 @@ class User(db.Model):
     last_name = db.Column (db.String(80), unique=False, nullable=True)
     age = db.Column(db.Integer, unique=False, nullable=True)
     rate = db.Column(db.Integer, unique=False, nullable=True)
+    rate_count = db.Column(db.Integer)
+    average_rate = db.Column(db.Float)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
     bio = db.Column(db.String(250), unique=False, nullable=True)
@@ -19,6 +21,7 @@ class User(db.Model):
     location = db.Column(db.String(80), unique=False, nullable=True)
     events = db.relationship('Event', backref='creator', lazy=True)
     favorites = db.relationship('Favorite', backref='user', lazy=True)
+    ratings_received = db.relationship('Rating', foreign_keys='Rating.user_id', backref='rated')
 
     def __repr__(self):
         return f'<User {self.email}>'
@@ -31,7 +34,7 @@ class User(db.Model):
             "first_name": self.first_name,
             "last_name": self.last_name,
             "age": self.age,
-            "rate": self.rate,
+            "average_rate": self.average_rate,
             "created_at": self.created_at,
             "updated_at": self.updated_at,
             "bio": self.bio,
@@ -88,5 +91,21 @@ class Favorite(db.Model):
             "id": self.id,
             "user_id": self.user_id,
             "event_id": self.event_id,
+            "created_at": self.created_at
+        }
+
+class Rating(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    rate = db.Column(db.Float, nullable=False) 
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    rater_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.now) 
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "rate": self.rate,
+            "user_id": self.user_id,
+            "rater_id": self.rater_id,
             "created_at": self.created_at
         }

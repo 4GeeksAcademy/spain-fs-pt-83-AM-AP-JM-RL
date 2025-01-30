@@ -6,7 +6,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 			favorites: [],
 			userDetails: [],
 			eventCreatorData: [],
-			filteredEvents: []
+			filteredEvents: [],
+			message: null,
+			error: null,
+			rating: []
 		},
 		actions: {
 			searchEvents: async (formData) => {
@@ -273,6 +276,28 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error fetching event creator data:", error);
 				}
 			},
+			addRating: async (rate, userId) => {
+				const token = sessionStorage.getItem('access_token');
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/rating/${userId}`, {
+						method: 'POST',
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": "Bearer " + token
+						},
+						body: JSON.stringify(rate)
+					});
+					const data = await response.json();
+					if (response.ok) {
+						setStore({ message: data.message });
+					} else {
+						setStore({ error: data.error });
+					}
+				} catch (error) {
+					setStore({ error: error.message });
+				}
+			},
+
 		},
 	};
 };
