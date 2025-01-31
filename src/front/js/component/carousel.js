@@ -66,19 +66,19 @@ export const Carousel = ({ filter, sort, title, id }) => {
                             <h4 className="card-title">{event.title}</h4>
                             <p>{event.location}</p>
                             <div className="d-flex justify-content-between align-items-center">
-                              
+
                               <Link to={`/events/${event.id}`} className="btn btn-primary">
                                 Details
                               </Link>
-                               
+
                               <i
-  onClick={() => {
-    const isFavorite = store.favorites.some((fav) => fav.event_id === event.id);
-    isFavorite ? actions.removeFavorite(event.id) : actions.addFavorite(event.id);
-  }}
-  className={`fa-${store.favorites.some((fav) => fav.event_id === event.id) ? "solid text-warning" : "regular"} fa-star`}
-  style={{ cursor: "pointer" }}
-></i>
+                                onClick={() => {
+                                  const isFavorite = store.favorites.some((fav) => fav.event_id === event.id);
+                                  isFavorite ? actions.removeFavorite(event.id) : actions.addFavorite(event.id);
+                                }}
+                                className={`fa-${store.favorites.some((fav) => fav.event_id === event.id) ? "solid text-warning" : "regular"} fa-star`}
+                                style={{ cursor: "pointer" }}
+                              ></i>
 
                             </div>
                           </div>

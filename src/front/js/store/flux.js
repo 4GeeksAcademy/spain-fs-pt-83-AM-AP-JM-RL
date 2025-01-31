@@ -9,7 +9,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			filteredEvents: [],
 			message: null,
 			error: null,
-			rating: []
+			posts: []
 		},
 		actions: {
 			searchEvents: async (formData) => {
@@ -100,7 +100,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 				}
 			},
-
 			createEvent: async (eventData) => {
 				const token = sessionStorage.getItem("access_token");
 				try {
@@ -297,6 +296,28 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setStore({ error: error.message });
 				}
 			},
+			addPost: async (content, eventId) => {
+				const token = sessionStorage.getItem('access_token')
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/new-post/${eventId}`, {
+						method: 'POST',
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": "Bearer " + token
+						},
+						body: JSON.stringify(content)
+					})
+					const data = await response.json()
+					if (response.ok) {
+						setStore({ posts: data })
+					} else {
+						setStore({ error: data.error })
+					}
+				} catch (error) {
+					setStore({ error: error.message })
+				}
+			}
+
 
 		},
 	};

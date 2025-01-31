@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint, current_app
-from api.models import db, User, Event, Favorite, Rating
+from api.models import db, User, Event, Favorite, Rating, Post
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 import re
@@ -338,4 +338,24 @@ def add_rate(user_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
-
+@api.route('/new-post/<int:event_id>', methods=['POST'])
+@jwt_required()
+def new_post(event_id):
+    data = request.get_json()
+    if not "content" in data or not data['content'].strip():
+        return jsonify({"error": "No tiene contenido"}), 400
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).first()
+    if not user:
+        return jsonify({"error": "Usuario no encontrado"}), 404
+    event = Event.query.get(event_id)
+    if not event:
+        return jsonify({"error": "No se ha encontrado el evento"}), 404
+    new_post = Post(content=data['content'], user_id=user.id, event_id=event.id)
+    try:
+        db.session.add(new_post)
+        db.session.commit()
+        return jsonify({"message": "Post creado correctamente"}), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": f"error de servidor, {e}"}), 500
