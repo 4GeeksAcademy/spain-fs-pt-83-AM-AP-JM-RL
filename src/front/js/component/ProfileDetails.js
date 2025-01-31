@@ -30,7 +30,6 @@ export const ProfileDetails = () => {
     };
 
 
-
     return (
         <>
             {store.eventCreatorData.map((user) => (
@@ -66,6 +65,7 @@ export const ProfileDetails = () => {
                                         {store.message && <div><p className="alert alert-success mt-1">{store.message}</p></div>}
                                         {store.error && <div><p className="alert alert-danger mt-1">{store.error}</p></div>}
                                     </form>
+
                                 </div>
                             </div>
                         </div>

@@ -22,6 +22,7 @@ class User(db.Model):
     events = db.relationship('Event', backref='creator', lazy=True)
     favorites = db.relationship('Favorite', backref='user', lazy=True)
     ratings_received = db.relationship('Rating', foreign_keys='Rating.user_id', backref='rated')
+    posts = db.relationship('Post', foreign_keys='Post.user_id', backref='posts')
 
     def __repr__(self):
         return f'<User {self.email}>'
@@ -35,8 +36,8 @@ class User(db.Model):
             "last_name": self.last_name,
             "age": self.age,
             "average_rate": self.average_rate,
-            "created_at": self.created_at,
-            "updated_at": self.updated_at,
+            "created_at": self.created_at.strftime('%d-%m-%Y'),
+            "updated_at": self.updated_at.strftime('%d-%m-%Y'),
             "bio": self.bio,
             "image": self.image,
             "location": self.location
@@ -56,6 +57,7 @@ class Event(db.Model):
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     favorites = db.relationship('Favorite', backref='event', lazy=True)
+    posts = db.relationship('Post', backref='event', foreign_keys='Post.event_id')
 
     def __repr__(self):
         return f'<Event {self.title}>'
@@ -72,8 +74,8 @@ class Event(db.Model):
             "image": self.image,
             "type": self.type,
             "user_id": self.user_id,
-            "created_at": self.created_at,
-            "updated_at": self.updated_at
+            "created_at": self.created_at.strftime('%d-%m-%Y'),
+            "updated_at": self.updated_at.strftime('%d-%m-%Y')
         }
     
 class Favorite(db.Model):
@@ -91,7 +93,7 @@ class Favorite(db.Model):
             "id": self.id,
             "user_id": self.user_id,
             "event_id": self.event_id,
-            "created_at": self.created_at
+            "created_at": self.created_at.strftime('%d-%m-%Y')
         }
 
 class Rating(db.Model):
@@ -108,4 +110,19 @@ class Rating(db.Model):
             "user_id": self.user_id,
             "rater_id": self.rater_id,
             "created_at": self.created_at
+        }
+class Post(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String(120), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    event_id = db.Column(db.Integer, db.ForeignKey('event.id'), nullable=False)
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "content": self.content,
+            "created_at": self.created_at.strftime('%d-%m-%Y'),
+            "user_id": self.user_id,
+            "event_id": self.event_id
         }
