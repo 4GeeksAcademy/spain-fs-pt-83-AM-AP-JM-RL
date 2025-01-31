@@ -36,7 +36,7 @@ export const SearchResults = () => {
                 );
             }
 
-            // Apply additional filters (price, time, date, type)
+         
             if (filters.priceRange.min) {
                 filtered = filtered.filter(event =>
                     parseFloat(event.price) >= parseFloat(filters.priceRange.min)
