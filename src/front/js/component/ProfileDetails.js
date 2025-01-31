@@ -13,6 +13,7 @@ export const ProfileDetails = () => {
 
 
 
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const userId = store.eventCreatorData[0].id
@@ -41,7 +42,7 @@ export const ProfileDetails = () => {
                                     src={user.image || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9HCXwTbNqx8X6h1gkiBjs6dh2OtqYY-takA&s"}
                                     className="img-fluid p-3"
                                     alt="Profile"
-                                    style={{ objectFit: 'cover', width: '200px', height: '200px' }}
+                                    style={{ objectFit: 'cover', width: '230px', height: '230px' }}
                                 />
                             </div>
 
@@ -62,6 +63,8 @@ export const ProfileDetails = () => {
                                     <form onSubmit={handleSubmit}>
                                         <input value={rate} onChange={(e) => setRate(e.target.value)} min={0} max={5} className="form-control w-75" type="number" placeholder="Puntuar"></input>
                                         <input className="btn btn-success mt-1" value={'Confirmar'} type="submit"></input>
+                                        {store.message && <div><p className="alert alert-success mt-1">{store.message}</p></div>}
+                                        {store.error && <div><p className="alert alert-danger mt-1">{store.error}</p></div>}
                                     </form>
                                 </div>
                             </div>
