@@ -27,7 +27,7 @@ const Layout = () => {
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
     const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
 
-    
+
     const handleOpenLogin = () => {
         setIsLoginModalOpen(true);
     }
@@ -64,7 +64,7 @@ const Layout = () => {
                         <Route element={<h1>Not found!</h1>} path="*" />
                         <Route element={<EventDetail />} path="/events/:id" />
                         <Route element={<ResultsPage />} path="/results" />
-                        {/* <Route element={<SearchResults />} path="/search" /> */}
+                        <Route element={<SearchResults />} path="/search" />
 
 
                     </Routes>

@@ -1,14 +1,34 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import { useParams } from "react-router-dom";
 
 export const ProfileDetails = () => {
     const { store, actions } = useContext(Context);
     const { event_id } = useParams();
+    const [rate, setRate] = useState('');
 
     useEffect(() => {
         actions.getEventCreatorData(event_id);
-    }, [event_id, actions]);
+    }, [event_id, rate]);
+
+
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const userId = store.eventCreatorData[0].id
+        const formData = {
+            rate
+        }
+
+        if (userId) {
+            await actions.addRating(formData, userId);
+            setRate('')
+        } else {
+            console.error('User ID not found');
+        }
+    };
+
+
 
     return (
         <>
@@ -30,7 +50,7 @@ export const ProfileDetails = () => {
                                     <h5 className="card-title text-center">{user.first_name} {user.last_name}</h5>
                                     <p className="text-center text-muted">Registrado desde {user.created_at}</p>
                                     <div className="d-flex justify-content-center mb-3">
-                                        <span className="badge bg-primary">{user.rate ? user.rate + '⭐' : '⭐⭐⭐⭐⭐'}</span>
+                                        <span className="badge bg-primary">{user.average_rate ? user.average_rate.toFixed(2) + '⭐' : '⭐⭐⭐⭐⭐'}</span>
                                     </div>
                                     <div className="d-flex justify-content-center">
                                         <ul className="list-unstyled">
@@ -39,8 +59,9 @@ export const ProfileDetails = () => {
                                         </ul>
                                     </div>
                                     <p>¿Te gustaría puntuar a este creador?</p>
-                                    <form>
-                                        <input min={0} max={5} className="form-control w-75" type="number" placeholder="Puntuar"></input>
+                                    <form onSubmit={handleSubmit}>
+                                        <input value={rate} onChange={(e) => setRate(e.target.value)} min={0} max={5} className="form-control w-75" type="number" placeholder="Puntuar"></input>
+                                        <input className="btn btn-success mt-1" value={'Confirmar'} type="submit"></input>
                                     </form>
                                 </div>
                             </div>
