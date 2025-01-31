@@ -4,7 +4,7 @@ import { Context } from "../store/appContext";
 import Image from 'react-bootstrap/Image';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import Button from 'react-bootstrap/Button';
-import { FaHome, FaCog } from "react-icons/fa";
+import { FaHome, FaCog, FaUser, FaCalendarPlus, FaSignOutAlt } from "react-icons/fa";
 import { SearchBar } from "./searchbar";
 import "../../styles/navbar.css";
 
@@ -64,15 +64,23 @@ export const Navbar = ({ onLoginClick, onRegisterClick }) => {
 				</div>
 			</nav>
 
-			<Offcanvas show={showOffcanvas} onHide={() => setShowOffcanvas(false)} placement="end">
-				<Offcanvas.Header closeButton>
-					<Offcanvas.Title>Opciones de Usuario</Offcanvas.Title>
+			<Offcanvas show={showOffcanvas} onHide={() => setShowOffcanvas(false)} placement="end" className="custom-offcanvas">
+				<Offcanvas.Header closeButton className="offcanvas-header">
+					<Offcanvas.Title className="offcanvas-title">Opciones de Usuario</Offcanvas.Title>
 				</Offcanvas.Header>
-				<Offcanvas.Body>
-					<Link to="/user-details" className="offcanvas-link" onClick={() => setShowOffcanvas(false)}>Mi Perfil</Link>
-					<Link to="/events-form" className="offcanvas-link" onClick={() => setShowOffcanvas(false)}>Crear Evento</Link>
-					<hr />
-					<Button variant="danger" onClick={handleLogout}>Cerrar Sesión</Button>
+				<Offcanvas.Body className="offcanvas-body">
+					<div className="offcanvas-links">
+						<Link to="/user-details" className="offcanvas-link" onClick={() => setShowOffcanvas(false)}>
+							<FaUser className="offcanvas-icon" /> Mi Perfil
+						</Link>
+						<Link to="/events-form" className="offcanvas-link" onClick={() => setShowOffcanvas(false)}>
+							<FaCalendarPlus className="offcanvas-icon" /> Crear Evento
+						</Link>
+					</div>
+					<div className="offcanvas-footer">
+						<hr className="offcanvas-divider" />
+						<Button variant="danger" onClick={handleLogout} className="offcanvas-logout">Cerrar Sesión</Button>
+					</div>
 				</Offcanvas.Body>
 			</Offcanvas>
 		</>
