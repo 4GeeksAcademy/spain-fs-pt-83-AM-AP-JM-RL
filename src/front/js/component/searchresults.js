@@ -66,7 +66,7 @@ export const SearchResults = () => {
             }
 
             if (sortOption === "most_recent") {
-                filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+                filtered.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
             } else if (sortOption === "upcoming") {
                 filtered.sort((a, b) => new Date(a.date) - new Date(b.date));
             } else if (sortOption === "price_asc") {
