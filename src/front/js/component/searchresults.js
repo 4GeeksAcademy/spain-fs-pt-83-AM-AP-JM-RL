@@ -9,6 +9,7 @@ export const SearchResults = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [paginatedResults, setPaginatedResults] = useState([]);
     const [selectedType, setSelectedType] = useState("");
+    const [sortOption, setSortOption] = useState("");
     const [filters, setFilters] = useState({
         priceRange: { min: "", max: "" },
         timeRange: { start: "", end: "" },
@@ -17,77 +18,81 @@ export const SearchResults = () => {
 
     const itemsPerPage = 9;
     const query = new URLSearchParams(location.search).get("query");
-    const types = ["fiesta", "concierto", "cultural", "empresarial", "otros"]; 
+    const types = ["fiesta", "concierto", "cultural", "empresarial", "otros"];
 
     useEffect(() => {
-        if (query) {
-            if (store.events.length === 0) {
-                actions.getEvents();
-            } else {
-                let filtered = store.events.filter((event) =>
+        if (store.events.length === 0) {
+            actions.getEvents();
+        } else {
+            let filtered = store.events;
+
+
+            if (query && query.trim() !== "") {
+                filtered = store.events.filter((event) =>
                     event?.title?.toLowerCase().includes(query.toLowerCase()) ||
-                event?.location?.toLowerCase().includes(query.toLowerCase()) ||
-                event?.description?.toLowerCase().includes(query.toLowerCase()) ||
-                event?.type?.toLowerCase().includes(query.toLowerCase())
-
+                    event?.location?.toLowerCase().includes(query.toLowerCase()) ||
+                    event?.description?.toLowerCase().includes(query.toLowerCase()) ||
+                    event?.type?.toLowerCase().includes(query.toLowerCase())
                 );
-
-
-                if (filters.priceRange.min) {
-                    filtered = filtered.filter(
-                        (event) =>
-                            parseFloat(event.price) >= parseFloat(filters.priceRange.min)
-                    );
-                }
-                if (filters.priceRange.max) {
-                    filtered = filtered.filter(
-                        (event) =>
-                            parseFloat(event.price) <= parseFloat(filters.priceRange.max)
-                    );
-                }
-
-        
-                if (filters.timeRange.start && filters.timeRange.end) {
-                    filtered = filtered.filter(
-                        (event) =>
-                            event.time >= filters.timeRange.start &&
-                            event.time <= filters.timeRange.end
-                    );
-                }
-
-       
-                if (filters.dateRange.start && filters.dateRange.end) {
-                    filtered = filtered.filter(
-                        (event) =>
-                            new Date(event.date) >= new Date(filters.dateRange.start) &&
-                            new Date(event.date) <= new Date(filters.dateRange.end)
-                    );
-                }
-
-
-                if (selectedType) {
-                    console.log("Filtering by type:", selectedType);
-                    filtered = filtered.filter((event) => {
-                        console.log("Event type:", event.type);
-                        return event.type && event.type.toLowerCase() === selectedType.toLowerCase();
-                    });
-                }
-
-                setPaginatedResults(filtered);
-                setCurrentPage(0);
             }
+
+            // Apply additional filters (price, time, date, type)
+            if (filters.priceRange.min) {
+                filtered = filtered.filter(event =>
+                    parseFloat(event.price) >= parseFloat(filters.priceRange.min)
+                );
+            }
+            if (filters.priceRange.max) {
+                filtered = filtered.filter(event =>
+                    parseFloat(event.price) <= parseFloat(filters.priceRange.max)
+                );
+            }
+            if (filters.timeRange.start && filters.timeRange.end) {
+                filtered = filtered.filter(event =>
+                    event.time >= filters.timeRange.start &&
+                    event.time <= filters.timeRange.end
+                );
+            }
+            if (filters.dateRange.start && filters.dateRange.end) {
+                filtered = filtered.filter(event =>
+                    new Date(event.date) >= new Date(filters.dateRange.start) &&
+                    new Date(event.date) <= new Date(filters.dateRange.end)
+                );
+            }
+            if (selectedType) {
+                filtered = filtered.filter(event =>
+                    event.type && event.type.toLowerCase() === selectedType.toLowerCase()
+                );
+            }
+
+            if (sortOption === "most_recent") {
+                filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+            } else if (sortOption === "upcoming") {
+                filtered.sort((a, b) => new Date(a.date) - new Date(b.date));
+            } else if (sortOption === "price_asc") {
+                filtered.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+            } else if (sortOption === "price_desc") {
+                filtered.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+            }
+
+            setPaginatedResults(filtered);
+            setCurrentPage(0);
         }
-    }, [query, store.events, actions, filters, selectedType]);
+    }, [query, store.events, actions, filters, selectedType, sortOption]);
+    const handleSortChange = (e) => {
+        setSortOption(e.target.value);
+    };
+
 
     const handleTypeSelect = (type) => {
         console.log("Type selected:", type, "Previous selectedType:", selectedType);
         setSelectedType((prev) => {
             const newType = prev === type ? "" : type;
-            actions.searchEvents({ type: newType, filters }); 
+            actions.searchEvents({ type: newType, filters });
             return newType;
         });
     };
-    
+
 
     const handlePriceChange = (e) => {
         const { name, value } = e.target;
@@ -123,7 +128,18 @@ export const SearchResults = () => {
                     <div className="col-lg-4 mb-3">
                         <div className="filter-by">
                             <h4>Filter By</h4>
+
                             <div className="row filter-group">
+
+                                <label>Sort By</label>
+                                <select className="form-control" value={sortOption} onChange={handleSortChange}>
+                                    <option value="">Select</option>
+                                    <option value="most_recent">Most Recent</option>
+                                    <option value="upcoming">Upcoming</option>
+                                    <option value="price_asc">Price: Low to High</option>
+                                    <option value="price_desc">Price: High to Low</option>
+                                </select>
+
                                 <label>Price Range</label>
                                 <input
                                     type="number"
@@ -187,8 +203,11 @@ export const SearchResults = () => {
                     <div className="col-lg-8">
                         <div className="row justify-content-between">
                             <div className="col-6">
-                                <h3 className="mb-3">Search Results for "{query}"</h3>
+                                <h3 className="mb-3">
+                                    {query ? `Search Results for "${query}"` : "All Events"}
+                                </h3>
                             </div>
+
                             <div className="col-3 text-left justify-content-end">
                                 <button
                                     className="arrow-left btn btn-primary mb-3 mr-1"
@@ -247,13 +266,13 @@ export const SearchResults = () => {
                                                     Details
                                                 </Link>
                                                 <i
-  onClick={() => {
-    const isFavorite = store.favorites.some((fav) => fav.event_id === event.id);
-    isFavorite ? actions.removeFavorite(event.id) : actions.addFavorite(event.id);
-  }}
-  className={`fa-${store.favorites.some((fav) => fav.event_id === event.id) ? "solid text-warning" : "regular"} fa-star`}
-  style={{ cursor: "pointer" }}
-></i>
+                                                    onClick={() => {
+                                                        const isFavorite = store.favorites.some((fav) => fav.event_id === event.id);
+                                                        isFavorite ? actions.removeFavorite(event.id) : actions.addFavorite(event.id);
+                                                    }}
+                                                    className={`fa-${store.favorites.some((fav) => fav.event_id === event.id) ? "solid text-warning" : "regular"} fa-star`}
+                                                    style={{ cursor: "pointer" }}
+                                                ></i>
                                             </div>
                                         </div>
                                     </div>
@@ -270,4 +289,3 @@ export const SearchResults = () => {
         </section>
     );
 };
-

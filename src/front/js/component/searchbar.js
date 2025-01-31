@@ -55,8 +55,10 @@ export const SearchBar = () => {
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       handleSearchIconClick();
+      setShowDropdown(false);
     }
   };
+  
 
   return (
     <div className="search-bar" style={{ position: "relative" }}>

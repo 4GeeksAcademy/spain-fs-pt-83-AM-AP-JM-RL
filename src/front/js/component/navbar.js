@@ -19,6 +19,7 @@ export const Navbar = ({ onLoginClick, onRegisterClick }) => {
 		<nav className="navbar navbar-light bg-light d-flex">
 			<Link to="/" className="btn btn-primary">Home</Link>
 			<Link to="/events-form" className="btn btn-primary">Crear Evento</Link>
+			<Link to="/results" className="btn btn-primary">All events</Link>
 		
 			<SearchBar />
 			<div className="ml-auto">
