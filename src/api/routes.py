@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint, current_app
-from api.models import db, User, Event, Favorite
+from api.models import db, User, Event, Favorite, Rating
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 import re
@@ -305,8 +305,37 @@ def get_event_creator_details(event_id):
         return jsonify({"error": "Evento no encontrado"}), 404
     return jsonify([user.serialize()])
 
-@api.route('/rating', methods=['POST'])
-def add_rate(creator_id):
+@api.route('/rating/<int:user_id>', methods=['POST'])
+@jwt_required()
+def add_rate(user_id):
+    data = request.get_json()
     user_email = get_jwt_identity()
-    user = User.query.filter_by(email=user_email).first()
-    
+    rater = User.query.filter_by(email=user_email).first()
+    if not rater:
+        return jsonify({"error": "Usuario no encontrado"}), 404
+    user_rated = User.query.filter_by(id=user_id).first()
+    if not user_rated:
+        return jsonify({"error": "El usuario al que intentas puntuar no existe"}), 404
+    if rater.id == user_rated.id:
+        return jsonify({"error": "No puedes puntuarte a ti mismo"}), 401
+    existing_rate = Rating.query.filter_by(user_id=user_rated.id, rater_id=rater.id).first()
+    if existing_rate:
+        return jsonify({"error": "Ya has puntuado a este creador"}), 401
+    new_rate = Rating(rate=data['rate'], user_id=user_id, rater_id=rater.id)
+    int_rate = int(data['rate'])
+
+    try:
+        if user_rated.rate is None:
+            user_rated.rate = 0
+        if user_rated.rate_count is None:
+            user_rated.rate_count = 0
+        user_rated.rate = user_rated.rate + int_rate 
+        user_rated.rate_count += 1
+        user_rated.average_rate = user_rated.rate / user_rated.rate_count
+        db.session.add(new_rate)
+        db.session.commit()
+        return jsonify({"message": "Rating añadido", "new_average": user_rated.average_rate}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
+

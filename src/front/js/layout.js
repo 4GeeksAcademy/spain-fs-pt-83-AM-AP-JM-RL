@@ -27,7 +27,7 @@ const Layout = () => {
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
     const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
 
-    
+
     const handleOpenLogin = () => {
         setIsLoginModalOpen(true);
     }
