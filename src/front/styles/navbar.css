@@ -1,18 +1,28 @@
-.navbar .btn {
-    margin: 5px;
-    height: 40px;
-    width: auto;
-    max-width: 150px;
-}
-
+/* Estilos generales del Navbar */
 .navbar {
     height: 60px;
-    padding: 10px;
-    background-color: #ffffff;
-    opacity: 100%;
+    padding: 10px 20px;
+    background-color: rgba(255, 255, 255, 0.13); 
+    backdrop-filter: blur(10px); 
+    border: 2px solid rgba(255, 255, 255, 0.1); 
+    box-shadow: 0 0 20px rgba(8, 7, 16, 0.3); 
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+/* Estilos para el icono de Home */
+.navbar .home {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+.navbar .home:hover {
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .navbar .user-profile {
@@ -21,10 +31,145 @@
     gap: 10px;
 }
 
-
+/* Estilos para la imagen de usuario */
 .navbar .user-profile img {
     width: 40px;
     height: 40px;
     border-radius: 50%;
     object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    transition: border-color 0.3s ease;
+}
+
+/* Estilos para el botón de configuración */
+.navbar .settings-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border-radius: 50%;
+    background-color: transparent;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.navbar .settings-button:hover {
+    background-color: rgba(255, 255, 255, 0.1); 
+}
+
+/* Estilos para los botones de Login y Register */
+.navbar .btn {
+    margin: 5px;
+    height: 40px;
+    width: auto;
+    max-width: 150px;
+    border-radius: 20px; 
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.navbar .btn-primary {
+    background-color: #007bff;
+    border: none;
+}
+
+.navbar .btn-secondary {
+    background-color: #6c757d;
+    border: none;
+}
+
+.navbar .btn:hover {
+    transform: scale(1.05);
+}
+
+/* Estilos para el contenedor de usuario */
+.navbar .user-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Estilos para el offcanvas */
+.custom-offcanvas {
+    background-color: rgba(255, 255, 255, 0.13);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+    border-radius: 10px;
+    width: 400px;
+}
+
+.offcanvas-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.offcanvas-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #000;
+}
+
+.offcanvas-body {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    height: 100%;
+}
+
+.offcanvas-links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.offcanvas-link {
+    color: #000;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.offcanvas-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.offcanvas-icon {
+    font-size: 1.2rem;
+}
+
+.offcanvas-footer {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.offcanvas-divider {
+    margin: 20px 0;
+    border-color: rgba(14, 10, 10, 0.151);
+}
+
+.offcanvas-logout {
+    margin-top: auto;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #dc3545;
+    border: none;
+    color: white;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.offcanvas-logout:hover {
+    background-color: #c82333;
 }
