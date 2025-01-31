@@ -15,7 +15,7 @@ export const Navbar = ({ onLoginClick, onRegisterClick }) => {
 
 	useEffect(() => {
 		actions.getUserDetails()
-	}, [])
+	}, []);
 
 	const handleLogout = () => {
 		actions.logout();
