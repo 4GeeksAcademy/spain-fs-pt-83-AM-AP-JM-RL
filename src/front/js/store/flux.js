@@ -4,12 +4,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 			users: [],
 			events: [],
 			favorites: [],
-			userDetails: [],
-			eventCreatorData: [],
+			userDetails: {},
+			eventCreatorData: {},
 			filteredEvents: [],
 			message: null,
 			error: null,
-			posts: []
+			comments: []
 		},
 		actions: {
 			searchEvents: async (formData) => {
@@ -67,6 +67,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						const data = await response.json();
 						sessionStorage.setItem("access_token", data.token);
 						console.log("User logged in:", data);
+						setStore({ message: data.message, error: data.error })
 						return true;
 					} else {
 						const errorData = await response.json();
@@ -296,7 +297,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setStore({ error: error.message });
 				}
 			},
-			addPost: async (content, eventId) => {
+			addComment: async (content, eventId) => {
 				const token = sessionStorage.getItem('access_token')
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}/api/new-post/${eventId}`, {
@@ -309,13 +310,29 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					const data = await response.json()
 					if (response.ok) {
-						setStore({ posts: data })
+						setStore({ message: data.message })
 					} else {
 						setStore({ error: data.error })
 					}
 				} catch (error) {
 					setStore({ error: error.message })
 				}
+			},
+			getPostComments: async (eventId) => {
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/posts/${eventId}`)
+					const data = await response.json()
+					if (response.ok) {
+						setStore({ comments: data })
+					} else {
+						setStore({ error: data.error })
+					}
+				} catch (error) {
+					setStore({ error: error.message })
+				}
+			},
+			clearMessages: () => {
+				setStore({ error: null, message: null })
 			}
 
 

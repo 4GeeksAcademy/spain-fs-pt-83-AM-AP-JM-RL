@@ -25,6 +25,16 @@ const injectContext = PassedComponent => {
 			state.actions.getEvents();
 		}, []);
 
+		useEffect(() => {
+			state.actions.getUserDetails()
+		}, [])
+
+
+		useEffect(() => {
+			setTimeout(() => {
+				state.actions.clearMessages()
+			}, 1500);
+		}, [state.store.message, state.store.error])
 
 		return (
 			<Context.Provider value={state}>

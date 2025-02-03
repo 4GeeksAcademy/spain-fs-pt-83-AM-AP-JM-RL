@@ -39,9 +39,7 @@ export const Navbar = ({ onLoginClick, onRegisterClick }) => {
 						</>
 					) : (
 						<div className="user-profile">
-							{store.userDetails.map(user => (
-								<Image key={user.id} src={user.image} className="profile-image" roundedCircle />
-							))}
+							<Image src={store.userDetails.image} className="profile-image" roundedCircle />
 							<Button variant="light" className="settings-button" onClick={() => setShowOffcanvas(true)}>
 								<FaCog size={24} />
 							</Button>
