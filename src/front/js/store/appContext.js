@@ -31,9 +31,7 @@ const injectContext = PassedComponent => {
 
 
 		useEffect(() => {
-			setTimeout(() => {
-				state.actions.clearMessages()
-			}, 1500);
+			state.actions.clearMessages()
 		}, [state.store.message, state.store.error])
 
 		return (

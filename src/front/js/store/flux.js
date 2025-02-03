@@ -83,6 +83,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			logout: () => {
 				sessionStorage.removeItem("access_token");
 				console.log("Session closed");
+				setStore({ message: 'Sesion cerrada correctamente' })
 			},
 
 			getEvents: async () => {
@@ -332,7 +333,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 			clearMessages: () => {
-				setStore({ error: null, message: null })
+				setTimeout(() => {
+					setStore({ error: null, message: null })
+				}, 1500);
 			}
 
 

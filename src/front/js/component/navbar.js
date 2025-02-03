@@ -74,11 +74,14 @@ export const Navbar = ({ onLoginClick, onRegisterClick }) => {
 						<Link to="/events-form" className="offcanvas-link" onClick={() => setShowOffcanvas(false)}>
 							<FaCalendarPlus className="offcanvas-icon" /> Crear Evento
 						</Link>
+						{store.message && <div><p className="alert alert-success">{store.message}</p></div>}
+						{store.error && <div><p className="alert alert-danger">{store.error}</p></div>}
 					</div>
 					<div className="offcanvas-footer">
 						<hr className="offcanvas-divider" />
 						<Button variant="danger" onClick={handleLogout} className="offcanvas-logout">Cerrar Sesión</Button>
 					</div>
+
 				</Offcanvas.Body>
 			</Offcanvas>
 		</>
