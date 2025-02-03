@@ -11,28 +11,12 @@ import Button from 'react-bootstrap/Button';
 import { ListGroup } from "react-bootstrap";
 
 export const EventDetail = () => {
-
-
   const { store, actions } = useContext(Context);
   const { id } = useParams();
 
-  const [show, setShow] = useState(false)
-  const [showAddComment, setShowAddComment] = useState(false)
-  const [inputValue, setInputValue] = useState('')
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  const handleCloseAddComment = () => {
-    setShowAddComment(false)
-  };
-  const handleShowAddComment = () => {
-    setShow(false)
-    setShowAddComment(true)
-  };
-
-  const event = store.events.find((ev) => ev.id === parseInt(id));
-
-  console.log(store.posts)
+  const [show, setShow] = useState(false);
+  const [showAddComment, setShowAddComment] = useState(false);
+  const [inputValue, setInputValue] = useState('');
 
   useEffect(() => {
     if (store.favorites.length === 0) {
@@ -41,22 +25,29 @@ export const EventDetail = () => {
   }, [store.favorites.length]);
 
   useEffect(() => {
-    actions.getPostComments(id)
-  }, [id, show])
+    actions.getPostComments(id);
+  }, [id, show]);
+
+  const event = store.events.find(ev => ev.id === parseInt(id));
 
   if (!event) {
     return <p>Event not found or still loading...</p>;
   }
 
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const handleCloseAddComment = () => setShowAddComment(false);
+  const handleShowAddComment = () => {
+    setShow(false);
+    setShowAddComment(true);
+  };
 
-
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    actions.addComment({ "content": inputValue }, event.id)
-    handleCloseAddComment()
-    setInputValue('')
-  }
+  const handleSubmit = e => {
+    e.preventDefault();
+    actions.addComment({ content: inputValue }, event.id);
+    handleCloseAddComment();
+    setInputValue('');
+  };
 
   const citiesCoordinates = {
     barcelona: [41.38879, 2.15899],
@@ -68,13 +59,9 @@ export const EventDetail = () => {
   const legalIcon = new Icon({
     iconUrl: 'https://img.icons8.com/?size=100&id=13800&format=png&color=000000',
     iconSize: [35, 35],
-  })
+  });
 
-  const isFavorite = store.favorites.some((fav) => fav.event_id === parseInt(id));
-
-
-  console.log("Evento seleccionado:", event);
-  console.log("Coordenadas del evento:", citiesCoordinates[event.location]);
+  const isFavorite = store.favorites.some(fav => fav.event_id === parseInt(id));
 
   return (
     <>
@@ -107,7 +94,6 @@ export const EventDetail = () => {
                 }}
                 style={{ cursor: "pointer" }}
               ></i>
-
             </div>
             <div className="mt-2">
               <h3>{event.description}</h3>
@@ -158,9 +144,7 @@ export const EventDetail = () => {
                 "Invalid Date or Time"
               )}
             </div>
-            <div className="mt-3">
-
-            </div>
+            <div className="mt-3"></div>
             <div>
               <Button variant="primary" onClick={handleShow}>
                 Ver comentarios del evento
@@ -188,8 +172,11 @@ export const EventDetail = () => {
         </Modal.Header>
         <Modal.Body>
           {store.comments?.map(post => (
-            <ListGroup>
-              <ListGroup.Item><p className="mb-2">{post.content}</p><small className="card-text">Escrito el {post.created_at} por {post.user_id}</small></ListGroup.Item>
+            <ListGroup key={post.id}>
+              <ListGroup.Item>
+                <p className="mb-2">{post.content}</p>
+                <small className="card-text">Escrito el {post.created_at} por {post.user_id}</small>
+              </ListGroup.Item>
             </ListGroup>
           ))}
           <Button variant="primary" onClick={handleShowAddComment}>
@@ -202,15 +189,16 @@ export const EventDetail = () => {
         <Modal.Header closeButton>
           <Modal.Title><h2 className="text-center">Deja tu comentario</h2></Modal.Title>
         </Modal.Header>
-        <Modal.Body><form onSubmit={handleSubmit}>
-          <textarea className="form-control" value={inputValue} onChange={(e) => setInputValue(e.target.value)}></textarea>
-          <button className="btn btn-success" type="submit">Enviar</button>
-        </form><Button variant="secondary" onClick={handleClose}>
+        <Modal.Body>
+          <form onSubmit={handleSubmit}>
+            <textarea className="form-control" value={inputValue} onChange={e => setInputValue(e.target.value)}></textarea>
+            <button className="btn btn-success" type="submit">Enviar</button>
+          </form>
+          <Button variant="secondary" onClick={handleClose}>
             Cerrar
-          </Button></Modal.Body>
+          </Button>
+        </Modal.Body>
       </Modal>
-
     </>
   );
 };
-
