@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 import Image from 'react-bootstrap/Image';
@@ -23,26 +23,31 @@ export const Navbar = ({ onLoginClick, onRegisterClick }) => {
 	};
 
 
+
+
 	return (
 		<>
-			<nav className="navbar navbar-light bg-light d-flex">
-				<Link to="/" className="home"><FaHome size={24} color="black" /></Link>
-				<SearchBar />
-				<div className="ml-auto user-container">
-					{!store.isAuthenticated ? (
-						<>
-							<button className="btn btn-primary" onClick={onLoginClick}>Login</button>
-							{onRegisterClick && (
-								<button className="btn btn-secondary" onClick={onRegisterClick}>Register</button>
-							)}
-						</>
-					) : (
-						<div className="user-profile">
-							<Image src={store.userDetails.image} className="profile-image" roundedCircle />
-							<Button variant="light" className="settings-button" onClick={() => setShowOffcanvas(true)}>
-								<FaCog size={24} />
-							</Button>
-							{/*
+			{store.message ? <div className="w-100"><p role="alert" className={'alert alert-success m-auto'}>{store.message}</p></div> :
+
+				<nav className="navbar navbar-light bg-light d-flex">
+					{store.message ? '' : <><Link to="/" className="home"><FaHome size={24} color="black" /></Link>
+						<SearchBar /></>}
+					<div className="ml-auto user-container">
+
+						{!store.isAuthenticated ? (
+							<>
+								<button className="btn btn-primary" onClick={onLoginClick}>Login</button>
+								{onRegisterClick && (
+									<button className="btn btn-secondary" onClick={onRegisterClick}>Register</button>
+								)}
+							</>
+						) : (
+							<div className="user-profile">
+								<Image src={store.userDetails.image} className="profile-image" roundedCircle />
+								<Button variant="light" className="settings-button" onClick={() => setShowOffcanvas(true)}>
+									<FaCog size={24} />
+								</Button>
+								{/*
 								<NavDropdown
 							title={<FaCog size={24} />}
 							id="user-options-dropdown"
@@ -56,11 +61,11 @@ export const Navbar = ({ onLoginClick, onRegisterClick }) => {
 						</NavDropdown>					
 						*/}
 
-						</div>
-					)}
-				</div>
-			</nav>
-
+							</div>
+						)}
+					</div>
+				</nav>
+			}
 			<Offcanvas show={showOffcanvas} onHide={() => setShowOffcanvas(false)} placement="end" className="custom-offcanvas">
 				<Offcanvas.Header closeButton className="offcanvas-header">
 					<Offcanvas.Title className="offcanvas-title">Opciones de Usuario</Offcanvas.Title>
