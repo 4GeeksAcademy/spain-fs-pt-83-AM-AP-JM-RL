@@ -1,0 +1,32 @@
+.user-details-card {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+}
+
+.user-details-card h2 {
+    font-family: 'Arial', sans-serif;
+    color: #333;
+}
+
+.user-details-card .list-group-item {
+    background-color: #fff;
+    border: none;
+    border-bottom: 1px solid #ddd;
+}
+
+.user-details-card .list-group-item:last-child {
+    border-bottom: none;
+}
+
+.user-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin-bottom: 20px;
+    border: 3px solid #007bff;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}

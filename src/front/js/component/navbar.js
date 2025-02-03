@@ -13,16 +13,12 @@ export const Navbar = ({ onLoginClick, onRegisterClick }) => {
 	const navigate = useNavigate();
 	const [showOffcanvas, setShowOffcanvas] = useState(false);
 
-	useEffect(() => {
-		actions.getUserDetails()
-	}, []);
 
 	const handleLogout = () => {
 		actions.logout();
 		navigate("/");
 	};
 
-	const isAuthenticated = sessionStorage.getItem("access_token");
 
 	return (
 		<>
@@ -30,7 +26,7 @@ export const Navbar = ({ onLoginClick, onRegisterClick }) => {
 				<Link to="/" className="home"><FaHome size={24} color="black" /></Link>
 				<SearchBar />
 				<div className="ml-auto user-container">
-					{!isAuthenticated ? (
+					{!store.isAuthenticated ? (
 						<>
 							<button className="btn btn-primary" onClick={onLoginClick}>Login</button>
 							{onRegisterClick && (

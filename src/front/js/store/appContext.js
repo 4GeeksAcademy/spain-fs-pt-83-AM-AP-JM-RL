@@ -26,8 +26,10 @@ const injectContext = PassedComponent => {
 		}, []);
 
 		useEffect(() => {
-			state.actions.getUserDetails()
-		}, [])
+			if (state.store.isAuthenticated) {
+				state.actions.getUserDetails()
+			}
+		}, [state.store.isAuthenticated, state.store.userDetails.updated_at])
 
 
 		useEffect(() => {
