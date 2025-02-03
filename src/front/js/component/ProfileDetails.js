@@ -6,6 +6,7 @@ export const ProfileDetails = () => {
     const { store, actions } = useContext(Context);
     const { event_id } = useParams();
     const [rate, setRate] = useState('');
+    const [error, setError] = useState(null)
 
     useEffect(() => {
         actions.getEventCreatorData(event_id);
@@ -26,8 +27,12 @@ export const ProfileDetails = () => {
         if (userId) {
             await actions.addRating(formData, userId);
             setRate('')
-        } else {
-            console.error('User ID not found');
+        }
+        if (!sessionStorage.getItem('access_token')) {
+            setError('Debes iniciar sesión primero')
+            setTimeout(() => {
+                setError('')
+            }, 1500);
         }
     };
 
@@ -62,10 +67,11 @@ export const ProfileDetails = () => {
                                 </div>
                                 <p>¿Te gustaría puntuar a este creador?</p>
                                 <form onSubmit={handleSubmit}>
-                                    <input value={rate} onChange={(e) => setRate(e.target.value)} min={0} max={5} className="form-control w-75" type="number" placeholder="Puntuar"></input>
+                                    <input value={rate} onChange={(e) => setRate(e.target.value)} min={1} max={5} className="form-control w-75" type="number" placeholder="Puntuar"></input>
                                     <input className="btn btn-success mt-1" value={'Confirmar'} type="submit"></input>
                                     {store.message && <div><p className="alert alert-success mt-1">{store.message}</p></div>}
                                     {store.error && <div><p className="alert alert-danger mt-1">{store.error}</p></div>}
+                                    {error && <div><p className="alert alert-danger mt-1">{error}</p></div>}
                                 </form>
 
                             </div>
