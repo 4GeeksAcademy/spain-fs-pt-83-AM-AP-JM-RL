@@ -67,13 +67,13 @@ export const ProfileDetails = () => {
                                 </div>
                                 <p>¿Te gustaría puntuar a este creador?</p>
                                 <form onSubmit={handleSubmit}>
-                                    <input value={rate} onChange={(e) => setRate(e.target.value)} min={1} max={5} className="form-control w-75" type="number" placeholder="Puntuar"></input>
-                                    <input className="btn btn-success mt-1" value={'Confirmar'} type="submit"></input>
                                     {store.message && <div><p className="alert alert-success mt-1">{store.message}</p></div>}
                                     {store.error && <div><p className="alert alert-danger mt-1">{store.error}</p></div>}
                                     {error && <div><p className="alert alert-danger mt-1">{error}</p></div>}
-                                </form>
+                                    {!store.message && !store.error ? <><input value={rate} onChange={(e) => setRate(e.target.value)} min={1} max={5} className="form-control w-75" type="number" placeholder="Puntuar"></input>
+                                        <input className="btn btn-success mt-1" value={'Confirmar'} type="submit"></input></> : ''}
 
+                                </form>
                             </div>
                         </div>
                     </div>
