@@ -25,6 +25,16 @@ const injectContext = PassedComponent => {
 			state.actions.getEvents();
 		}, []);
 
+		useEffect(() => {
+			if (state.store.isAuthenticated) {
+				state.actions.getUserDetails()
+			}
+		}, [state.store.isAuthenticated, state.store.userDetails.updated_at])
+
+
+		useEffect(() => {
+			state.actions.clearMessages()
+		}, [state.store.message, state.store.error])
 
 		return (
 			<Context.Provider value={state}>

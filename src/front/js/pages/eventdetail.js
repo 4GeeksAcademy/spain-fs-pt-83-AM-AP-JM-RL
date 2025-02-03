@@ -8,17 +8,27 @@ import { Icon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import { ListGroup } from "react-bootstrap";
 
 export const EventDetail = () => {
 
 
   const { store, actions } = useContext(Context);
   const { id } = useParams();
+
   const [show, setShow] = useState(false)
+  const [showAddComment, setShowAddComment] = useState(false)
   const [inputValue, setInputValue] = useState('')
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const handleCloseAddComment = () => {
+    setShowAddComment(false)
+  };
+  const handleShowAddComment = () => {
+    setShow(false)
+    setShowAddComment(true)
+  };
 
   const event = store.events.find((ev) => ev.id === parseInt(id));
 
@@ -29,6 +39,11 @@ export const EventDetail = () => {
       actions.loadFavorites();
     }
   }, [store.favorites.length]);
+
+  useEffect(() => {
+    actions.getPostComments(id)
+  }, [id, show])
+
   if (!event) {
     return <p>Event not found or still loading...</p>;
   }
@@ -38,8 +53,8 @@ export const EventDetail = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    actions.addPost({ "content": inputValue }, event.id)
-    handleClose()
+    actions.addComment({ "content": inputValue }, event.id)
+    handleCloseAddComment()
     setInputValue('')
   }
 
@@ -148,7 +163,7 @@ export const EventDetail = () => {
             </div>
             <div>
               <Button variant="primary" onClick={handleShow}>
-                Comentar evento
+                Ver comentarios del evento
               </Button>
             </div>
           </div>
@@ -168,6 +183,22 @@ export const EventDetail = () => {
       </div>
 
       <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title><h2>Lista de comentarios del evento</h2></Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {store.comments?.map(post => (
+            <ListGroup>
+              <ListGroup.Item><p className="mb-2">{post.content}</p><small className="card-text">Escrito el {post.created_at} por {post.user_id}</small></ListGroup.Item>
+            </ListGroup>
+          ))}
+          <Button variant="primary" onClick={handleShowAddComment}>
+            Añadir comentario
+          </Button>
+        </Modal.Body>
+      </Modal>
+
+      <Modal show={showAddComment} onHide={handleCloseAddComment}>
         <Modal.Header closeButton>
           <Modal.Title><h2 className="text-center">Deja tu comentario</h2></Modal.Title>
         </Modal.Header>

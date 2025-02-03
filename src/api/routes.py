@@ -296,14 +296,14 @@ def get_user():
     user = User.query.filter_by(email=user_email).first()
     if not user:
         return jsonify({"error": "Usuario no encontrado."}), 404
-    return jsonify([user.serialize()]), 200
+    return jsonify(user.serialize()), 200
 @api.route('/event-creator-details/<int:event_id>')
 def get_event_creator_details(event_id):
     event = Event.query.get(event_id)
     user = User.query.filter_by(id=event.user_id).first()
     if not event:
         return jsonify({"error": "Evento no encontrado"}), 404
-    return jsonify([user.serialize()])
+    return jsonify(user.serialize())
 
 @api.route('/rating/<int:user_id>', methods=['POST'])
 @jwt_required()
@@ -359,3 +359,8 @@ def new_post(event_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": f"error de servidor, {e}"}), 500
+@api.route('/posts/<int:event_id>')
+def get_event_posts(event_id):
+    posts = Post.query.filter_by(event_id=event_id).all()
+    serialized_events = [events.serialize() for events in posts]
+    return jsonify(serialized_events)
