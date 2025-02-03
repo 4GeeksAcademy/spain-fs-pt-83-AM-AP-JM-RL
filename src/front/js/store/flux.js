@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
@@ -44,10 +46,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (response.ok) {
 						const data = await response.json();
 						console.log("User registered:", data);
+						toast.success('Registro completado!')
 						return true;
 					} else {
 						const errorData = await response.json();
 						console.error("Registration error:", errorData.msg);
+						toast.error('Ha ocurrido un error en el registro.')
 						return false;
 					}
 				} catch (error) {
@@ -69,22 +73,26 @@ const getState = ({ getStore, getActions, setStore }) => {
 						sessionStorage.setItem("access_token", data.token);
 						console.log("User logged in:", data);
 						setStore({ message: data.message, error: data.error, isAuthenticated: true })
+						toast.success("Inicio de sesión completado!")
 						return true;
 					} else {
 						const errorData = await response.json();
-						console.error("Login error:", errorData.msg);
+						console.error(errorData.error)
+						toast.error("Hubo un error en el inicio de sesión.")
 						return false;
 					}
 				} catch (error) {
 					console.error("Error during login:", error);
 					return false;
 				}
+
 			},
 
 			logout: () => {
 				sessionStorage.removeItem("access_token");
 				console.log("Session closed");
 				setStore({ message: 'Sesion cerrada correctamente', isAuthenticated: false })
+				toast.success('Cierre de sesión completado!')
 			},
 
 			getEvents: async () => {
