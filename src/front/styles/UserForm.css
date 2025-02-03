@@ -1,28 +1,45 @@
-.container {
-    background-color: #f9f9f9;
-}
-
-h2 {
-    color: #4a4a4a;
-    font-family: 'Arial', sans-serif;
-}
-
-.form-label {
-    color: #333333;
-    font-weight: bold;
-}
-
-.form-control {
-    border-radius: 0.25rem;
+.user-form-card {
+    background-color: #ffffff;
     border: 1px solid #ced4da;
 }
 
-.btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
+.user-form-card h2 {
+    font-family: 'Arial', sans-serif;
+    color: #343a40;
 }
 
-.btn-primary:hover {
-    background-color: #0056b3;
-    border-color: #004085;
+.user-form-card .form-group {
+    background-color: #f8f9fa;
+    border: none;
+    padding-bottom: 10px;
+}
+
+.user-form-card .form-control {
+    border-radius: 0.25rem;
+}
+
+.image-upload-wrapper {
+    cursor: pointer;
+}
+
+.placeholder-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.25rem;
+    border: 2px solid #6c757d;
+}
+
+.btn-outline-primary {
+    border-color: #007bff;
+    color: #007bff;
+}
+
+.btn-outline-primary:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
 }

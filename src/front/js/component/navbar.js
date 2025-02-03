@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 import Image from 'react-bootstrap/Image';
@@ -16,16 +16,12 @@ export const Navbar = ({ onLoginClick, onRegisterClick }) => {
 	const [showOffcanvas, setShowOffcanvas] = useState(false);
 	const [showLogoutModal, setShowLogoutModal] = useState(false);
 
-	useEffect(() => {
-		actions.getUserDetails()
-	}, []);
 
 	const handleLogout = () => {
 		actions.logout();
 		navigate("/");
 	};
 
-	const isAuthenticated = sessionStorage.getItem("access_token");
 
 	return (
 		<>
@@ -33,7 +29,7 @@ export const Navbar = ({ onLoginClick, onRegisterClick }) => {
 				<Link to="/" className="home"><FaHome size={24} color="black" /></Link>
 				<SearchBar />
 				<div className="ml-auto user-container">
-					{!isAuthenticated ? (
+					{!store.isAuthenticated ? (
 						<>
 							<button className="btn btn-primary" onClick={onLoginClick}>Login</button>
 							{onRegisterClick && (
@@ -42,9 +38,7 @@ export const Navbar = ({ onLoginClick, onRegisterClick }) => {
 						</>
 					) : (
 						<div className="user-profile">
-							{store.userDetails.map(user => (
-								<Image key={user.id} src={user.image} className="profile-image" roundedCircle />
-							))}
+							<Image src={store.userDetails.image} className="profile-image" roundedCircle />
 							<Button variant="light" className="settings-button" onClick={() => setShowOffcanvas(true)}>
 								<FaCog size={24} />
 							</Button>
@@ -79,11 +73,14 @@ export const Navbar = ({ onLoginClick, onRegisterClick }) => {
 						<Link to="/events-form" className="offcanvas-link" onClick={() => setShowOffcanvas(false)}>
 							<FaCalendarPlus className="offcanvas-icon" /> Crear Evento
 						</Link>
+						{store.message && <div><p className="alert alert-success">{store.message}</p></div>}
+						{store.error && <div><p className="alert alert-danger">{store.error}</p></div>}
 					</div>
 					<div className="offcanvas-footer">
 						<hr className="offcanvas-divider" />
 						<Button variant="danger" onClick={() => setShowLogoutModal(true)} className="offcanvas-logout">Cerrar Sesión</Button>
 					</div>
+
 				</Offcanvas.Body>
 			</Offcanvas>
 
