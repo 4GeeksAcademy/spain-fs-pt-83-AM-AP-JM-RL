@@ -4,14 +4,17 @@ import { Context } from "../store/appContext";
 import Image from 'react-bootstrap/Image';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 import { FaHome, FaCog, FaUser, FaCalendarPlus, FaSignOutAlt } from "react-icons/fa";
 import { SearchBar } from "./searchbar";
 import "../../styles/navbar.css";
+import "../../styles/modal.css";
 
 export const Navbar = ({ onLoginClick, onRegisterClick }) => {
 	const { store, actions } = useContext(Context);
 	const navigate = useNavigate();
 	const [showOffcanvas, setShowOffcanvas] = useState(false);
+	const [showLogoutModal, setShowLogoutModal] = useState(false);
 
 	useEffect(() => {
 		actions.getUserDetails()
@@ -79,10 +82,23 @@ export const Navbar = ({ onLoginClick, onRegisterClick }) => {
 					</div>
 					<div className="offcanvas-footer">
 						<hr className="offcanvas-divider" />
-						<Button variant="danger" onClick={handleLogout} className="offcanvas-logout">Cerrar Sesión</Button>
+						<Button variant="danger" onClick={() => setShowLogoutModal(true)} className="offcanvas-logout">Cerrar Sesión</Button>
 					</div>
 				</Offcanvas.Body>
 			</Offcanvas>
+
+			<Modal show={showLogoutModal} onHide={() => setShowLogoutModal(false)} centered>
+				<div className="modal-form">
+					<Modal.Body className="text-center">
+						<p>¿Deseas cerrar sesión?</p>
+					</Modal.Body>
+					<Modal.Footer className="justify-content-center">
+						<Button variant="secondary" onClick={() => setShowLogoutModal(false)}>Cancelar</Button>
+						<Button variant="danger" onClick={() => { handleLogout(); setShowOffcanvas(false); setShowLogoutModal(false) }}
+						>Cerrar Sesión</Button>
+					</Modal.Footer>
+				</div>
+			</Modal>
 		</>
 
 
