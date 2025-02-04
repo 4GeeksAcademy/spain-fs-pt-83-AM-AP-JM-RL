@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 import Image from 'react-bootstrap/Image';
@@ -57,7 +57,7 @@ export const Navbar = ({ onLoginClick, onRegisterClick }) => {
 						<Link to="/user-details" className="offcanvas-link" onClick={() => setShowOffcanvas(false)}>
 							<FaUser className="offcanvas-icon" /> Mi Perfil
 						</Link>
-						<Link to="/events-form" className="offcanvas-link" onClick={() => setShowOffcanvas(false)}>
+						<Link to="/events-form" className="offcanvas-link" onClick={() => { setShowOffcanvas(false) }}>
 							<FaCalendarPlus className="offcanvas-icon" /> Crear Evento
 						</Link>
 						{store.message && <div><p className="alert alert-success">{store.message}</p></div>}

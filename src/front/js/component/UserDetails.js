@@ -35,5 +35,6 @@ export const UserDetails = () => {
             </ul>
             <Link to="/user-form" className="btn btn-primary mt-4 w-100">Editar</Link>
         </div>
+
     );
 };

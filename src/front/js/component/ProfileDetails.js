@@ -24,17 +24,23 @@ export const ProfileDetails = () => {
         const formData = {
             rate
         }
-
-        if (userId) {
-            await actions.addRating(formData, userId);
-            setRate('')
-        }
         if (!sessionStorage.getItem('access_token')) {
             setError('Debes iniciar sesión primero')
             setTimeout(() => {
                 setError('')
             }, 1500);
         }
+        if (rate === '') {
+            setError('El valor no puede estar vacío')
+            setTimeout(() => {
+                setError('')
+            }, 1500);
+        }
+        if (userId && rate != '') {
+            await actions.addRating(formData, userId);
+            setRate('')
+        }
+
     };
 
 

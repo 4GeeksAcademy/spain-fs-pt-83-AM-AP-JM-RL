@@ -171,7 +171,7 @@ export const EventDetail = () => {
             <ListGroup key={post.id}>
               <ListGroup.Item>
                 <p className="mb-2">{post.content}</p>
-                <small className="card-text">Escrito el {post.created_at} por {post.user_id}</small>
+                <small className="card-text">Escrito el {post.created_at} por {post.poster}</small>
               </ListGroup.Item>
             </ListGroup>
           ))}

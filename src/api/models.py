@@ -124,5 +124,6 @@ class Post(db.Model):
             "content": self.content,
             "created_at": self.created_at.strftime('%d-%m-%Y'),
             "user_id": self.user_id,
-            "event_id": self.event_id
+            "event_id": self.event_id,
+            "poster": self.posts.first_name
         }

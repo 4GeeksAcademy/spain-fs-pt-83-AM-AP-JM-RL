@@ -172,10 +172,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 					if (response.ok) {
 						const data = await response.json();
-						setStore({ userDetails: data });
+						setStore({ userDetails: data.user, message: data.message });
 					} else {
 						const errorData = await response.json();
-						console.error("Error updating user:", errorData.message);
+						setStore({ error: errorData.error })
 					}
 				} catch (error) {
 					console.error("Error updating user:", error);

@@ -17,7 +17,7 @@ export const EventsForm = () => {
     const [type, setType] = useState('')
     const [error, setError] = useState('')
 
-    const client = filestack.init('AVQNdAjjIRHW0xnKKEipvz') 
+    const client = filestack.init('AVQNdAjjIRHW0xnKKEipvz')
 
     const handleUploadImage = () => {
         const options = {
@@ -68,8 +68,8 @@ export const EventsForm = () => {
     return (
         <div className="container text-center mt-5">
             <h1 className="fs-1 text-center mb-4 fw-bold text-decoration-underline">Crear Evento</h1>
-            <form onSubmit={handleSubmit} className="row row-cols g-3 align-items-center">
-                <div className="col-md-6 text-center">
+            <form onSubmit={handleSubmit} className="row row-cols g-3 align-items-center d-flex justify-content-center">
+                <div className="col-lg-4 text-center">
                     <div className="mb-3">
                         <label htmlFor="titulo" className="form-label">Título</label>
                         <input onChange={(e) => setTitle(e.target.value)} value={title} type="text" className="form-control" id="titulo" placeholder="Título" required />
@@ -99,8 +99,8 @@ export const EventsForm = () => {
                     </div>
                     <div className="mb-3">
                         <label htmlFor="ubicacion" className="form-label">Ubicación</label>
-                        <select required value={location} onChange={(e) => setLocation(e.target.value)} className="form-select" aria-label="Default select example"> 
-                        <option value={''} disabled>¿Donde es el evento?</option>
+                        <select required value={location} onChange={(e) => setLocation(e.target.value)} className="form-select" aria-label="Default select example">
+                            <option value={''} disabled>¿Donde es el evento?</option>
                             <option value="barcelona">Barcelona</option>
                             <option value="madrid">Madrid</option>
                             <option value="sevilla">Sevilla</option>
@@ -112,7 +112,7 @@ export const EventsForm = () => {
                         <textarea value={description} onChange={(e) => setDescription(e.target.value)} className="form-control" id="description" rows="3" placeholder="Descripción" required></textarea>
                     </div>
                 </div>
-                <div className="col-md-6">
+                <div className="col-lg-4">
                     <div onClick={handleUploadImage} className="image-upload-wrapper border rounded p-3">
                         <img src="https://via.placeholder.com/300" alt="Añadir foto" className="placeholder-image img-fluid mb-3" />
                     </div>
