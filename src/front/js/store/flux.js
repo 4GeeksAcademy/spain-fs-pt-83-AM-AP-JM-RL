@@ -385,7 +385,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 							"Content-Type": "application/json",
 							"Authorization": "Bearer " + token
 						}
-					}); 
+					});
 
 					if (response.ok) {
 						const data = await response.json();
@@ -398,7 +398,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 				} catch (e) {
 					console.error("Error al cancelar el registro:", e);
-					setStore({ error: "Error de servidor al cancelar el registro"});
+					setStore({ error: "Error de servidor al cancelar el registro" });
 				}
 			},
 
@@ -408,7 +408,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 					if (response.ok) {
 						const data = await response.json();
-						setStore({ eventRegistrarions: data.registrations});
+						setStore({ eventRegistrarions: data.registrations });
 					} else {
 						const errorData = await response.json();
 						console.error("Error en mostrar registros", errorData.error);
