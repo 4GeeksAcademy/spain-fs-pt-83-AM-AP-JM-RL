@@ -57,7 +57,6 @@ export const ProfileDetails = () => {
                                 style={{ objectFit: 'cover', width: '230px', height: '230px' }}
                             />
                         </div>
-
                         <div className="col-md-6">
                             <div className="card-body">
                                 <h5 className="card-title text-center">{store.eventCreatorData.first_name} {store.eventCreatorData.last_name}</h5>

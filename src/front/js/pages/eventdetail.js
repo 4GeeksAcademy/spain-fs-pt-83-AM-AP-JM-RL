@@ -18,11 +18,7 @@ export const EventDetail = () => {
   const [showAddComment, setShowAddComment] = useState(false);
   const [inputValue, setInputValue] = useState('');
 
-  useEffect(() => {
-    if (store.favorites.length === 0) {
-      actions.loadFavorites();
-    }
-  }, [store.favorites.length]);
+
 
   useEffect(() => {
     actions.getPostComments(id);

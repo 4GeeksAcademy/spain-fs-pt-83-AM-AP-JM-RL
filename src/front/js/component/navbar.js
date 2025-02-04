@@ -88,7 +88,6 @@ export const Navbar = ({ onLoginClick, onRegisterClick }) => {
 				theme="colored"
 				transition={Slide}
 				position="top-center"
-				icon={'🚀'}
 			/>
 		</>
 	);
