@@ -18,7 +18,9 @@ export const EventDetail = () => {
 
   const [show, setShow] = useState(false)
   const [showAddComment, setShowAddComment] = useState(false)
+  const [showRegistrations, setShowRegistrations] = useState(false);
   const [inputValue, setInputValue] = useState('')
+  const [isRegistered, setIsRegistered] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -38,24 +40,45 @@ export const EventDetail = () => {
     if (store.favorites.length === 0) {
       actions.loadFavorites();
     }
-  }, [store.favorites.length]);
+    actions.getEventRegistrations(id);
+  }, [store.favorites.length, id]);
 
   useEffect(() => {
     actions.getPostComments(id)
-  }, [id, show])
+  }, [id, show]);
+
+  useEffect(() => {
+    if (store.eventRegistrarions && store.userDetails) {
+      const isUserRegistered = store.eventRegistrarions.some((reg) => reg.user_id === store.userDetails.id);
+      setIsRegistered(isUserRegistered);
+    } 
+  }, [store.eventRegistrarions, store.userDetails]);
 
   if (!event) {
     return <p>Event not found or still loading...</p>;
   }
-
-
-
 
   const handleSubmit = (e) => {
     e.preventDefault()
     actions.addComment({ "content": inputValue }, event.id)
     handleCloseAddComment()
     setInputValue('')
+  }
+
+  const handleRegister = async () => {
+    const success = await actions.registerToEvent(id);
+    if (success) {
+      setIsRegistered(true);
+      actions.getEventRegistrations(id);
+    }
+  }
+
+  const handleCandelRegister = async () => {
+    const success = await actions.cancelRegisterFromEvent(id);
+    if (success) {
+      setIsRegistered(false);
+      actions.getEventRegistrations(id);
+    }
   }
 
   const citiesCoordinates = {
@@ -159,7 +182,16 @@ export const EventDetail = () => {
               )}
             </div>
             <div className="mt-3">
-
+              {store.isAuthenticated ? (
+                isRegistered ? (
+                  <Button variant="danger" onClick={handleCandelRegister}>Cancelar registro</Button> 
+                ) : (
+                  <Button variant="success" onClick={handleRegister}>Registrarse al evento</Button>
+                )
+              ): (
+                <p>Inicia sesion para registrarse en este evento</p>
+              )}
+              <Button variant="info" onClick={() => setShowRegistrations(true)} className="ms-2">Ver registrados</Button>
             </div>
             <div>
               <Button variant="primary" onClick={handleShow}>
@@ -208,6 +240,22 @@ export const EventDetail = () => {
         </form><Button variant="secondary" onClick={handleClose}>
             Cerrar
           </Button></Modal.Body>
+      </Modal>
+
+      <Modal show={showRegistrations} onHide={() => setShowRegistrations(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title><h2>Usuarios registrados</h2></Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+          {store.eventRegistrations?.map(reg => (
+            <ListGroup key={reg.id}>
+              <ListGroup.Item>
+                <p>Usuario: {reg.user_id}</p>
+                <small>Registrado el {reg.created_at}</small>
+              </ListGroup.Item>
+            </ListGroup>
+          ))}
+        </Modal.Body>
       </Modal>
 
     </>
