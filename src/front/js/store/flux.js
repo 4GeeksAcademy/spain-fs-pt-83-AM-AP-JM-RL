@@ -10,7 +10,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			filteredEvents: [],
 			message: null,
 			error: null,
-			comments: []
+			comments: [],
+			eventRegistrarions: []
 		},
 		actions: {
 			searchEvents: async (formData) => {
@@ -337,8 +338,78 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setTimeout(() => {
 					setStore({ error: null, message: null })
 				}, 1500);
-			}
+			},
 
+			registerToEvent: async (event_id) => {
+				const token = sessionStorage.getItem("access_token");
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/events/${event_id}/register`, {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": "Bearer " + token
+						}
+					});
+
+					if (response.ok) {
+						const data = await response.json();
+						setStore({ message: data.message });
+						console.log("registro ok")
+						return true;
+					} else {
+						const errorData = await response.json();
+						setStore({ error: errorData.error });
+						console.log("registro fallido")
+						return false;
+					}
+				} catch (e) {
+					console.error("Error registro en evento:", e);
+					setStore({ error: "Error al registrarse en evento" });
+					return false;
+				}
+			},
+
+			cancelRegisterFromEvent: async (event_id) => {
+				const token = sessionStorage.getItem("access_token");
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/events/${event_id}/cancelregister`, {
+						method: "DELETE",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": "Bearer " + token
+						}
+					}); 
+
+					if (response.ok) {
+						const data = await response.json();
+						setStore({ message: data.message });
+						return true;
+					} else {
+						const errorData = await response.json();
+						setStore({ error: errorData.error });
+						return false;
+					}
+				} catch (e) {
+					console.error("Error al cancelar el registro:", e);
+					setStore({ error: "Error de servidor al cancelar el registro"});
+				}
+			},
+
+			getEventRegistrations: async (event_id) => {
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/events/${event_id}/registrations`);
+
+					if (response.ok) {
+						const data = await response.json();
+						setStore({ eventRegistrarions: data.registrations});
+					} else {
+						const errorData = await response.json();
+						console.error("Error en mostrar registros", errorData.error);
+					}
+				} catch (e) {
+					console.error("Error al mostrar registro", e);
+				}
+			}
 
 		},
 	};
