@@ -32,6 +32,10 @@ const injectContext = PassedComponent => {
 		}, [state.store.isAuthenticated, state.store.userDetails.updated_at])
 
 		useEffect(() => {
+			state.actions.getEvents();
+		}, [state.store.events.length]);
+
+		useEffect(() => {
 			state.actions.loadFavorites();
 		}, [state.store.favorites.length]);
 

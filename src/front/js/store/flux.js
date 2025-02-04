@@ -96,20 +96,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			getEvents: async () => {
-				const store = getStore();
-				if (store.events.length === 0) {
-					try {
-						const response = await fetch(`${process.env.BACKEND_URL}/api/events`);
-						if (response.ok) {
-							const data = await response.json();
-							setStore({ events: data, filteredEvents: data });
-						} else {
-							console.error("Error fetching events");
-						}
-					} catch (error) {
-						console.error("Error fetching events:", error);
+
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/events`);
+					if (response.ok) {
+						const data = await response.json();
+						setStore({ events: data, filteredEvents: data });
+					} else {
+						console.error("Error fetching events");
 					}
+				} catch (error) {
+					console.error("Error fetching events:", error);
 				}
+
 			},
 			createEvent: async (eventData) => {
 				const token = sessionStorage.getItem("access_token");
