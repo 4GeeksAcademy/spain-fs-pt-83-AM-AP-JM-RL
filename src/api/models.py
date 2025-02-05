@@ -59,7 +59,7 @@ class Event(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     favorites = db.relationship('Favorite', backref='event', lazy=True)
     posts = db.relationship('Post', backref='event', foreign_keys='Post.event_id')
-    registration = db.relationship('EventRegistration', backref='event', lazy=True)
+    registrations = db.relationship('EventRegistration', backref='event', lazy=True, foreign_keys='EventRegistration.event_id')
 
     def __repr__(self):
         return f'<Event {self.title}>'
@@ -93,8 +93,13 @@ class EventRegistration(db.Model):
         return {
             "id": self.id,
             "user_id": self.user_id,
-            "event_id": self.user_id,
-            "created_at": self.created_at.strftime('%d-%m-%Y')
+            "event_id": self.event_id,
+            "created_at": self.created_at.strftime('%d-%m-%Y %H:%M:%S'),
+            "user": {
+                "id": self.user.id,
+                "first_name": self.user.first_name,
+                "last_name": self.user.last_name,
+            }
         }
     
 class Favorite(db.Model):
