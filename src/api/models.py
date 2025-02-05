@@ -59,7 +59,7 @@ class Event(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     favorites = db.relationship('Favorite', backref='event', lazy=True)
     posts = db.relationship('Post', backref='event', foreign_keys='Post.event_id')
-    registration = db.relationship('EventRegistration', backref='event', lazy=True)
+    registrations = db.relationship('EventRegistration', backref='event', lazy=True, foreign_keys='EventRegistration.event_id')
 
     def __repr__(self):
         return f'<Event {self.title}>'
@@ -82,19 +82,24 @@ class Event(db.Model):
     
 class EventRegistration(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False) 
-    event_id = db.Column(db.Integer, db.ForeignKey('event.id'), nullable=False)  
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    event_id = db.Column(db.Integer, db.ForeignKey('event.id'), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
 
-    def __rep__(self):
+    def __repr__(self):
         return f'<EventRegistration {self.user_id} - {self.event_id}>'
-    
+
     def serialize(self):
         return {
             "id": self.id,
             "user_id": self.user_id,
-            "event_id": self.user_id,
-            "created_at": self.created_at.strftime('%d-%m-%Y')
+            "event_id": self.event_id,
+            "created_at": self.created_at.strftime('%d-%m-%Y %H:%M:%S'),
+            "user": {
+                "id": self.user.id,
+                "first_name": self.user.first_name,
+                "last_name": self.user.last_name,
+            }
         }
     
 class Favorite(db.Model):
@@ -144,5 +149,5 @@ class Post(db.Model):
             "created_at": self.created_at.strftime('%d-%m-%Y'),
             "user_id": self.user_id,
             "event_id": self.event_id,
-            "poster": self.posts.first_name
+            "poster": f"{self.posts.first_name} {self.posts.last_name}"
         }

@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint, current_app
-from api.models import db, User, Event, Favorite, Rating, Post
+from api.models import EventRegistration, db, User, Event, Favorite, Rating, Post
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 import re
@@ -224,6 +224,61 @@ def delete_favorite(id):
         db.session.delete(favorite)
         db.session.commit()
         return jsonify({"message": "Favorito eliminado satisfactoriamente."}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": "Error de servidor.", "detalles": str(e)}), 500
+    
+@api.route('/events/<int:event_id>/register', methods=['POST'])
+@jwt_required()
+def register_to_event(event_id):
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).first()
+    if not user:
+        return jsonify({"error": "Usuario no encontrado o no autenticado."}), 401
+
+    event = Event.query.get(event_id)
+    if not event:
+        return jsonify({"error": "Evento no encontrado."}), 404
+
+    exist_registration = EventRegistration.query.filter_by(user_id=user.id, event_id=event.id).first()
+    if exist_registration:
+        return jsonify({"error": "Ya estás registrado en este evento."}), 400
+
+    new_registration = EventRegistration(user_id=user.id, event_id=event.id)
+    try:
+        db.session.add(new_registration)
+        db.session.commit()
+        return jsonify({"message": "Te has registrado en el evento correctamente."}), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": "Error de servidor.", "detalles": str(e)}), 500
+    
+@api.route('/events/<int:event_id>/registrations', methods=['GET'])
+def get_event_registrations(event_id):
+    event = Event.query.get(event_id)
+    if not event:
+        return jsonify({"error": "Evento no encontrado."}), 404
+
+    registrations = EventRegistration.query.filter_by(event_id=event.id).all()
+    registrations_list = [reg.serialize() for reg in registrations]
+    return jsonify({"registrations": registrations_list}), 200
+
+@api.route('/events/<int:event_id>/cancelregister', methods=['DELETE'])
+@jwt_required()
+def unregister_from_event(event_id):
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).first()
+    if not user:
+        return jsonify({"error": "Usuario no encontrado o no autenticado."}), 401
+
+    registration = EventRegistration.query.filter_by(user_id=user.id, event_id=event_id).first()
+    if not registration:
+        return jsonify({"error": "No estás registrado en este evento."}), 404
+
+    try:
+        db.session.delete(registration)
+        db.session.commit()
+        return jsonify({"message": "Has cancelado tu registro en el evento correctamente."}), 200
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": "Error de servidor.", "detalles": str(e)}), 500

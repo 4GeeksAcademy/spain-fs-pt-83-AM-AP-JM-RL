@@ -44,9 +44,7 @@ export const UserForm = () => {
         e.preventDefault();
         await actions.updateUser(formData);
         if (!store.error) {
-            setTimeout(() => {
-                navigate("/user-details");
-            }, 1500);
+            navigate("/user-details");
         }
     };
 
@@ -55,14 +53,14 @@ export const UserForm = () => {
             <div className="container user-form-card mt-5 p-4 rounded">
                 <BackButton />
                 <form onSubmit={handleSubmit}>
-                    {!store.message ? <h2 className="text-center mb-4">Formulario de Usuario</h2> : <><div className="w-100"><div className="w-50 m-auto text-center alert alert-success">{store.message}</div></div></>}
+                    <h2 className="text-center mb-4">Formulario de Usuario</h2>
                     <div className="form-group mb-3">
                         <label htmlFor="inputEmail" className="form-label">Email</label>
                         <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" className="form-control" id="inputEmail" placeholder="Introduce tu email" />
                     </div>
                     <div className="form-group mb-3">
-                        {!store.error ? <><label htmlFor="inputPassword" className="form-label">Contraseña</label>
-                            <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" className="form-control" id="inputPassword" placeholder="Introduce tu contraseña actual" required /></> : <div className="w-100"><div className="w-50 m-auto text-center alert alert-danger">{store.error}</div></div>}
+                        <label htmlFor="inputPassword" className="form-label">Contraseña</label>
+                        <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" className="form-control" id="inputPassword" placeholder="Introduce tu contraseña actual" required />
                     </div>
                     <div className="form-group mb-3">
                         <label htmlFor="inputFirstName" className="form-label">Nombre</label>

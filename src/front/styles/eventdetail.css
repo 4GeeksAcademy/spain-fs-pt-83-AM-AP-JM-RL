@@ -21,3 +21,21 @@
     height: 300px;
     width: 100%;
 }
+
+.comments-container,
+.registrations-container {
+    display: flex;
+    overflow-x: auto;
+    padding: 10px 0;
+}
+
+.comment-card,
+.registration-card {
+    flex: 0 0 auto;
+    width: 300px;
+    margin-right: 10px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

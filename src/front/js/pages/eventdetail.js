@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "../../styles/eventdetail.css";
 import { Link } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
@@ -9,6 +9,7 @@ import 'leaflet/dist/leaflet.css';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { ListGroup } from "react-bootstrap";
+import { toast } from "react-toastify";
 
 export const EventDetail = () => {
   const { store, actions } = useContext(Context);
@@ -19,6 +20,7 @@ export const EventDetail = () => {
   const [showRegistrations, setShowRegistrations] = useState(false);
   const [inputValue, setInputValue] = useState('')
   const [isRegistered, setIsRegistered] = useState(false);
+  const navigate = useNavigate()
 
 
 
@@ -31,11 +33,11 @@ export const EventDetail = () => {
   }, [id, show]);
 
   useEffect(() => {
-    if (store.eventRegistrarions && store.userDetails) {
-      const isUserRegistered = store.eventRegistrarions.some((reg) => reg.user_id === store.userDetails.id);
+    if (store.eventRegistrations && store.userDetails) {
+      const isUserRegistered = store.eventRegistrations.some((reg) => reg.user_id === store.userDetails.id);
       setIsRegistered(isUserRegistered);
-    }
-  }, [store.eventRegistrarions, store.userDetails]);
+    } 
+  }, [store.eventRegistrations, store.userDetails]);
 
   if (!event) {
     return <p>Event not found or still loading...</p>;
@@ -45,8 +47,16 @@ export const EventDetail = () => {
   const handleShow = () => setShow(true);
   const handleCloseAddComment = () => setShowAddComment(false);
   const handleShowAddComment = () => {
-    setShow(false);
-    setShowAddComment(true);
+    if (store.userDetails.first_name && store.userDetails.last_name) {
+      setShow(false);
+      setShowAddComment(true);
+    } else {
+      toast.error("Debes tener actualizado tu nombre y apellido para poder comentar")
+      setTimeout(() => {
+        navigate("/user-form")
+      }, 1000);
+    }
+
   };
 
   const handleSubmit = e => {
@@ -57,6 +67,14 @@ export const EventDetail = () => {
   };
 
   const handleRegister = async () => {
+    if (!store.userDetails.first_name || !store.userDetails.last_name) {
+      toast.error("Debes actualizar tu nombre y apellido para registrarte en el evento")
+      setTimeout(() => {
+        navigate("/user-form");
+      }, 1000);
+      return;
+    }
+    
     const success = await actions.registerToEvent(id);
     if (success) {
       setIsRegistered(true);
@@ -169,7 +187,9 @@ export const EventDetail = () => {
             </div>
             <div className="mt-3">
               {store.isAuthenticated ? (
-                isRegistered ? (
+                event.user_id === store.userDetails.id ? (
+                  <p className="text-danger">Eres el creador del evento y no puedes registrarte</p>
+                ) : isRegistered ? (
                   <Button variant="danger" onClick={handleCandelRegister}>Cancelar registro</Button>
                 ) : (
                   <Button variant="success" onClick={handleRegister}>Registrarse al evento</Button>
@@ -177,7 +197,7 @@ export const EventDetail = () => {
               ) : (
                 <p>Inicia sesion para registrarse en este evento</p>
               )}
-              <Button variant="info" onClick={() => setShowRegistrations(true)} className="ms-2">Ver registrados</Button>
+              <Button variant="info" onClick={() => setShowRegistrations(true)}>Ver registrados</Button>
             </div>
             <div>
               <Button variant="primary" onClick={handleShow}>
@@ -228,7 +248,7 @@ export const EventDetail = () => {
             <textarea className="form-control" value={inputValue} onChange={e => setInputValue(e.target.value)}></textarea>
             <button className="btn btn-success" type="submit">Enviar</button>
           </form>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={handleCloseAddComment}>
             Cerrar
           </Button>
         </Modal.Body>
@@ -242,7 +262,7 @@ export const EventDetail = () => {
           {store.eventRegistrations?.map(reg => (
             <ListGroup key={reg.id}>
               <ListGroup.Item>
-                <p>Usuario: {reg.user_id}</p>
+                <p className="mb-0">{reg.user.first_name} {reg.user.last_name}</p>
                 <small>Registrado el {reg.created_at}</small>
               </ListGroup.Item>
             </ListGroup>
