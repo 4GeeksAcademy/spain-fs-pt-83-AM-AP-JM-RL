@@ -67,6 +67,14 @@ export const EventDetail = () => {
   };
 
   const handleRegister = async () => {
+    if (!store.userDetails.first_name || !store.userDetails.last_name) {
+      toast.error("Debes actualizar tu nombre y apellido para registrarte en el evento")
+      setTimeout(() => {
+        navigate("/user-form");
+      }, 1000);
+      return;
+    }
+    
     const success = await actions.registerToEvent(id);
     if (success) {
       setIsRegistered(true);
@@ -179,7 +187,9 @@ export const EventDetail = () => {
             </div>
             <div className="mt-3">
               {store.isAuthenticated ? (
-                isRegistered ? (
+                event.user_id === store.userDetails.id ? (
+                  <p className="text-danger">Eres el creador del evento y no puedes registrarte</p>
+                ) : isRegistered ? (
                   <Button variant="danger" onClick={handleCandelRegister}>Cancelar registro</Button>
                 ) : (
                   <Button variant="success" onClick={handleRegister}>Registrarse al evento</Button>
@@ -252,7 +262,7 @@ export const EventDetail = () => {
           {store.eventRegistrations?.map(reg => (
             <ListGroup key={reg.id}>
               <ListGroup.Item>
-                <p>Usuario: {reg.user_id}</p>
+                <p className="mb-0">{reg.user.first_name} {reg.user.last_name}</p>
                 <small>Registrado el {reg.created_at}</small>
               </ListGroup.Item>
             </ListGroup>
