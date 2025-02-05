@@ -14,10 +14,6 @@ export const ProfileDetails = () => {
     }, [event_id, rate]);
 
 
-
-
-
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         const userId = store.eventCreatorData.id
