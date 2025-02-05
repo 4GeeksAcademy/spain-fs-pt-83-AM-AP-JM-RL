@@ -36,7 +36,7 @@ export const EventDetail = () => {
     if (store.eventRegistrations && store.userDetails) {
       const isUserRegistered = store.eventRegistrations.some((reg) => reg.user_id === store.userDetails.id);
       setIsRegistered(isUserRegistered);
-    } 
+    }
   }, [store.eventRegistrations, store.userDetails]);
 
   if (!event) {
@@ -73,6 +73,7 @@ export const EventDetail = () => {
       actions.getEventRegistrations(id);
     }
   }
+
 
   const handleCandelRegister = async () => {
     const success = await actions.cancelRegisterFromEvent(id);

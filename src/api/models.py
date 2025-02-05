@@ -59,7 +59,7 @@ class Event(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     favorites = db.relationship('Favorite', backref='event', lazy=True)
     posts = db.relationship('Post', backref='event', foreign_keys='Post.event_id')
-    registrations = db.relationship('EventRegistration', backref='event', lazy=True)
+    registration = db.relationship('EventRegistration', backref='event', lazy=True)
 
     def __repr__(self):
         return f'<Event {self.title}>'
@@ -82,19 +82,19 @@ class Event(db.Model):
     
 class EventRegistration(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    event_id = db.Column(db.Integer, db.ForeignKey('event.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False) 
+    event_id = db.Column(db.Integer, db.ForeignKey('event.id'), nullable=False)  
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
 
-    def __repr__(self):
+    def __rep__(self):
         return f'<EventRegistration {self.user_id} - {self.event_id}>'
-
+    
     def serialize(self):
         return {
             "id": self.id,
             "user_id": self.user_id,
-            "event_id": self.event_id,
-            "created_at": self.created_at.strftime('%d-%m-%Y %H:%M:%S')
+            "event_id": self.user_id,
+            "created_at": self.created_at.strftime('%d-%m-%Y')
         }
     
 class Favorite(db.Model):

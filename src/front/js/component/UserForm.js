@@ -4,6 +4,8 @@ import "../../styles/UserForm.css";
 import { useNavigate } from "react-router-dom";
 import * as filestack from "filestack-js";
 import { BackButton } from "./BackButton";
+import { Link } from "react-router-dom";
+import { Button, Modal } from "react-bootstrap";
 
 export const UserForm = () => {
     const [email, setEmail] = useState("");
@@ -15,6 +17,11 @@ export const UserForm = () => {
     const [location, setLocation] = useState("");
     const [image, setImage] = useState("");
     const navigate = useNavigate();
+    const [showPasswordChange, setShowPasswordChange] = useState(false)
+
+    const handleShowPasswordChange = () => setShowPasswordChange(true)
+
+    const handleClosePasswordChange = () => setShowPasswordChange(false)
 
     const { store, actions } = useContext(Context);
 
@@ -29,6 +36,8 @@ export const UserForm = () => {
         };
         client.picker(options).open();
     };
+
+
 
     const handleSubmit = async (e) => {
         const formData = {
@@ -89,8 +98,14 @@ export const UserForm = () => {
                         </div>
                     </div>
                     <button type="submit" className="btn btn-success w-100">Guardar</button>
+                    <Button variant="primary" onClick={handleShowPasswordChange}>
+                        Cambiar contraseña
+                    </Button>
                 </form>
-            </div>
+            </div >
+            <Modal show={showPasswordChange} onHide={handleClosePasswordChange}>
+                <Modal.Header closeButton>Cambiar Contraseña</Modal.Header>
+            </Modal>
         </>
     );
 };
