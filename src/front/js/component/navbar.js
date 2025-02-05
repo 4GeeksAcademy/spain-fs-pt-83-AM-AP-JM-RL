@@ -57,9 +57,10 @@ export const Navbar = ({ onLoginClick, onRegisterClick }) => {
 						<Link to="/user-details" className="offcanvas-link" onClick={() => setShowOffcanvas(false)}>
 							<FaUser className="offcanvas-icon" /> Mi Perfil
 						</Link>
-						<Link to="/events-form" className="offcanvas-link" onClick={() => { setShowOffcanvas(false) }}>
+						{!store.userDetails.first_name || !store.userDetails.last_name ? <><p className="text-danger text-center">Para poder crear un evento necesitas rellenar tu nombre y apellidos en el perfil</p></> : <Link to="/events-form" className="offcanvas-link" onClick={() => { setShowOffcanvas(false) }}>
 							<FaCalendarPlus className="offcanvas-icon" /> Crear Evento
-						</Link>
+						</Link>}
+
 						{store.message && <div><p className="alert alert-success">{store.message}</p></div>}
 						{store.error && <div><p className="alert alert-danger">{store.error}</p></div>}
 					</div>

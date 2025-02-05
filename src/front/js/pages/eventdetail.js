@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "../../styles/eventdetail.css";
 import { Link } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
@@ -20,6 +20,7 @@ export const EventDetail = () => {
   const [showRegistrations, setShowRegistrations] = useState(false);
   const [inputValue, setInputValue] = useState('')
   const [isRegistered, setIsRegistered] = useState(false);
+  const navigate = useNavigate()
 
 
 
@@ -46,11 +47,16 @@ export const EventDetail = () => {
   const handleShow = () => setShow(true);
   const handleCloseAddComment = () => setShowAddComment(false);
   const handleShowAddComment = () => {
-    if (!store.userDetails.first_name || !store.userDetails.last_name) {
+    if (store.userDetails.first_name && store.userDetails.last_name) {
+      setShow(false);
+      setShowAddComment(true);
+    } else {
       toast.error("Debes tener actualizado tu nombre y apellido para poder comentar")
+      setTimeout(() => {
+        navigate("/user-form")
+      }, 1000);
     }
-    setShow(false);
-    setShowAddComment(true);
+
   };
 
   const handleSubmit = e => {
