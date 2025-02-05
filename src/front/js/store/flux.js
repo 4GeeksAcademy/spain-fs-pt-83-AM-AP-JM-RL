@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
@@ -45,10 +47,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (response.ok) {
 						const data = await response.json();
 						console.log("User registered:", data);
+						toast.success('Registro completado!')
 						return true;
 					} else {
 						const errorData = await response.json();
 						console.error("Registration error:", errorData.msg);
+						toast.error('Ha ocurrido un error en el registro.')
 						return false;
 					}
 				} catch (error) {
@@ -68,41 +72,43 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (response.ok) {
 						const data = await response.json();
 						sessionStorage.setItem("access_token", data.token);
-						console.log("User logged in:", data);
 						setStore({ message: data.message, error: data.error, isAuthenticated: true })
+						toast.success("Inicio de sesión completado!")
 						return true;
 					} else {
 						const errorData = await response.json();
-						console.error("Login error:", errorData.msg);
+						console.error(errorData.error)
+						toast.error("Hubo un error en el inicio de sesión.")
 						return false;
 					}
 				} catch (error) {
 					console.error("Error during login:", error);
 					return false;
 				}
+
 			},
 
 			logout: () => {
 				sessionStorage.removeItem("access_token");
 				console.log("Session closed");
 				setStore({ message: 'Sesion cerrada correctamente', isAuthenticated: false })
+				toast.success('Cierre de sesión completado!')
 			},
 
 			getEvents: async () => {
-				const store = getStore();
-				if (store.events.length === 0) {
-					try {
-						const response = await fetch(`${process.env.BACKEND_URL}/api/events`);
-						if (response.ok) {
-							const data = await response.json();
-							setStore({ events: data, filteredEvents: data });
-						} else {
-							console.error("Error fetching events");
-						}
-					} catch (error) {
-						console.error("Error fetching events:", error);
+
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/events`);
+					if (response.ok) {
+						const data = await response.json();
+						setStore({ events: data, filteredEvents: data });
+					} else {
+						console.error("Error fetching events");
 					}
+				} catch (error) {
+					console.error("Error fetching events:", error);
 				}
+
 			},
 			createEvent: async (eventData) => {
 				const token = sessionStorage.getItem("access_token");
@@ -119,9 +125,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (response.ok) {
 						const data = await response.json();
 						const store = getStore();
+						toast.success(data.message)
 						setStore({ events: [...store.events, data] });
 					} else {
 						const errorData = await response.json();
+						toast.error(errorData.error)
 						console.error("Error creating event:", errorData.message);
 					}
 				} catch (error) {
@@ -166,10 +174,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 					if (response.ok) {
 						const data = await response.json();
-						setStore({ userDetails: data });
+						toast.success(data.message)
+						setStore({ userDetails: data.user, message: data.message });
 					} else {
 						const errorData = await response.json();
-						console.error("Error updating user:", errorData.message);
+						toast.error(errorData.error)
+						setStore({ error: errorData.error })
 					}
 				} catch (error) {
 					console.error("Error updating user:", error);
@@ -186,16 +196,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 							Authorization: `Bearer ${token}`
 						},
 					});
-
+					const data = await response.json()
 					if (response.ok) {
-						console.log("Favorite added successfully!");
 						const store = getStore();
 						const newFavorites = [...store.favorites, { event_id }];
+						toast.success(data.message)
 						setStore({ favorites: newFavorites });
-						console.log("Updated store favorites:", newFavorites);
 					} else {
-						const errorData = await response.json();
-						console.error("Error adding favorite:", errorData.error);
+						toast.error(data.error)
 					}
 				} catch (error) {
 					console.error("Error adding favorite:", error);
@@ -214,23 +222,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 							Authorization: `Bearer ${token}`
 						},
 					});
-
+					const data = await response.json()
 					if (response.ok) {
-						console.log("getStore:", getStore());
-
 						const store = getStore();
 						const { favorites } = store;
-						console.log("store.favorites:", favorites);
-
+						toast.success(data.message)
 						const updatedFavorites = favorites.filter((fav) => fav.event_id !== event_id);
-						console.log("updated favorites:", updatedFavorites);
-
 						setStore({ favorites: updatedFavorites });
-
-						console.log("Removed favorite, updated list:", updatedFavorites);
 					} else {
 						const errorData = await response.json();
-						console.error("Error removing favorite:", errorData.error);
+						toast.error(errorData.error)
 					}
 				} catch (error) {
 					console.error("Error removing favorite:", error);
@@ -251,11 +252,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 					if (response.ok) {
 						const data = await response.json();
+						toast.success(data.message)
 						setStore({ favorites: data.favorites });
-						console.log("Loaded favorites from API:", data.favorites);
 					} else {
 						const errorData = await response.json();
-						console.error("Error loading favorites:", errorData.error || errorData.message);
+						toast.error(errorData.error)
 						setStore({ favorites: [] });
 					}
 				} catch (error) {
@@ -292,8 +293,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 					const data = await response.json();
 					if (response.ok) {
+						toast.success(data.message)
 						setStore({ message: data.message });
 					} else {
+						toast.error(data.error)
 						setStore({ error: data.error });
 					}
 				} catch (error) {
@@ -313,9 +316,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					const data = await response.json()
 					if (response.ok) {
-						setStore({ message: data.message })
+						toast.success(data.message)
 					} else {
-						setStore({ error: data.error })
+						toast.error(data.error)
+
 					}
 				} catch (error) {
 					setStore({ error: error.message })
@@ -378,7 +382,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 							"Content-Type": "application/json",
 							"Authorization": "Bearer " + token
 						}
-					}); 
+					});
 
 					if (response.ok) {
 						const data = await response.json();
@@ -391,7 +395,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 				} catch (e) {
 					console.error("Error al cancelar el registro:", e);
-					setStore({ error: "Error de servidor al cancelar el registro"});
+					setStore({ error: "Error de servidor al cancelar el registro" });
 				}
 			},
 

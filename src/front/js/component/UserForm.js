@@ -16,7 +16,7 @@ export const UserForm = () => {
     const [image, setImage] = useState("");
     const navigate = useNavigate();
 
-    const { actions } = useContext(Context);
+    const { store, actions } = useContext(Context);
 
     const client = filestack.init("AVQNdAjjIRHW0xnKKEipvz");
 
@@ -30,7 +30,7 @@ export const UserForm = () => {
         client.picker(options).open();
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         const formData = {
             email,
             password,
@@ -42,8 +42,10 @@ export const UserForm = () => {
             image,
         };
         e.preventDefault();
-        actions.updateUser(formData);
-        navigate("/user-details");
+        await actions.updateUser(formData);
+        if (!store.error) {
+            navigate("/user-details");
+        }
     };
 
     return (
@@ -58,7 +60,7 @@ export const UserForm = () => {
                     </div>
                     <div className="form-group mb-3">
                         <label htmlFor="inputPassword" className="form-label">Contraseña</label>
-                        <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" className="form-control" id="inputPassword" placeholder="Introduce tu contraseña" required />
+                        <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" className="form-control" id="inputPassword" placeholder="Introduce tu contraseña actual" required />
                     </div>
                     <div className="form-group mb-3">
                         <label htmlFor="inputFirstName" className="form-label">Nombre</label>

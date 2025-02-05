@@ -5,10 +5,9 @@ import "../../styles/modal.css";
 
 
 export const ModalLogin = ({ show, onClose, onRegisterClick }) => {
-    const { store, actions } = useContext(Context);
+    const { actions } = useContext(Context);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [showLogoutModal, setShowLogoutModal] = useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -59,8 +58,6 @@ export const ModalLogin = ({ show, onClose, onRegisterClick }) => {
                     <button type="button" className="modal-button btn btn-secondary" onClick={onClose}>Close</button>
                     <h6>¿Aun no tienes cuenta?. Registrate</h6>
                     <button type="button" className="btn btn-secondary" onClick={onRegisterClick}>Register</button>
-                    {store.message && <div><p className="alert alert-success mt-2 text-center">{store.message}</p></div>}
-                    {store.error && <div><p className="text-danger">{store.error}</p></div>}
                 </form>
 
             </div>

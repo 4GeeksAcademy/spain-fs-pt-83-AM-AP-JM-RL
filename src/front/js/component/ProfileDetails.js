@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import { useParams } from "react-router-dom";
+import { BackButton } from "./BackButton";
+import { toast } from "react-toastify";
 
 export const ProfileDetails = () => {
     const { store, actions } = useContext(Context);
     const { event_id } = useParams();
     const [rate, setRate] = useState('');
-    const [error, setError] = useState(null)
 
     useEffect(() => {
         actions.getEventCreatorData(event_id);
@@ -23,17 +24,14 @@ export const ProfileDetails = () => {
         const formData = {
             rate
         }
-
+        if (!sessionStorage.getItem('access_token')) {
+            toast.error('Debes iniciar sesión primero')
+        }
         if (userId) {
             await actions.addRating(formData, userId);
             setRate('')
         }
-        if (!sessionStorage.getItem('access_token')) {
-            setError('Debes iniciar sesión primero')
-            setTimeout(() => {
-                setError('')
-            }, 1500);
-        }
+
     };
 
 
@@ -41,7 +39,12 @@ export const ProfileDetails = () => {
         <>
 
             <div className="d-flex justify-content-center">
-                <div className="card mt-5 shadow-sm rounded-lg" style={{ width: '50vw' }}>
+                <div className="card mt-5 shadow-sm rounded-lg" style={{
+                    width: '50vw'
+                }}>
+                    <div className="ms-1">
+                        <BackButton />
+                    </div>
                     <div className="row g-0">
                         <div className="col-md-6 d-flex justify-content-center align-items-center">
                             <img
@@ -51,7 +54,6 @@ export const ProfileDetails = () => {
                                 style={{ objectFit: 'cover', width: '230px', height: '230px' }}
                             />
                         </div>
-
                         <div className="col-md-6">
                             <div className="card-body">
                                 <h5 className="card-title text-center">{store.eventCreatorData.first_name} {store.eventCreatorData.last_name}</h5>
@@ -67,12 +69,8 @@ export const ProfileDetails = () => {
                                 </div>
                                 <p>¿Te gustaría puntuar a este creador?</p>
                                 <form onSubmit={handleSubmit}>
-                                    {store.message && <div><p className="alert alert-success mt-1">{store.message}</p></div>}
-                                    {store.error && <div><p className="alert alert-danger mt-1">{store.error}</p></div>}
-                                    {error && <div><p className="alert alert-danger mt-1">{error}</p></div>}
-                                    {!store.message && !store.error ? <><input value={rate} onChange={(e) => setRate(e.target.value)} min={1} max={5} className="form-control w-75" type="number" placeholder="Puntuar"></input>
-                                        <input className="btn btn-success mt-1" value={'Confirmar'} type="submit"></input></> : ''}
-
+                                    <><input value={rate} onChange={(e) => setRate(e.target.value)} min={1} max={5} className="form-control w-75" type="number" placeholder="Puntuar"></input>
+                                        <input className="btn btn-success mt-1" value={'Confirmar'} type="submit"></input></>
                                 </form>
                             </div>
                         </div>
