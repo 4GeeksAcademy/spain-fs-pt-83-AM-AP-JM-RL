@@ -13,7 +13,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			message: null,
 			error: null,
 			comments: [],
-			eventRegistrarions: []
+			eventRegistrations: []
 		},
 		actions: {
 			searchEvents: async (formData) => {
@@ -363,7 +363,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					} else {
 						const errorData = await response.json();
 						setStore({ error: errorData.error });
-						console.log("registro fallido")
+						console.log("registro fallido", errorData)
 						return false;
 					}
 				} catch (e) {
@@ -405,7 +405,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 					if (response.ok) {
 						const data = await response.json();
-						setStore({ eventRegistrarions: data.registrations });
+						setStore({ eventRegistrations: data.registrations});
 					} else {
 						const errorData = await response.json();
 						console.error("Error en mostrar registros", errorData.error);
