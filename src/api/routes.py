@@ -248,10 +248,11 @@ def update_user():
     if not user:
         return jsonify({"error": "Usuario no encontrado o no tienes permisos."}), 401
     
+    if not check_password_hash(user.password, data['password']):
+        return jsonify({"error": "La contraseña no es correcta"}), 401
+
     if 'email' in data and data['email']:
         user.email = data['email']
-    if 'password' in data and data['password']:
-        user.password = generate_password_hash(data['password'])
     if 'firstName' in data and data['firstName']:
         user.first_name = data['firstName']
     if 'lastName' in data and data['lastName']:
@@ -270,7 +271,7 @@ def update_user():
     
     try:
         db.session.commit()
-        return jsonify([user.serialize()]), 200
+        return jsonify({"user": user.serialize(), "message": "Usuario actualizado correctamente"}), 200
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": "Error de servidor.", "detalles": str(e)}), 500
@@ -362,5 +363,5 @@ def new_post(event_id):
 @api.route('/posts/<int:event_id>')
 def get_event_posts(event_id):
     posts = Post.query.filter_by(event_id=event_id).all()
-    serialized_events = [events.serialize() for events in posts]
-    return jsonify(serialized_events)
+    serialized_posts = [events.serialize() for events in posts]
+    return jsonify(serialized_posts)

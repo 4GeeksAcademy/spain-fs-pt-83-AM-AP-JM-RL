@@ -9,6 +9,8 @@ import { FaHome, FaCog, FaUser, FaCalendarPlus, FaSignOutAlt } from "react-icons
 import { SearchBar } from "./searchbar";
 import "../../styles/navbar.css";
 import "../../styles/modal.css";
+import { Slide, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const Navbar = ({ onLoginClick, onRegisterClick }) => {
 	const { store, actions } = useContext(Context);
@@ -17,11 +19,11 @@ export const Navbar = ({ onLoginClick, onRegisterClick }) => {
 	const [showLogoutModal, setShowLogoutModal] = useState(false);
 
 
+
 	const handleLogout = () => {
 		actions.logout();
 		navigate("/");
 	};
-
 
 	return (
 		<>
@@ -42,25 +44,10 @@ export const Navbar = ({ onLoginClick, onRegisterClick }) => {
 							<Button variant="light" className="settings-button" onClick={() => setShowOffcanvas(true)}>
 								<FaCog size={24} />
 							</Button>
-							{/*
-								<NavDropdown
-							title={<FaCog size={24} />}
-							id="user-options-dropdown"
-							align="end"
-							className="dropdown-menu-right"
-						>
-							<NavDropdown.Item as={Link} to="/user-details">Mi Perfil</NavDropdown.Item>
-							<NavDropdown.Item as={Link} to="/events-form">Crear Evento</NavDropdown.Item>
-							<NavDropdown.Divider />
-							<NavDropdown.Item onClick={handleLogout}>Cerrar Sesión</NavDropdown.Item>
-						</NavDropdown>					
-						*/}
-
 						</div>
 					)}
 				</div>
 			</nav>
-
 			<Offcanvas show={showOffcanvas} onHide={() => setShowOffcanvas(false)} placement="end" className="custom-offcanvas">
 				<Offcanvas.Header closeButton className="offcanvas-header">
 					<Offcanvas.Title className="offcanvas-title">Opciones de Usuario</Offcanvas.Title>
@@ -70,7 +57,7 @@ export const Navbar = ({ onLoginClick, onRegisterClick }) => {
 						<Link to="/user-details" className="offcanvas-link" onClick={() => setShowOffcanvas(false)}>
 							<FaUser className="offcanvas-icon" /> Mi Perfil
 						</Link>
-						<Link to="/events-form" className="offcanvas-link" onClick={() => setShowOffcanvas(false)}>
+						<Link to="/events-form" className="offcanvas-link" onClick={() => { setShowOffcanvas(false) }}>
 							<FaCalendarPlus className="offcanvas-icon" /> Crear Evento
 						</Link>
 						{store.message && <div><p className="alert alert-success">{store.message}</p></div>}
@@ -80,7 +67,6 @@ export const Navbar = ({ onLoginClick, onRegisterClick }) => {
 						<hr className="offcanvas-divider" />
 						<Button variant="danger" onClick={() => setShowLogoutModal(true)} className="offcanvas-logout">Cerrar Sesión</Button>
 					</div>
-
 				</Offcanvas.Body>
 			</Offcanvas>
 
@@ -96,8 +82,13 @@ export const Navbar = ({ onLoginClick, onRegisterClick }) => {
 					</Modal.Footer>
 				</div>
 			</Modal>
+
+			<ToastContainer
+				autoClose={3000}
+				theme="colored"
+				transition={Slide}
+				position="top-center"
+			/>
 		</>
-
-
 	);
 };

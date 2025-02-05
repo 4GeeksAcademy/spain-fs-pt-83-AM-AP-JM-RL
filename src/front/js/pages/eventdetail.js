@@ -11,8 +11,6 @@ import Button from 'react-bootstrap/Button';
 import { ListGroup } from "react-bootstrap";
 
 export const EventDetail = () => {
-
-
   const { store, actions } = useContext(Context);
   const { id } = useParams();
 
@@ -22,26 +20,11 @@ export const EventDetail = () => {
   const [inputValue, setInputValue] = useState('')
   const [isRegistered, setIsRegistered] = useState(false);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  const handleCloseAddComment = () => {
-    setShowAddComment(false)
-  };
-  const handleShowAddComment = () => {
-    setShow(false)
-    setShowAddComment(true)
-  };
 
-  const event = store.events.find((ev) => ev.id === parseInt(id));
 
-  console.log(store.posts)
 
-  useEffect(() => {
-    if (store.favorites.length === 0) {
-      actions.loadFavorites();
-    }
-    actions.getEventRegistrations(id);
-  }, [store.favorites.length, id]);
+
+  const event = store.events.find(ev => ev.id === parseInt(id));
 
   useEffect(() => {
     actions.getPostComments(id)
@@ -51,19 +34,27 @@ export const EventDetail = () => {
     if (store.eventRegistrarions && store.userDetails) {
       const isUserRegistered = store.eventRegistrarions.some((reg) => reg.user_id === store.userDetails.id);
       setIsRegistered(isUserRegistered);
-    } 
+    }
   }, [store.eventRegistrarions, store.userDetails]);
 
   if (!event) {
     return <p>Event not found or still loading...</p>;
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    actions.addComment({ "content": inputValue }, event.id)
-    handleCloseAddComment()
-    setInputValue('')
-  }
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const handleCloseAddComment = () => setShowAddComment(false);
+  const handleShowAddComment = () => {
+    setShow(false);
+    setShowAddComment(true);
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    actions.addComment({ content: inputValue }, event.id);
+    handleCloseAddComment();
+    setInputValue('');
+  };
 
   const handleRegister = async () => {
     const success = await actions.registerToEvent(id);
@@ -91,13 +82,9 @@ export const EventDetail = () => {
   const legalIcon = new Icon({
     iconUrl: 'https://img.icons8.com/?size=100&id=13800&format=png&color=000000',
     iconSize: [35, 35],
-  })
+  });
 
-  const isFavorite = store.favorites.some((fav) => fav.event_id === parseInt(id));
-
-
-  console.log("Evento seleccionado:", event);
-  console.log("Coordenadas del evento:", citiesCoordinates[event.location]);
+  const isFavorite = store.favorites.some(fav => fav.event_id === parseInt(id));
 
   return (
     <>
@@ -130,7 +117,6 @@ export const EventDetail = () => {
                 }}
                 style={{ cursor: "pointer" }}
               ></i>
-
             </div>
             <div className="mt-2">
               <h3>{event.description}</h3>
@@ -184,11 +170,11 @@ export const EventDetail = () => {
             <div className="mt-3">
               {store.isAuthenticated ? (
                 isRegistered ? (
-                  <Button variant="danger" onClick={handleCandelRegister}>Cancelar registro</Button> 
+                  <Button variant="danger" onClick={handleCandelRegister}>Cancelar registro</Button>
                 ) : (
                   <Button variant="success" onClick={handleRegister}>Registrarse al evento</Button>
                 )
-              ): (
+              ) : (
                 <p>Inicia sesion para registrarse en este evento</p>
               )}
               <Button variant="info" onClick={() => setShowRegistrations(true)} className="ms-2">Ver registrados</Button>
@@ -220,8 +206,11 @@ export const EventDetail = () => {
         </Modal.Header>
         <Modal.Body>
           {store.comments?.map(post => (
-            <ListGroup>
-              <ListGroup.Item><p className="mb-2">{post.content}</p><small className="card-text">Escrito el {post.created_at} por {post.user_id}</small></ListGroup.Item>
+            <ListGroup key={post.id}>
+              <ListGroup.Item>
+                <p className="mb-2">{post.content}</p>
+                <small className="card-text">Escrito el {post.created_at} por {post.poster}</small>
+              </ListGroup.Item>
             </ListGroup>
           ))}
           <Button variant="primary" onClick={handleShowAddComment}>
@@ -234,19 +223,22 @@ export const EventDetail = () => {
         <Modal.Header closeButton>
           <Modal.Title><h2 className="text-center">Deja tu comentario</h2></Modal.Title>
         </Modal.Header>
-        <Modal.Body><form onSubmit={handleSubmit}>
-          <textarea className="form-control" value={inputValue} onChange={(e) => setInputValue(e.target.value)}></textarea>
-          <button className="btn btn-success" type="submit">Enviar</button>
-        </form><Button variant="secondary" onClick={handleClose}>
+        <Modal.Body>
+          <form onSubmit={handleSubmit}>
+            <textarea className="form-control" value={inputValue} onChange={e => setInputValue(e.target.value)}></textarea>
+            <button className="btn btn-success" type="submit">Enviar</button>
+          </form>
+          <Button variant="secondary" onClick={handleClose}>
             Cerrar
-          </Button></Modal.Body>
+          </Button>
+        </Modal.Body>
       </Modal>
 
       <Modal show={showRegistrations} onHide={() => setShowRegistrations(false)}>
-          <Modal.Header closeButton>
-            <Modal.Title><h2>Usuarios registrados</h2></Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
+        <Modal.Header closeButton>
+          <Modal.Title><h2>Usuarios registrados</h2></Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
           {store.eventRegistrations?.map(reg => (
             <ListGroup key={reg.id}>
               <ListGroup.Item>
@@ -261,4 +253,3 @@ export const EventDetail = () => {
     </>
   );
 };
-
