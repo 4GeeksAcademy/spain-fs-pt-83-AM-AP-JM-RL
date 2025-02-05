@@ -48,11 +48,11 @@ export const EventDetail = () => {
   }, [id, show]);
 
   useEffect(() => {
-    if (store.eventRegistrarions && store.userDetails) {
-      const isUserRegistered = store.eventRegistrarions.some((reg) => reg.user_id === store.userDetails.id);
+    if (store.eventRegistrations && store.userDetails) {
+      const isUserRegistered = store.eventRegistrations.some((reg) => reg.user_id === store.userDetails.id);
       setIsRegistered(isUserRegistered);
     } 
-  }, [store.eventRegistrarions, store.userDetails]);
+  }, [store.eventRegistrations, store.userDetails]);
 
   if (!event) {
     return <p>Event not found or still loading...</p>;
