@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "../../styles/eventdetail.css";
 import { Link } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
@@ -9,6 +9,7 @@ import 'leaflet/dist/leaflet.css';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { ListGroup } from "react-bootstrap";
+import { toast } from "react-toastify";
 
 export const EventDetail = () => {
   const { store, actions } = useContext(Context);
@@ -19,6 +20,7 @@ export const EventDetail = () => {
   const [showRegistrations, setShowRegistrations] = useState(false);
   const [inputValue, setInputValue] = useState('')
   const [isRegistered, setIsRegistered] = useState(false);
+  const navigate = useNavigate()
 
 
 
@@ -45,8 +47,16 @@ export const EventDetail = () => {
   const handleShow = () => setShow(true);
   const handleCloseAddComment = () => setShowAddComment(false);
   const handleShowAddComment = () => {
-    setShow(false);
-    setShowAddComment(true);
+    if (store.userDetails.first_name && store.userDetails.last_name) {
+      setShow(false);
+      setShowAddComment(true);
+    } else {
+      toast.error("Debes tener actualizado tu nombre y apellido para poder comentar")
+      setTimeout(() => {
+        navigate("/user-form")
+      }, 1000);
+    }
+
   };
 
   const handleSubmit = e => {
@@ -228,7 +238,7 @@ export const EventDetail = () => {
             <textarea className="form-control" value={inputValue} onChange={e => setInputValue(e.target.value)}></textarea>
             <button className="btn btn-success" type="submit">Enviar</button>
           </form>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={handleCloseAddComment}>
             Cerrar
           </Button>
         </Modal.Body>

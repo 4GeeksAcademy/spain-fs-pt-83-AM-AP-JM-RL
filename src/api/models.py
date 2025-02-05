@@ -144,5 +144,5 @@ class Post(db.Model):
             "created_at": self.created_at.strftime('%d-%m-%Y'),
             "user_id": self.user_id,
             "event_id": self.event_id,
-            "poster": self.posts.first_name
+            "poster": f"{self.posts.first_name} {self.posts.last_name}"
         }
