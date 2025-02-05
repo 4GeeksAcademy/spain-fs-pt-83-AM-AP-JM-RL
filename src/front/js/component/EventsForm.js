@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import '../../styles/EventsForm.css';
 import { Context } from "../store/appContext";
 import * as filestack from "filestack-js";
+import { useNavigate } from "react-router-dom";
 
 export const EventsForm = () => {
     const { actions } = useContext(Context)
@@ -13,9 +14,8 @@ export const EventsForm = () => {
     const [price, setPrice] = useState('')
     const [location, setLocation] = useState('')
     const [image, setImage] = useState('')
-    const [message, setMessage] = useState('')
     const [type, setType] = useState('')
-    const [error, setError] = useState('')
+    const navigate = useNavigate()
 
     const client = filestack.init('AVQNdAjjIRHW0xnKKEipvz')
 
@@ -45,11 +45,9 @@ export const EventsForm = () => {
 
         try {
             await actions.createEvent(formData);
-            setMessage('Evento creado exitosamente');
-            setError('')
+            navigate('/')
         } catch (error) {
-            setError(`Ha ocurrido un error creando el evento, ${error}`)
-            setMessage('')
+            console.error(error)
         }
 
         setTitle('')
@@ -60,9 +58,6 @@ export const EventsForm = () => {
         setLocation('')
         setImage('')
         setType('')
-
-        console.log("Ubicación seleccionada:", location);
-        console.log("Coordenadas asignadas:", citiesCoordinates[location]);
     }
 
     return (
@@ -121,8 +116,6 @@ export const EventsForm = () => {
                     <button className="btn btn-success w-50">Crear evento</button>
                 </div>
             </form>
-            {message && <div><p>{message}</p></div >}
-            {error && <div><p>{error}</p></div>}
         </div>
     )
 }

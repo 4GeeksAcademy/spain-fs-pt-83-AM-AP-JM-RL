@@ -72,7 +72,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (response.ok) {
 						const data = await response.json();
 						sessionStorage.setItem("access_token", data.token);
-						console.log("User logged in:", data);
 						setStore({ message: data.message, error: data.error, isAuthenticated: true })
 						toast.success("Inicio de sesión completado!")
 						return true;
@@ -126,9 +125,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (response.ok) {
 						const data = await response.json();
 						const store = getStore();
+						toast.success(data.message)
 						setStore({ events: [...store.events, data] });
 					} else {
 						const errorData = await response.json();
+						toast.error(errorData.error)
 						console.error("Error creating event:", errorData.message);
 					}
 				} catch (error) {
@@ -173,9 +174,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 					if (response.ok) {
 						const data = await response.json();
+						toast.success(data.message)
 						setStore({ userDetails: data.user, message: data.message });
 					} else {
 						const errorData = await response.json();
+						toast.error(errorData.error)
 						setStore({ error: errorData.error })
 					}
 				} catch (error) {
@@ -193,16 +196,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 							Authorization: `Bearer ${token}`
 						},
 					});
-
+					const data = await response.json()
 					if (response.ok) {
-						console.log("Favorite added successfully!");
 						const store = getStore();
 						const newFavorites = [...store.favorites, { event_id }];
+						toast.success(data.message)
 						setStore({ favorites: newFavorites });
-						console.log("Updated store favorites:", newFavorites);
 					} else {
-						const errorData = await response.json();
-						console.error("Error adding favorite:", errorData.error);
+						toast.error(data.error)
 					}
 				} catch (error) {
 					console.error("Error adding favorite:", error);
@@ -221,23 +222,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 							Authorization: `Bearer ${token}`
 						},
 					});
-
+					const data = await response.json()
 					if (response.ok) {
-						console.log("getStore:", getStore());
-
 						const store = getStore();
 						const { favorites } = store;
-						console.log("store.favorites:", favorites);
-
+						toast.success(data.message)
 						const updatedFavorites = favorites.filter((fav) => fav.event_id !== event_id);
-						console.log("updated favorites:", updatedFavorites);
+
 
 						setStore({ favorites: updatedFavorites });
 
 						console.log("Removed favorite, updated list:", updatedFavorites);
 					} else {
 						const errorData = await response.json();
-						console.error("Error removing favorite:", errorData.error);
+						toast.error(errorData.error)
 					}
 				} catch (error) {
 					console.error("Error removing favorite:", error);
@@ -258,11 +256,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 					if (response.ok) {
 						const data = await response.json();
+						toast.success(data.message)
 						setStore({ favorites: data.favorites });
-						console.log("Loaded favorites from API:", data.favorites);
 					} else {
 						const errorData = await response.json();
-						console.error("Error loading favorites:", errorData.error || errorData.message);
+						toast.error(errorData.error)
 						setStore({ favorites: [] });
 					}
 				} catch (error) {
@@ -299,8 +297,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 					const data = await response.json();
 					if (response.ok) {
+						toast.success(data.message)
 						setStore({ message: data.message });
 					} else {
+						toast.error(data.error)
 						setStore({ error: data.error });
 					}
 				} catch (error) {
@@ -320,9 +320,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					const data = await response.json()
 					if (response.ok) {
-						setStore({ message: data.message })
+						toast.success(data.message)
 					} else {
-						setStore({ error: data.error })
+						toast.error(data.error)
+
 					}
 				} catch (error) {
 					setStore({ error: error.message })

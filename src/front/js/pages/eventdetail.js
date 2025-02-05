@@ -177,7 +177,7 @@ export const EventDetail = () => {
               ) : (
                 <p>Inicia sesion para registrarse en este evento</p>
               )}
-              <Button variant="info" onClick={() => setShowRegistrations(true)} className="ms-2">Ver registrados</Button>
+              <Button variant="info" onClick={() => setShowRegistrations(true)}>Ver registrados</Button>
             </div>
             <div>
               <Button variant="primary" onClick={handleShow}>
