@@ -2,12 +2,12 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import { useParams } from "react-router-dom";
 import { BackButton } from "./BackButton";
+import { toast } from "react-toastify";
 
 export const ProfileDetails = () => {
     const { store, actions } = useContext(Context);
     const { event_id } = useParams();
     const [rate, setRate] = useState('');
-    const [error, setError] = useState(null)
 
     useEffect(() => {
         actions.getEventCreatorData(event_id);
@@ -25,18 +25,9 @@ export const ProfileDetails = () => {
             rate
         }
         if (!sessionStorage.getItem('access_token')) {
-            setError('Debes iniciar sesión primero')
-            setTimeout(() => {
-                setError('')
-            }, 1500);
+            toast.error('Debes iniciar sesión primero')
         }
-        if (rate === '') {
-            setError('El valor no puede estar vacío')
-            setTimeout(() => {
-                setError('')
-            }, 1500);
-        }
-        if (userId && rate != '') {
+        if (userId) {
             await actions.addRating(formData, userId);
             setRate('')
         }
@@ -78,12 +69,8 @@ export const ProfileDetails = () => {
                                 </div>
                                 <p>¿Te gustaría puntuar a este creador?</p>
                                 <form onSubmit={handleSubmit}>
-                                    {store.message && <div><p className="alert alert-success mt-1">{store.message}</p></div>}
-                                    {store.error && <div><p className="alert alert-danger mt-1">{store.error}</p></div>}
-                                    {error && <div><p className="alert alert-danger mt-1">{error}</p></div>}
-                                    {!store.message && !store.error && !error ? <><input value={rate} onChange={(e) => setRate(e.target.value)} min={1} max={5} className="form-control w-75" type="number" placeholder="Puntuar"></input>
-                                        <input className="btn btn-success mt-1" value={'Confirmar'} type="submit"></input></> : ''}
-
+                                    <><input value={rate} onChange={(e) => setRate(e.target.value)} min={1} max={5} className="form-control w-75" type="number" placeholder="Puntuar"></input>
+                                        <input className="btn btn-success mt-1" value={'Confirmar'} type="submit"></input></>
                                 </form>
                             </div>
                         </div>
