@@ -9,6 +9,7 @@ import 'leaflet/dist/leaflet.css';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { ListGroup } from "react-bootstrap";
+import { toast } from "react-toastify";
 
 export const EventDetail = () => {
   const { store, actions } = useContext(Context);
@@ -45,6 +46,9 @@ export const EventDetail = () => {
   const handleShow = () => setShow(true);
   const handleCloseAddComment = () => setShowAddComment(false);
   const handleShowAddComment = () => {
+    if (!store.userDetails.first_name || !store.userDetails.last_name) {
+      toast.error("Debes tener actualizado tu nombre y apellido para poder comentar")
+    }
     setShow(false);
     setShowAddComment(true);
   };
@@ -228,7 +232,7 @@ export const EventDetail = () => {
             <textarea className="form-control" value={inputValue} onChange={e => setInputValue(e.target.value)}></textarea>
             <button className="btn btn-success" type="submit">Enviar</button>
           </form>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={handleCloseAddComment}>
             Cerrar
           </Button>
         </Modal.Body>

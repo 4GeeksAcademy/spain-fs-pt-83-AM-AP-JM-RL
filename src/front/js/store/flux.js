@@ -228,11 +228,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						const { favorites } = store;
 						toast.success(data.message)
 						const updatedFavorites = favorites.filter((fav) => fav.event_id !== event_id);
-
-
 						setStore({ favorites: updatedFavorites });
-
-						console.log("Removed favorite, updated list:", updatedFavorites);
 					} else {
 						const errorData = await response.json();
 						toast.error(errorData.error)
