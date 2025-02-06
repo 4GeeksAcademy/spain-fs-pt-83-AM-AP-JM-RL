@@ -1,76 +1,139 @@
+.search-results {
+  background-color: white;
+}
+
 .search-card {
-    position: relative;
+  position: relative;
 }
 
 .search-card img {
-    width: 100%;
-    height: 250px; 
-    object-fit: cover;
-  }
-
-  .search-card .date-time {
-    position: absolute;
-    top: 10px; 
-    right: 10px;
-    background-color: rgba(0, 0, 0, 0.7); 
-    color: #fff; 
-    padding: 5px 10px; 
-    font-size: 14px;
-    text-align: center;
-    border-radius: 5px;
-    line-height: 1.2;
-    z-index: 2; 
-    text-transform: lowercase; 
-  }
-
-  .arrow-left,
-  .arrow-right {
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 50%; 
-    width: 40px;
-    margin-left: 10px;
-  }
-
-.filter-group {
-margin-top: 70px;
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
 }
 
-  .filter-group input {
-    width: 120px;
-    margin-right: 10px;
-    margin-top: 5px;
-  }
+.search-card .date-time {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 5px 10px;
+  font-size: 14px;
+  text-align: center;
+  border-radius: 5px;
+  line-height: 1.2;
+  z-index: 2;
+  text-transform: lowercase;
+}
 
-  .filter-group label {
-left: -5px;
-  }
+.arrow-left,
+.arrow-right {
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  width: 40px;
+  margin-left: 10px;
+}
 
-  .filter-buttons {
-    position: relative;
-    top: 10%;
-    right: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    z-index: 1000;
-    width: 80px;
-    background-color: #fff;
+.filter-by {
+  padding: 10px;
+
+}
+
+.filter-group {
+  margin-top: 70px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.filter-group input {
+  width: 120px;
+  margin-right: 10px;
+  margin-top: 5px;
+}
+
+
+.filter-buttons {
+  position: relative;
+  top: 10%;
+  right: 10px;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 1000;
+  width: 80px;
+  background-color: #fff;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+
 }
 
 .type-button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  padding: 0px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  border-radius: 15px;
+  font-size: 16px;
+  height: 35px;
+  margin: 0px;
+  justify-content: center;
+  align-items: center;
+
+
+}
+
+.type-button.fiesta {
+  width: 70px;
+
+}
+
+.type-button.concierto {
+  width: 100px;
+}
+
+.type-button.cultural {
+  width: 80px;
+}
+
+.type-button.empresarial {
+  width: 115px;
+}
+
+.type-button.otros {
+  width: 65px;
 }
 
 .type-button.active {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }
 
 .type-button:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
+}
+
+.filter-by label {
+  width: 150px;
+
+  font-weight: bold;
+
+  margin-bottom: 0;
+ 
+}
+
+.filter-group input,
+.filter-group select {
+  flex: 1;
+
+  padding: 8px;
+
+  font-size: 14px;
+
+  margin-right: 10px;
+  border-radius: 10px;
 }

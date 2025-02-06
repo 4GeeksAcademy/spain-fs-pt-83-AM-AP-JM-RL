@@ -25,12 +25,13 @@ export const Home = () => {
   return (
     <>
       <BannerCarousel />
-      <div className="container">
+      <div className="home-background container">
 
         <Carousel
           id="recentCarousel"
           title="Recently Added"
           sort={sortByMostRecent}
+          className="first-carousel"
         />
 
         <Carousel

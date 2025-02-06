@@ -20,6 +20,13 @@ export const SearchResults = () => {
     const query = new URLSearchParams(location.search).get("query");
     const types = ["fiesta", "concierto", "cultural", "empresarial", "otros"];
 
+
+    const reformatDate = (dateString) => {
+        const [day, month, year] = dateString.split("-");
+        return `${year}-${month}-${day}`;
+    };
+
+
     useEffect(() => {
         if (store.events.length === 0) {
             actions.getEvents();
@@ -36,7 +43,7 @@ export const SearchResults = () => {
                 );
             }
 
-         
+
             if (filters.priceRange.min) {
                 filtered = filtered.filter(event =>
                     parseFloat(event.price) >= parseFloat(filters.priceRange.min)
@@ -66,15 +73,19 @@ export const SearchResults = () => {
             }
 
             if (sortOption === "most_recent") {
-                filtered.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+                filtered.sort((a, b) => new Date(reformatDate(b.created_at) - new Date(a.created_at)));
+                console.log("Sorting by created_at:", store.events.map(event => event.created_at));
             } else if (sortOption === "upcoming") {
-                filtered.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+                filtered.sort((a, b) => new Date(reformatDate(a.date) - new Date(b.date)));
+                console.log("Sorted Events by created_at:", filtered);
             } else if (sortOption === "price_asc") {
                 filtered.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
             } else if (sortOption === "price_desc") {
                 filtered.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
             }
-
+            console.log("Events after sorting:", filtered);
             setPaginatedResults(filtered);
             setCurrentPage(0);
         }
@@ -82,6 +93,7 @@ export const SearchResults = () => {
     const handleSortChange = (e) => {
         setSortOption(e.target.value);
     };
+
 
 
     const handleTypeSelect = (type) => {
@@ -121,84 +133,118 @@ export const SearchResults = () => {
     const startIndex = currentPage * itemsPerPage;
     const currentItems = paginatedResults.slice(startIndex, startIndex + itemsPerPage);
 
+
     return (
-        <section className="pt-5 pb-5">
+        <section className="pt-5 pb-5 results-body">
             <div className="container">
                 <div className="row">
                     <div className="col-lg-4 mb-3">
                         <div className="filter-by">
                             <h4>Filter By</h4>
 
-                            <div className="row filter-group">
+                            <div className="filter-group">
 
-                                <label>Sort By</label>
-                                <select className="form-control" value={sortOption} onChange={handleSortChange}>
-                                    <option value="">Select</option>
-                                    <option value="most_recent">Most Recent</option>
-                                    <option value="upcoming">Upcoming</option>
-                                    <option value="price_asc">Price: Low to High</option>
-                                    <option value="price_desc">Price: High to Low</option>
-                                </select>
+                                <div className="row">
+                                    <label>Sort By</label>
+                                    <select className="form-control" value={sortOption} onChange={handleSortChange}>
+                                        <option value="">Select</option>
+                                        <option value="most_recent">Most Recent</option>
+                                        <option value="upcoming">Upcoming</option>
+                                        <option value="price_asc">Price: Low to High</option>
+                                        <option value="price_desc">Price: High to Low</option>
+                                    </select>
 
-                                <label>Price Range</label>
-                                <input
-                                    type="number"
-                                    placeholder="Min"
-                                    name="min"
-                                    value={filters.priceRange.min}
-                                    onChange={handlePriceChange}
-                                />
-                                <input
-                                    type="number"
-                                    placeholder="Max"
-                                    name="max"
-                                    value={filters.priceRange.max}
-                                    onChange={handlePriceChange}
-                                />
+                                </div>
+                                <div className="row">
+                                    <label>Price Range</label>
+                                </div>
+                                <div className="row">
+                                    <div className="col-6">
+                                        <input
+                                            type="number"
+                                            placeholder="Min"
+                                            name="min"
+                                            value={filters.priceRange.min}
+                                            onChange={handlePriceChange}
+                                        />
+                                    </div>
+                                    <div className="col-6">
+                                        <input
+                                            type="number"
+                                            placeholder="Max"
+                                            name="max"
+                                            value={filters.priceRange.max}
+                                            onChange={handlePriceChange}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="filter-group">
+                                <div className="row">
+                                    <label>Time Range</label>
+                                </div>
+                                <div className="row">
+                                    <div className="col-6">
+                                        <input
+                                            type="time"
+                                            name="start"
+                                            value={filters.timeRange.start}
+                                            onChange={handleTimeChange}
+                                        />
+                                    </div>
+                                    <div className="col-6">
+                                        <input
+                                            type="time"
+                                            name="end"
+                                            value={filters.timeRange.end}
+                                            onChange={handleTimeChange}
+                                        />
+                                    </div>
+                                </div>
                             </div>
                             <div className="row filter-group">
-                                <label>Time Range</label>
-                                <input
-                                    type="time"
-                                    name="start"
-                                    value={filters.timeRange.start}
-                                    onChange={handleTimeChange}
-                                />
-                                <input
-                                    type="time"
-                                    name="end"
-                                    value={filters.timeRange.end}
-                                    onChange={handleTimeChange}
-                                />
+                                <div className="row">
+                                    <label>Date Range</label>
+                                </div>
+                                <div className="row">
+                                    <div className="col-6">
+                                        <input
+                                            type="date"
+                                            name="start"
+                                            value={filters.dateRange.start}
+                                            onChange={handleDateChange}
+                                        />
+                                    </div>
+                                    <div className="col-6">
+                                        <input
+                                            type="date"
+                                            name="end"
+                                            value={filters.dateRange.end}
+                                            onChange={handleDateChange}
+                                        />
+                                    </div>
+                                </div>
                             </div>
-                            <div className="row filter-group">
-                                <label>Date Range</label>
-                                <input
-                                    type="date"
-                                    name="start"
-                                    value={filters.dateRange.start}
-                                    onChange={handleDateChange}
-                                />
-                                <input
-                                    type="date"
-                                    name="end"
-                                    value={filters.dateRange.end}
-                                    onChange={handleDateChange}
-                                />
+
+                            <div className="row">
+                                <label>Tipo</label>
                             </div>
+                            <div className="filter-buttons">
+
+                                {types.map((type) => (
+                                    <button
+                                        key={type}
+                                        className={`type-button ${selectedType === type ? "active" : ""} ${type.toLowerCase()}`}
+                                        onClick={() => handleTypeSelect(type)}
+                                    >
+                                        {type.charAt(0).toLowerCase() + type.slice(1)}
+                                    </button>
+                                ))}
+                            </div>
+
                         </div>
-                        <div className="filter-buttons">
-                            <label>Type</label>
-                            {types.map((type) => (
-                                <button
-                                    key={type}
-                                    className={`type-button ${selectedType === type ? "active" : ""}`}
-                                    onClick={() => handleTypeSelect(type)}
-                                >
-                                    {type.charAt(0).toLowerCase() + type.slice(1)}
-                                </button>
-                            ))}
-                        </div>
+
+
                     </div>
                     <div className="col-lg-8">
                         <div className="row justify-content-between">
@@ -262,17 +308,19 @@ export const SearchResults = () => {
                                             />
                                             <div className="search-card-body">
                                                 <h4 className="search-card-title">{event.title}</h4>
-                                                <Link to={`/events/${event.id}`} className="btn btn-primary btn-sm">
-                                                    Details
-                                                </Link>
-                                                <i
-                                                    onClick={() => {
-                                                        const isFavorite = store.favorites.some((fav) => fav.event_id === event.id);
-                                                        isFavorite ? actions.removeFavorite(event.id) : actions.addFavorite(event.id);
-                                                    }}
-                                                    className={`fa-${store.favorites.some((fav) => fav.event_id === event.id) ? "solid text-warning" : "regular"} fa-star`}
-                                                    style={{ cursor: "pointer" }}
-                                                ></i>
+                                                <div className="d-flex justify-content-between">
+                                                    <Link to={`/events/${event.id}`} className="btn btn-primary btn-sm">
+                                                        Details
+                                                    </Link>
+                                                    <i
+                                                        onClick={() => {
+                                                            const isFavorite = store.favorites.some((fav) => fav.event_id === event.id);
+                                                            isFavorite ? actions.removeFavorite(event.id) : actions.addFavorite(event.id);
+                                                        }}
+                                                        className={`fa-${store.favorites.some((fav) => fav.event_id === event.id) ? "solid text-warning" : "regular"} fa-star`}
+                                                        style={{ cursor: "pointer" }}
+                                                    ></i>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

@@ -1,13 +1,15 @@
 .navbar {
-    height: 60px;
-    padding: 10px 20px;
+    height: 70px;
+    padding: 0 20px; 
     background-color: rgba(255, 255, 255, 0.13); 
     backdrop-filter: blur(10px); 
     border: 2px solid rgba(255, 255, 255, 0.1); 
     box-shadow: 0 0 20px rgba(8, 7, 16, 0.3); 
     display: flex;
-    align-items: center;
+    align-items: center; 
     justify-content: space-between;
+    padding-top: 10px; 
+    padding-bottom: 10px; 
 }
 
 .navbar .home {
@@ -80,134 +82,4 @@
     display: flex;
     align-items: center;
     gap: 10px;
-}
-
-.custom-offcanvas {
-    background-color: rgba(255, 255, 255, 0.13);
-    backdrop-filter: blur(10px);
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
-    border-radius: 10px;
-    width: 400px;
-}
-
-.offcanvas-header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.offcanvas-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #000;
-}
-
-.offcanvas-body {
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    height: 100%;
-}
-
-.offcanvas-links {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.offcanvas-link {
-    color: #000;
-    text-decoration: none;
-    padding: 10px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.offcanvas-link:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-.offcanvas-icon {
-    font-size: 1.2rem;
-}
-
-.offcanvas-footer {
-    margin-top: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.offcanvas-divider {
-    margin: 20px 0;
-    border-color: rgba(14, 10, 10, 0.151);
-}
-
-.offcanvas-logout {
-    margin-top: auto;
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    background-color: #dc3545;
-    border: none;
-    color: white;
-    transition: background-color 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
-
-.offcanvas-logout:hover {
-    background-color: #c82333;
-}
-
-.modal-form {
-    background-color: rgba(255, 255, 255, 0.13);
-    backdrop-filter: blur(10px);
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
-    border-radius: 10px;
-    margin: 0 auto; 
-    padding: 0;
-}
-
-.modal-form .modal-body {
-    color: #000;
-    font-size: 1.1rem;
-    padding: 20px 10px; 
-}
-
-
-.modal-form .modal-footer {
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    display: flex;
-    justify-content: center; 
-    gap: 10px;
-    padding: 10px; 
-}
-
-.modal-form .btn-secondary {
-    background-color: #6c757d;
-    border: none;
-    padding: 8px 16px; 
-}
-
-.modal-form .btn-danger {
-    background-color: #dc3545;
-    border: none;
-    padding: 8px 16px;
-}
-
-.modal-form .btn-secondary:hover {
-    background-color: #5a6268;
-}
-
-.modal-form .btn-danger:hover {
-    background-color: #c82333;
 }
