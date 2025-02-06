@@ -53,6 +53,7 @@ export const EventDetail = () => {
     }
     if (!store.isAuthenticated) {
       toast.error('Debes iniciar sesión para poder comentar')
+      setShow(false);
     }
     if (store.isAuthenticated && (!store.userDetails.first_name || !store.userDetails.last_name)) {
       toast.error("Debes tener actualizado tu nombre y apellido para poder comentar")
