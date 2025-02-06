@@ -47,10 +47,14 @@ export const EventDetail = () => {
   const handleShow = () => setShow(true);
   const handleCloseAddComment = () => setShowAddComment(false);
   const handleShowAddComment = () => {
-    if (store.userDetails.first_name && store.userDetails.last_name) {
+    if (store.isAuthenticated && store.userDetails.first_name && store.userDetails.last_name) {
       setShow(false);
       setShowAddComment(true);
-    } else {
+    }
+    if (!store.isAuthenticated) {
+      toast.error('Debes iniciar sesión para poder comentar')
+    }
+    if (store.isAuthenticated && (!store.userDetails.first_name || !store.userDetails.last_name)) {
       toast.error("Debes tener actualizado tu nombre y apellido para poder comentar")
       setTimeout(() => {
         navigate("/user-form")
@@ -74,7 +78,7 @@ export const EventDetail = () => {
       }, 1000);
       return;
     }
-    
+
     const success = await actions.registerToEvent(id);
     if (success) {
       setIsRegistered(true);
