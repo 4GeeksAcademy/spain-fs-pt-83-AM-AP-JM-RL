@@ -10,6 +10,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { ListGroup } from "react-bootstrap";
 import { toast } from "react-toastify";
+import { BackButton } from "../component/BackButton"
 
 export const EventDetail = () => {
   const { store, actions } = useContext(Context);
@@ -112,9 +113,13 @@ export const EventDetail = () => {
 
   return (
     <>
+      <div className="ms-3">
+        <BackButton />
+      </div>
       <div className="event-card container">
         <div className="row mt-5">
           <div className="col-lg-6">
+
             <img
               className="img-fluid rounded-start"
               alt={event.title}
@@ -123,6 +128,7 @@ export const EventDetail = () => {
                 "https://www.svgrepo.com/show/508699/landscape-placeholder.svg"
               }
             />
+
             <Link style={{ float: 'right' }} className="btn btn-primary mt-5" to={`/profile/${event.id}`}>
               Ir al perfil del creador
             </Link>
