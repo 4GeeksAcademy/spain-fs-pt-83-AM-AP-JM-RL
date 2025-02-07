@@ -83,3 +83,76 @@
     align-items: center;
     gap: 10px;
 }
+
+.custom-offcanvas {
+    background-color: rgba(255, 255, 255, 0.13);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+    border-radius: 10px;
+    width: 400px;
+}
+
+.offcanvas-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.offcanvas-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #000;
+}
+
+.offcanvas-body {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    height: 100%;
+}
+
+
+.offcanvas-links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.offcanvas-link {
+    color: #000;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.offcanvas-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.offcanvas-icon {
+    font-size: 1.2rem;
+}
+
+.offcanvas-logout {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #dc3545;
+    border: none;
+    color: white;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.offcanvas-logout:hover {
+    background-color: #c82333;
+}

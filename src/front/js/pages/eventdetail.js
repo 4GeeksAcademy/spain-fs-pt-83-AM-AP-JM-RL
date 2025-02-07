@@ -41,7 +41,7 @@ export const EventDetail = () => {
   }, [store.eventRegistrations, store.userDetails]);
 
   if (!event) {
-    return <p>Event not found or still loading...</p>;
+    return <p>Evento no encontrado o cargando...</p>;
   }
 
   const handleClose = () => setShow(false);
@@ -129,9 +129,7 @@ export const EventDetail = () => {
               }
             />
 
-            <Link style={{ float: 'right' }} className="btn btn-primary mt-5" to={`/profile/${event.id}`}>
-              Ir al perfil del creador
-            </Link>
+
           </div>
           <div className="col-lg-6">
             <div className="title-icon d-flex align-items-center justify-content-between">
@@ -152,74 +150,63 @@ export const EventDetail = () => {
               <h3>{event.description}</h3>
             </div>
             <div className="row mt-3">
-              <div className="col-4">
+              <div className="col-3">
                 <p>
                   <strong>Dónde:</strong> {event.location}
                 </p>
               </div>
-              <div className="col-4">
+              <div className="col-3">
                 <p>
                   <strong>Fecha:</strong> {event.date}
                 </p>
               </div>
-              <div className="col-4">
+              <div className="col-3">
                 <p>
                   <strong>Hora:</strong> {event.time}
                 </p>
               </div>
-              <div className="col-4">
+              <div className="col-3">
                 <p>
-                  <strong>Precio:</strong> {event.price === 0 ? "Gratis!" : event.price}
+                  <strong>Precio:</strong> {event.price === 0 ? "Gratis!" : `${event.price} Euros`}
                 </p>
               </div>
             </div>
-            <div className="event-date-time mt-3">
-              {event.date && event.time ? (
-                (() => {
-                  const dateParts = event.date.split("-");
-                  const dateObject = new Date(
-                    `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`
-                  );
-                  const formattedTime = new Date(
-                    `1970-01-01T${event.time}Z`
-                  ).toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  });
-
-                  return (
-                    <div>
-                      {dateObject.toLocaleDateString("es-ES", {
-                        day: "numeric",
-                        month: "short",
-                        year: "numeric",
-                      })}{" "}
-                      {formattedTime}
-                    </div>
-                  );
-                })()
-              ) : (
-                "Invalid Date or Time"
-              )}
-            </div>
-            <div className="mt-3">
-              {store.isAuthenticated ? (
-                event.user_id === store.userDetails.id ? (
-                  <p className="text-danger">Eres el creador del evento y no puedes registrarte</p>
-                ) : isRegistered ? (
-                  <Button variant="danger" onClick={handleCandelRegister}>Cancelar registro</Button>
+            
+            <div className="row">
+              <div className="mt-3">
+                {store.isAuthenticated ? (
+                  event.user_id === store.userDetails.id ? (
+                    <p className="text-danger">Eres el creador del evento y no puedes registrarte</p>
+                  ) : isRegistered ? (
+                    <Button variant="danger" onClick={handleCandelRegister}>Cancelar registro</Button>
+                  ) : (
+                    <Button variant="success" onClick={handleRegister}>Registrarse al evento</Button>
+                  )
                 ) : (
-                  <Button variant="success" onClick={handleRegister}>Registrarse al evento</Button>
-                )
-              ) : (
-                <p>Inicia sesion para registrarse en este evento</p>
-              )}
-              <Button variant="info" onClick={() => setShowRegistrations(true)}>Ver registrados</Button>
+                  <p>Inicia sesion para registrarse en este evento</p>
+                )}
+
+              </div>
+
             </div>
-            <div>
-              <Button variant="primary" onClick={handleShow}>
-                Ver comentarios del evento
-              </Button>
+            <div className="row">
+              <div className="col-4">
+                <Button className="attendies-button" variant="info" onClick={() => setShowRegistrations(true)}>Registrados</Button>
+              </div>
+              <div className="col-4">
+                <Button className="Comments-button" variant="primary" onClick={handleShow}>
+                  Comentarios
+                </Button>
+              </div>
+              <div className="col-4">
+                <Link to={`/profile/${event.id}`}>
+                  <Button className="created-by-button btn btn-primary">
+                    Creador
+                  </Button>
+                </Link>
+
+
+              </div>
             </div>
           </div>
         </div>

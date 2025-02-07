@@ -16,6 +16,7 @@ export const SearchResults = () => {
         timeRange: { start: "", end: "" },
         dateRange: { start: "", end: "" },
     });
+    
 
     const itemsPerPage = 9;
     const query = new URLSearchParams(location.search).get("query");
@@ -24,9 +25,8 @@ export const SearchResults = () => {
 
     const reformatDate = (dateString) => {
         const [day, month, year] = dateString.split("-");
-        return `${year}-${month}-${day}`;
+        return `${year}-${month}-${day}`; 
     };
-
 
     useEffect(() => {
         if (store.events.length === 0) {
@@ -74,13 +74,19 @@ export const SearchResults = () => {
             }
 
             if (sortOption === "most_recent") {
-
-                filtered.sort((a, b) => new Date(reformatDate(b.created_at) - new Date(a.created_at)));
-                console.log("Sorting by created_at:", store.events.map(event => event.created_at));
+                filtered.sort((a, b) => {
+                    const dateA = reformatDate(a.created_at);
+                    const dateB = reformatDate(b.created_at);
+                    return new Date(dateB) - new Date(dateA); 
+                });
+                console.log("Sorting by created_at:", filtered);
             } else if (sortOption === "upcoming") {
-
-                filtered.sort((a, b) => new Date(reformatDate(a.date) - new Date(b.date)));
-                console.log("Sorted Events by created_at:", filtered);
+                filtered.sort((a, b) => {
+                    const dateA = reformatDate(a.date);
+                    const dateB = reformatDate(b.date);
+                    return new Date(dateA) - new Date(dateB); 
+                });
+                console.log("Sorting by upcoming date:", filtered); 
             } else if (sortOption === "price_asc") {
                 filtered.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
             } else if (sortOption === "price_desc") {
@@ -98,7 +104,7 @@ export const SearchResults = () => {
 
 
     const handleTypeSelect = (type) => {
-        console.log("Type selected:", type, "Previous selectedType:", selectedType);
+        
         setSelectedType((prev) => {
             const newType = prev === type ? "" : type;
             actions.searchEvents({ type: newType, filters });
@@ -151,23 +157,23 @@ export const SearchResults = () => {
                            transformOrigin: 'top',
                          }}
                         className="filter-by">
-                            <h4>Filter By</h4>
+                            <h4>Filtros</h4>
 
                             <div className="filter-group">
 
                                 <div className="row">
-                                    <label>Sort By</label>
+                                    <label>Ordenar</label>
                                     <select className="form-control" value={sortOption} onChange={handleSortChange}>
-                                        <option value="">Select</option>
-                                        <option value="most_recent">Most Recent</option>
-                                        <option value="upcoming">Upcoming</option>
-                                        <option value="price_asc">Price: Low to High</option>
-                                        <option value="price_desc">Price: High to Low</option>
+                                        <option value="">...</option>
+                                        <option value="most_recent">Recientes</option>
+                                        <option value="upcoming">Próximamente</option>
+                                        <option value="price_asc">Precio: Ascendente</option>
+                                        <option value="price_desc">Precio: Descendente</option>
                                     </select>
 
                                 </div>
                                 <div className="row">
-                                    <label>Price Range</label>
+                                    <label>Precio</label>
                                 </div>
                                 <div className="row">
                                     <div className="col-6">
@@ -192,7 +198,7 @@ export const SearchResults = () => {
                             </div>
                             <div className="filter-group">
                                 <div className="row">
-                                    <label>Time Range</label>
+                                    <label>Hora</label>
                                 </div>
                                 <div className="row">
                                     <div className="col-6">
@@ -215,7 +221,7 @@ export const SearchResults = () => {
                             </div>
                             <div className="row filter-group">
                                 <div className="row">
-                                    <label>Date Range</label>
+                                    <label>Fecha</label>
                                 </div>
                                 <div className="row">
                                     <div className="col-6">
@@ -270,13 +276,13 @@ export const SearchResults = () => {
                              
                               }} className="col-lg-8">
                         <div className="row justify-content-between">
-                            <div className="col-6">
-                                <h3 className="mb-3">
-                                    {query ? `Search Results for "${query}"` : "All Events"}
+                            <div className="col-9">
+                                <h3>
+                                    {query ? `Resultados para  "${query}"` : "Eventos"}
                                 </h3>
                             </div>
 
-                            <div className="col-3 text-left justify-content-end">
+                            <div className="col-3 text-left d-flex justify-content-end">
                                 <button
                                     className="arrow-left btn btn-primary mb-3 mr-1"
                                     onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}
