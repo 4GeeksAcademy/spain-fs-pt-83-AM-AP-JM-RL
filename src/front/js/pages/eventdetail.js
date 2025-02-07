@@ -10,6 +10,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { ListGroup } from "react-bootstrap";
 import { toast } from "react-toastify";
+import { BackButton } from "../component/BackButton"
 
 export const EventDetail = () => {
   const { store, actions } = useContext(Context);
@@ -36,7 +37,7 @@ export const EventDetail = () => {
     if (store.eventRegistrations && store.userDetails) {
       const isUserRegistered = store.eventRegistrations.some((reg) => reg.user_id === store.userDetails.id);
       setIsRegistered(isUserRegistered);
-    } 
+    }
   }, [store.eventRegistrations, store.userDetails]);
 
   if (!event) {
@@ -47,10 +48,15 @@ export const EventDetail = () => {
   const handleShow = () => setShow(true);
   const handleCloseAddComment = () => setShowAddComment(false);
   const handleShowAddComment = () => {
-    if (store.userDetails.first_name && store.userDetails.last_name) {
+    if (store.isAuthenticated && store.userDetails.first_name && store.userDetails.last_name) {
       setShow(false);
       setShowAddComment(true);
-    } else {
+    }
+    if (!store.isAuthenticated) {
+      toast.error('Debes iniciar sesión para poder comentar')
+      setShow(false);
+    }
+    if (store.isAuthenticated && (!store.userDetails.first_name || !store.userDetails.last_name)) {
       toast.error("Debes tener actualizado tu nombre y apellido para poder comentar")
       setTimeout(() => {
         navigate("/user-form")
@@ -74,13 +80,14 @@ export const EventDetail = () => {
       }, 1000);
       return;
     }
-    
+
     const success = await actions.registerToEvent(id);
     if (success) {
       setIsRegistered(true);
       actions.getEventRegistrations(id);
     }
   }
+
 
   const handleCandelRegister = async () => {
     const success = await actions.cancelRegisterFromEvent(id);
@@ -106,9 +113,13 @@ export const EventDetail = () => {
 
   return (
     <>
+      <div className="ms-3">
+        <BackButton />
+      </div>
       <div className="event-card container">
         <div className="row mt-5">
           <div className="col-lg-6">
+
             <img
               className="img-fluid rounded-start"
               alt={event.title}
@@ -117,6 +128,7 @@ export const EventDetail = () => {
                 "https://www.svgrepo.com/show/508699/landscape-placeholder.svg"
               }
             />
+
             <Link style={{ float: 'right' }} className="btn btn-primary mt-5" to={`/profile/${event.id}`}>
               Ir al perfil del creador
             </Link>
