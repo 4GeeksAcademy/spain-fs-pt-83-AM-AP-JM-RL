@@ -1,32 +1,64 @@
-.user-details-card {
-    background-color: #f8f9fa;
-    border: 1px solid #ddd;
+.user-details-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
 }
 
-.user-details-card h2 {
-    font-family: 'Arial', sans-serif;
-    color: #333;
+.user-profile-card {
+    background: #ffffff;
+    overflow: hidden;
 }
 
-.user-details-card .list-group-item {
-    background-color: #fff;
-    border: none;
-    border-bottom: 1px solid #ddd;
+.gradient-bg {
+    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
 }
 
-.user-details-card .list-group-item:last-child {
-    border-bottom: none;
-}
-
-.user-image {
+.avatar-container {
     width: 150px;
     height: 150px;
-    object-fit: cover;
-    margin-bottom: 20px;
-    border: 3px solid #007bff;
+    border: 4px solid white;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
 }
 
-.btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
+.user-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.detail-item {
+    background: #f8f9fa;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.detail-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.btn-edit {
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    letter-spacing: 0.5px;
+}
+
+.btn-edit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(168, 85, 247, 0.4);
+}
+
+.animate__animated {
+    animation-duration: 0.5s;
+}
+
+@media (max-width: 768px) {
+    .profile-header {
+        padding: 2rem !important;
+    }
+
+    .avatar-container {
+        width: 120px;
+        height: 120px;
+    }
 }

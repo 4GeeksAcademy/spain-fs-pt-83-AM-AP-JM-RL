@@ -4,9 +4,10 @@ import "../../styles/UserForm.css";
 import { useNavigate } from "react-router-dom";
 import * as filestack from "filestack-js";
 import { BackButton } from "./BackButton";
-import { Link } from "react-router-dom";
-import { Button, Modal } from "react-bootstrap";
+import { Button, Modal, Row, Col } from "react-bootstrap";
 import { toast } from "react-toastify";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEnvelope, faLock, faUser, faCalendar, faComment, faMapMarker, faCamera } from "@fortawesome/free-solid-svg-icons";
 
 export const UserForm = () => {
     const [email, setEmail] = useState("");
@@ -112,68 +113,217 @@ export const UserForm = () => {
 
     return (
         <>
-            <div className="container user-form-card mt-5 p-4 rounded">
-                <BackButton />
-                <form onSubmit={handleSubmit}>
-                    <h2 className="text-center mb-4">Formulario de Usuario</h2>
-                    <div className="form-group mb-3">
-                        <label htmlFor="inputEmail" className="form-label">Email</label>
-                        <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" className="form-control" id="inputEmail" placeholder="Introduce tu email" />
+            <div className="container user-form-container animate__animated animate__fadeIn">
+                <div className="user-form-card rounded-4 shadow-lg">
+                    <div className="form-header gradient-bg p-5 rounded-top-4">
+                        <BackButton variant="light" />
+                        <h1 className="text-white text-center mb-0">
+                            <FontAwesomeIcon icon={faUser} className="me-2" />
+                            Editar Perfil
+                        </h1>
                     </div>
-                    <div className="form-group mb-3">
-                        <label htmlFor="inputPassword" className="form-label">Contraseña</label>
-                        <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" className="form-control" id="inputPassword" placeholder="Introduce tu contraseña actual" required />
-                    </div>
-                    <div className="form-group mb-3">
-                        <label htmlFor="inputFirstName" className="form-label">Nombre</label>
-                        <input value={firstName} onChange={(e) => setFirstName(e.target.value)} type="text" className="form-control" id="inputFirstName" placeholder="Introduce tu nombre" />
-                    </div>
-                    <div className="form-group mb-3">
-                        <label htmlFor="inputLastName" className="form-label">Apellido</label>
-                        <input value={lastName} onChange={(e) => setLastName(e.target.value)} type="text" className="form-control" id="inputLastName" placeholder="Introduce tu apellido" />
-                    </div>
-                    <div className="form-group mb-3">
-                        <label htmlFor="inputAge" className="form-label">Edad</label>
-                        <input value={age} onChange={(e) => setAge(e.target.value)} type="number" className="form-control" id="inputAge" placeholder="Introduce tu edad" />
-                    </div>
-                    <div className="form-group mb-3">
-                        <label htmlFor="inputBio" className="form-label">Bio</label>
-                        <textarea value={bio} onChange={(e) => setBio(e.target.value)} className="form-control" id="inputBio" rows="3" placeholder="Cuéntanos sobre ti"></textarea>
-                    </div>
-                    <div className="form-group mb-3">
-                        <label htmlFor="inputLocation" className="form-label">Ubicación</label>
-                        <input value={location} onChange={(e) => setLocation(e.target.value)} type="text" className="form-control" id="inputLocation" placeholder="Introduce tu ubicación" />
-                    </div>
-                    <div className="form-group mb-3">
-                        <label className="form-label">Foto de perfil</label>
-                        <div onClick={handleUploadImage} className="image-upload-wrapper border rounded p-3 text-center">
-                            <button type="button" className="btn btn-outline-primary">Subir Imagen</button>
+
+                    <form onSubmit={handleSubmit} className="p-4 p-lg-5">
+                        <Row className="g-4">
+                            <Col md={6}>
+                                <FormField
+                                    icon={faEnvelope}
+                                    label="Email"
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    placeholder="tucorreo@ejemplo.com"
+                                />
+
+                                <FormField
+                                    icon={faUser}
+                                    label="Nombre"
+                                    type="text"
+                                    value={firstName}
+                                    onChange={(e) => setFirstName(e.target.value)}
+                                    placeholder="Tu nombre"
+                                />
+
+                                <FormField
+                                    icon={faUser}
+                                    label="Apellido"
+                                    type="text"
+                                    value={lastName}
+                                    onChange={(e) => setLastName(e.target.value)}
+                                    placeholder="Tu apellido"
+                                />
+
+                                <FormField
+                                    icon={faCalendar}
+                                    label="Edad"
+                                    type="number"
+                                    value={age}
+                                    onChange={(e) => setAge(e.target.value)}
+                                    placeholder="Tu edad"
+                                />
+                            </Col>
+
+                            <Col md={6}>
+                                <FormField
+                                    icon={faLock}
+                                    label="Contraseña Actual"
+                                    type="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    placeholder="••••••••"
+                                    required
+                                />
+
+                                <FormField
+                                    icon={faMapMarker}
+                                    label="Ubicación"
+                                    type="text"
+                                    value={location}
+                                    onChange={(e) => setLocation(e.target.value)}
+                                    placeholder="Ciudad, País"
+                                />
+
+                                <div className="form-field mb-4">
+                                    <label className="form-label text-muted small">
+                                        <FontAwesomeIcon icon={faCamera} className="me-2 text-primary" />
+                                        Foto de Perfil
+                                    </label>
+                                    <div
+                                        className="image-upload-wrapper border-dashed rounded-3 p-4 text-center cursor-pointer"
+                                        onClick={handleUploadImage}
+                                    >
+                                        {image ? (
+                                            <img src={image} alt="Preview" className="upload-preview rounded-3" />
+                                        ) : (
+                                            <>
+                                                <FontAwesomeIcon icon={faCamera} className="text-muted h3 mb-3" />
+                                                <p className="mb-0 text-muted">Haz clic para subir una imagen</p>
+                                            </>
+                                        )}
+                                    </div>
+                                </div>
+                            </Col>
+
+                            {/* Biografía Full Width */}
+                            <Col xs={12}>
+                                <FormField
+                                    icon={faComment}
+                                    label="Biografía"
+                                    type="textarea"
+                                    value={bio}
+                                    onChange={(e) => setBio(e.target.value)}
+                                    placeholder="Cuéntanos sobre ti..."
+                                    rows={4}
+                                />
+                            </Col>
+                        </Row>
+
+                        <div className="d-flex justify-content-center">
+                            <div className="me-1">
+                                <Button
+                                    variant="primary"
+                                    type="submit"
+                                    className="btn-save px-5 rounded-pill w-100"
+                                >
+                                    <small>Guardar</small>
+                                </Button>
+
+                            </div>
+                            <div className="ms-1">
+                                <Button
+                                    variant="outline-primary"
+                                    onClick={handleShowPasswordChange}
+                                    className="px-5 rounded-pill w-100"
+                                >
+                                    <small>Cambiar Contraseña</small>
+                                </Button>
+
+                            </div>
                         </div>
-                    </div>
-                    <button type="submit" className="btn btn-success w-100">Guardar</button>
-                    <Button variant="primary" onClick={handleShowPasswordChange}>
-                        Cambiar contraseña
-                    </Button>
-                </form>
-            </div >
-            <Modal show={showPasswordChange} onHide={handleClosePasswordChange}>
-                <Modal.Header closeButton>Modificar Contraseña</Modal.Header>
+                    </form>
+                </div>
+            </div>
+
+            <Modal show={showPasswordChange} onHide={handleClosePasswordChange} centered>
+                <Modal.Header closeButton className="gradient-bg text-white">
+                    <Modal.Title>
+                        <FontAwesomeIcon icon={faLock} className="me-2" />
+                        Cambiar Contraseña
+                    </Modal.Title>
+                </Modal.Header>
                 <form onSubmit={handleSubmitPasswordChange}>
-                    <Modal.Body>
-                        <div className="d-flex flex-column justify-content-center align-items-center">
-                            <input onChange={(e) => setNewPassword(e.target.value)} value={newPassword} placeholder="Contraseña nueva" className="form-control mb-2 w-50 text-center" type="password"></input>
-                            <input onChange={(e) => setMatchingPassword(e.target.value)} value={matchingPassword} placeholder="Confirma contraseña" className="form-control w-50 text-center" type="password"></input>
+                    <Modal.Body className="p-4">
+                        <div className="d-flex flex-column gap-3">
+                            <FormField
+                                icon={faLock}
+                                label="Nueva Contraseña"
+                                type="password"
+                                value={newPassword}
+                                onChange={(e) => setNewPassword(e.target.value)}
+                                placeholder="••••••••"
+                                centered
+                            />
+
+                            <FormField
+                                icon={faLock}
+                                label="Confirmar Contraseña"
+                                type="password"
+                                value={matchingPassword}
+                                onChange={(e) => setMatchingPassword(e.target.value)}
+                                placeholder="••••••••"
+                                centered
+                            />
                         </div>
                     </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="success" onClick={handleSubmitPasswordChange}>
+                    <Modal.Footer className="justify-content-center">
+                        <Button
+                            variant="outline-danger"
+                            onClick={handleClosePasswordChange}
+                            className="px-4 rounded-pill"
+                        >
+                            Cancelar
+                        </Button>
+                        <Button
+                            variant="primary"
+                            type="submit"
+                            className="px-5 rounded-pill"
+                        >
                             Confirmar
                         </Button>
-                        <Button variant="danger" onClick={handleClosePasswordChange}>Cancelar</Button>
-
                     </Modal.Footer>
                 </form>
             </Modal>
         </>
+    );
+};
+
+const FormField = ({ icon, label, type = "text", value, onChange, placeholder, required, rows, centered }) => {
+    const inputClass = `form-control ${centered ? 'text-center' : ''}`;
+
+    return (
+        <div className="form-field mb-4">
+            <label className="form-label text-muted small">
+                <FontAwesomeIcon icon={icon} className="me-2 text-primary" />
+                {label}
+            </label>
+            {type === "textarea" ? (
+                <textarea
+                    className={inputClass}
+                    value={value}
+                    onChange={onChange}
+                    placeholder={placeholder}
+                    rows={rows}
+                />
+            ) : (
+                <input
+                    type={type}
+                    className={inputClass}
+                    value={value}
+                    onChange={onChange}
+                    placeholder={placeholder}
+                    required={required}
+                />
+            )}
+        </div>
     );
 };
