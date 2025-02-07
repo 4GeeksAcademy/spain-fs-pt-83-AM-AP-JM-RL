@@ -1,0 +1,20 @@
+.banner-carousel-control-prev {
+    left: -100px !important;
+  }
+  
+  .banner-carousel-control-next {
+    right: -100px !important;
+  }
+  
+  .banner-carousel-control-prev,
+  .banner-carousel-control-next {
+    width: 5%;
+    position: relative;
+    z-index: 10;
+  }
+  
+  .banner-carousel-control-prev-icon,
+  .banner-carousel-control-next-icon {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+  }

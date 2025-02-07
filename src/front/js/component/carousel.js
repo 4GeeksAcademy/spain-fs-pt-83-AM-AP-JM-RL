@@ -26,7 +26,7 @@ export const Carousel = ({ filter, sort, title, id }) => {
 
   return (
     <section className="pt-5 pb-5 d-flex carousel-container">
-      <div className="container position-relative">
+      <div className="container">
         <h3 className="mb-4">{title}</h3>
         <div id={id} className="carousel slide" data-bs-ride="carousel">
           <div className="carousel-inner">
@@ -39,7 +39,7 @@ export const Carousel = ({ filter, sort, title, id }) => {
                   <div className="row d-flex flex-nowrap overflow-auto">
                     {chunk.map((event) => (
                       <div key={event.id} className="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
-                        <div className="card h-100">
+                        <div className="carousel-card h-100">
                           <div className="date-time">
                             {event.date && event.time
                               ? (() => {
@@ -61,8 +61,8 @@ export const Carousel = ({ filter, sort, title, id }) => {
                             alt={event.image}
                             src={event.image || "https://www.svgrepo.com/show/508699/landscape-placeholder.svg"}
                           />
-                          <div className="card-body">
-                            <h4 className="card-title">{event.title}</h4>
+                          <div className="carousel-card-body">
+                            <h4 className="carousel-card-title">{event.title}</h4>
                             <p>{event.location}</p>
                             <div className="d-flex justify-content-between align-items-center">
                               <Link to={`/events/${event.id}`} className="btn btn-primary">
