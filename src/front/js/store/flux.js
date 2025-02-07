@@ -357,11 +357,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 					if (response.ok) {
 						const data = await response.json();
+						toast.success(data.message)
 						setStore({ message: data.message });
 						console.log("registro ok")
 						return true;
 					} else {
 						const errorData = await response.json();
+						toast.error(errorData.error)
 						setStore({ error: errorData.error });
 						console.log("registro fallido", errorData)
 						return false;
@@ -386,10 +388,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 					if (response.ok) {
 						const data = await response.json();
+						toast.success(data.message)
 						setStore({ message: data.message });
 						return true;
 					} else {
 						const errorData = await response.json();
+						toast.error(errorData.error)
 						setStore({ error: errorData.error });
 						return false;
 					}
@@ -405,7 +409,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 					if (response.ok) {
 						const data = await response.json();
-						setStore({ eventRegistrations: data.registrations});
+						setStore({ eventRegistrations: data.registrations });
 					} else {
 						const errorData = await response.json();
 						console.error("Error en mostrar registros", errorData.error);

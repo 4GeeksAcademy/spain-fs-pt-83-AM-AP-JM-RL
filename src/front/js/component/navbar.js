@@ -29,6 +29,7 @@ export const Navbar = ({ onLoginClick, onRegisterClick }) => {
 		<>
 			<nav className="navbar navbar-light bg-light d-flex">
 				<Link to="/" className="home"><FaHome size={24} color="black" /></Link>
+				<Link to="/results" className="btn btn-secondary">todos</Link>
 				<SearchBar />
 				<div className="ml-auto user-container">
 					{!store.isAuthenticated ? (

@@ -51,30 +51,31 @@ const Layout = () => {
     return (
 
 
+        <div className="site-margin-color">
+            <div className="site-background-color">
+                <BrowserRouter basename={basename}>
+                    <ScrollToTop>
+                        <Navbar onLoginClick={handleOpenLogin} />
+                        <Routes>
+                            <Route element={<Home />} path="/" />
+                            <Route element={<ProfileDetails />} path="/profile/:event_id" />
+                            <Route element={<UserForm />} path="/user-form" />
+                            <Route element={<EventsForm />} path="/events-form" />
+                            <Route element={<UserDetails />} path="/user-details" />
+                            <Route element={<h1>Not found!</h1>} path="*" />
+                            <Route element={<EventDetail />} path="/events/:id" />
+                            <Route element={<ResultsPage />} path="/results" />
 
-        <div>
-            <BrowserRouter basename={basename}>
-                <ScrollToTop>
-                    <Navbar onLoginClick={handleOpenLogin} />
-                    <Routes>
-                        <Route element={<Home />} path="/" />
-                        <Route element={<ProfileDetails />} path="/profile/:event_id" />
-                        <Route element={<UserForm />} path="/user-form" />
-                        <Route element={<EventsForm />} path="/events-form" />
-                        <Route element={<UserDetails />} path="/user-details" />
-                        <Route element={<h1>Not found!</h1>} path="*" />
-                        <Route element={<EventDetail />} path="/events/:id" />
-                        <Route element={<ResultsPage />} path="/results" />
 
 
+                        </Routes>
+                    </ScrollToTop>
+                    <ModalLogin show={isLoginModalOpen} onClose={handleCloseLogin} onRegisterClick={handleOpenRegister} />
+                    <ModalRegister show={isRegisterModalOpen} onClose={handleCloseRegister} />
+                </BrowserRouter>
 
-                    </Routes>
-                </ScrollToTop>
-                <ModalLogin show={isLoginModalOpen} onClose={handleCloseLogin} onRegisterClick={handleOpenRegister} />
-                <ModalRegister show={isRegisterModalOpen} onClose={handleCloseRegister} />
-            </BrowserRouter>
-
-            <Footer />
+                <Footer />
+            </div>
         </div>
     );
 };

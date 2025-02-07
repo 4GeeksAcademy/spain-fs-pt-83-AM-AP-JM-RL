@@ -82,13 +82,13 @@ class Event(db.Model):
     
 class EventRegistration(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    event_id = db.Column(db.Integer, db.ForeignKey('event.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False) 
+    event_id = db.Column(db.Integer, db.ForeignKey('event.id'), nullable=False)  
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
 
-    def __repr__(self):
+    def __rep__(self):
         return f'<EventRegistration {self.user_id} - {self.event_id}>'
-
+    
     def serialize(self):
         return {
             "id": self.id,

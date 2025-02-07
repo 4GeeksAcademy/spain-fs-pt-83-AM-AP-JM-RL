@@ -353,6 +353,13 @@ def get_user():
     if not user:
         return jsonify({"error": "Usuario no encontrado."}), 404
     return jsonify(user.serialize()), 200
+@jwt_required()
+def get_user():
+    user_email = get_jwt_identity()
+    user = User.query.filter_by(email=user_email).first()
+    if not user:
+        return jsonify({"error": "Usuario no encontrado."}), 404
+    return jsonify(user.serialize()), 200
 @api.route('/event-creator-details/<int:event_id>')
 def get_event_creator_details(event_id):
     event = Event.query.get(event_id)
@@ -420,3 +427,30 @@ def get_event_posts(event_id):
     posts = Post.query.filter_by(event_id=event_id).all()
     serialized_posts = [events.serialize() for events in posts]
     return jsonify(serialized_posts)
+@api.route('/change-password', methods=['POST'])
+@jwt_required()
+def change_password():
+    data = request.get_json()
+    current_email = get_jwt_identity()
+    user = User.query.filter_by(email=current_email).first()
+    if not 'password' in data or not 'matchingPassword' in data:
+        return jsonify({"error": "No se ha enviado la nueva contraseña o la confirmación"}), 400
+    if data['password'] != data['matchingPassword']:
+        return jsonify({"error": "Las contraseñas no coinciden"}), 400
+    if len(data['password']) < 8:
+        return jsonify({"error": "La nueva contraseña debe tener más de 8 caracteres"}), 400
+    user.password = generate_password_hash(data['password'])
+    db.session.commit()
+    return jsonify({"message": "Contraseña actualizada correctamente"}), 200
+
+@api.route('/find-password', methods=['POST'])
+@jwt_required()
+def get_password():
+    data = request.get_json()
+    if not "password" in data:
+        return jsonify({"error": "No hay datos"}), 400
+    current_email = get_jwt_identity()
+    user = User.query.filter_by(email=current_email).first()
+    if not check_password_hash(user.password , data['password']):
+        return jsonify({"error": "Contraseña incorrecta"}), 400
+    return jsonify({"message": "Contraseña correcta"}), 200

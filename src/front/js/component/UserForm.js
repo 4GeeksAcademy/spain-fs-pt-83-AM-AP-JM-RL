@@ -4,6 +4,9 @@ import "../../styles/UserForm.css";
 import { useNavigate } from "react-router-dom";
 import * as filestack from "filestack-js";
 import { BackButton } from "./BackButton";
+import { Link } from "react-router-dom";
+import { Button, Modal } from "react-bootstrap";
+import { toast } from "react-toastify";
 
 export const UserForm = () => {
     const [email, setEmail] = useState("");
@@ -15,6 +18,31 @@ export const UserForm = () => {
     const [location, setLocation] = useState("");
     const [image, setImage] = useState("");
     const navigate = useNavigate();
+    const [showPasswordChange, setShowPasswordChange] = useState(false)
+    const [newPassword, setNewPassword] = useState('')
+    const [matchingPassword, setMatchingPassword] = useState('')
+
+    const token = sessionStorage.getItem('access_token')
+
+    const handleShowPasswordChange = async (e) => {
+        e.preventDefault()
+        const response = await fetch('https://symmetrical-space-lamp-69r6p7wpq9wxc679-3001.app.github.dev/api/find-password', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
+            },
+            body: JSON.stringify({ "password": password })
+        })
+        const data = await response.json()
+        if (response.ok) {
+            setShowPasswordChange(true)
+        } else {
+            toast.error(data.error)
+        }
+    }
+
+    const handleClosePasswordChange = () => setShowPasswordChange(false)
 
     const { store, actions } = useContext(Context);
 
@@ -29,6 +57,40 @@ export const UserForm = () => {
         };
         client.picker(options).open();
     };
+
+
+
+    const handleSubmitPasswordChange = async (e) => {
+        e.preventDefault()
+        if (newPassword.length < 8) {
+            toast.warning('La contraseña debe tener más de 8 caracteres')
+        } else {
+            try {
+                const response = await fetch('https://symmetrical-space-lamp-69r6p7wpq9wxc679-3001.app.github.dev/api/change-password', {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + token
+                    },
+                    body: JSON.stringify({ "password": newPassword, "matchingPassword": matchingPassword })
+                })
+                const data = await response.json()
+                if (response.ok) {
+                    toast.success(data.message)
+                    setPassword('')
+                    navigate('/user-details')
+                } else {
+                    toast.error(data.error)
+                }
+
+            } catch (error) {
+                console.error(error.message)
+            }
+        }
+
+    }
+
+
 
     const handleSubmit = async (e) => {
         const formData = {
@@ -89,8 +151,29 @@ export const UserForm = () => {
                         </div>
                     </div>
                     <button type="submit" className="btn btn-success w-100">Guardar</button>
+                    <Button variant="primary" onClick={handleShowPasswordChange}>
+                        Cambiar contraseña
+                    </Button>
                 </form>
-            </div>
+            </div >
+            <Modal show={showPasswordChange} onHide={handleClosePasswordChange}>
+                <Modal.Header closeButton>Modificar Contraseña</Modal.Header>
+                <form onSubmit={handleSubmitPasswordChange}>
+                    <Modal.Body>
+                        <div className="d-flex flex-column justify-content-center align-items-center">
+                            <input onChange={(e) => setNewPassword(e.target.value)} value={newPassword} placeholder="Contraseña nueva" className="form-control mb-2 w-50 text-center" type="password"></input>
+                            <input onChange={(e) => setMatchingPassword(e.target.value)} value={matchingPassword} placeholder="Confirma contraseña" className="form-control w-50 text-center" type="password"></input>
+                        </div>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="success" onClick={handleSubmitPasswordChange}>
+                            Confirmar
+                        </Button>
+                        <Button variant="danger" onClick={handleClosePasswordChange}>Cancelar</Button>
+
+                    </Modal.Footer>
+                </form>
+            </Modal>
         </>
     );
 };

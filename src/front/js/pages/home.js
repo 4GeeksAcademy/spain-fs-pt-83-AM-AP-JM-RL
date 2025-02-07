@@ -2,6 +2,8 @@ import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { Carousel } from "../component/carousel";
 import "../../styles/home.css";
+import { BannerCarousel } from "../component/bannercarousel";
+import { motion } from "motion/react";
 
 export const Home = () => {
   const { store, actions } = useContext(Context);
@@ -23,28 +25,68 @@ export const Home = () => {
 
   return (
     <>
-      <div className="home-img-banner">
-        <img src="https://images.unsplash.com/photo-1566737236500-c8ac43014a67?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
-      </div>
-      <div className="container">
+      <BannerCarousel />
+      <div className="home-background container-fluid">
 
-        <Carousel
-          id="recentCarousel"
-          title="Recently Added"
-          sort={sortByMostRecent}
-        />
+        <motion.div
+          initial={{ opacity: 0, scaleX: 0 }}
+          animate={{ opacity: 1, scaleX: 1 }}
+          transition={{
+            duration: 1,
+            delay: 0.5
+          }}
+          style={{
+            position: 'relative',
+            transformOrigin: 'right center',
+            width: '100vw'
+          }}
+        >
+          <Carousel
+            id="recentCarousel"
+            title="Recientes"
+            sort={sortByMostRecent}
+            className="first-carousel"
+          />
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, scaleX: 0 }}
+          animate={{ opacity: 1, scaleX: 1 }}
+          transition={{
+            duration: 1,
+            delay: 1
+          }}
+          style={{
+            position: 'relative',
+            transformOrigin: 'right center',
+            width: '100vw'
+          }}
+        >
+          <Carousel
+            id="upcomingCarousel"
+            title="Próximamente"
+            sort={sortByUpcoming}
+          />
+        </motion.div>
 
-        <Carousel
-          id="upcomingCarousel"
-          title="Upcoming"
-          sort={sortByUpcoming}
-        />
-
-        <Carousel
-          id="freeCarousel"
-          title="Free"
-          filter={filterFreeEvents}
-        />
+        <motion.div
+          initial={{ opacity: 0, scaleX: 0 }}
+          animate={{ opacity: 1, scaleX: 1 }}
+          transition={{
+            duration: 1,
+            delay: 1.5
+          }}
+          style={{
+            position: 'relative',
+            transformOrigin: 'right center',
+            width: '100vw'
+          }}
+        >
+          <Carousel
+            id="freeCarousel"
+            title="Gratis"
+            filter={filterFreeEvents}
+          />
+        </motion.div>
       </div>
     </>
   );
