@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 import "../../styles/searchresults.css";
+import { motion } from "motion/react";
 
 export const SearchResults = () => {
     const location = useLocation();
@@ -139,7 +140,17 @@ export const SearchResults = () => {
             <div className="container">
                 <div className="row">
                     <div className="col-lg-4 mb-3">
-                        <div className="filter-by">
+                        <motion.div 
+                         initial={{ opacity: 0, y: -50, scaleX: 0 }} 
+                         animate={{ opacity: 1, y: 0, scaleX: 1 }}  
+                         transition={{
+                           duration: 1,
+                           delay: 0.2
+                         }}
+                         style={{
+                           transformOrigin: 'top',
+                         }}
+                        className="filter-by">
                             <h4>Filter By</h4>
 
                             <div className="filter-group">
@@ -242,11 +253,22 @@ export const SearchResults = () => {
                                 ))}
                             </div>
 
-                        </div>
+                        </motion.div>
 
 
                     </div>
-                    <div className="col-lg-8">
+                    <motion.div
+                              initial={{ opacity: 0, scaleX: 0 }}
+                              animate={{ opacity: 1, scaleX: 1 }}
+                              transition={{
+                                duration: 1,
+                                delay: 0.5
+                              }}
+                              style={{
+                             
+                                transformOrigin: 'right center',
+                             
+                              }} className="col-lg-8">
                         <div className="row justify-content-between">
                             <div className="col-6">
                                 <h3 className="mb-3">
@@ -307,7 +329,8 @@ export const SearchResults = () => {
                                                 }
                                             />
                                             <div className="search-card-body">
-                                                <h4 className="search-card-title">{event.title}</h4>
+                                                <h4 className="search-card-title">{event.title}</h4><br></br>
+                                                <h6 className="search-card-location">{event.location}</h6>
                                                 <div className="d-flex justify-content-between">
                                                     <Link to={`/events/${event.id}`} className="btn btn-primary btn-sm">
                                                         Details
@@ -331,7 +354,29 @@ export const SearchResults = () => {
                                 </div>
                             )}
                         </div>
-                    </div>
+                        <div className="col-3 text-left justify-content-end">
+                            <button
+                                className="arrow-left btn btn-primary mb-3 mr-1"
+                                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}
+                                disabled={currentPage === 0}
+                            >
+                                <i className="fa fa-arrow-left"></i>
+                            </button>
+                            <button
+                                className="arrow-right btn btn-primary mb-3"
+                                onClick={() =>
+                                    setCurrentPage((prev) =>
+                                        (prev + 1) * itemsPerPage < paginatedResults.length
+                                            ? prev + 1
+                                            : prev
+                                    )
+                                }
+                                disabled={(currentPage + 1) * itemsPerPage >= paginatedResults.length}
+                            >
+                                <i className="fa fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </motion.div>
                 </div>
             </div>
         </section>

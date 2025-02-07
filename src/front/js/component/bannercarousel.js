@@ -3,7 +3,7 @@ import { Context } from "../store/appContext";
 import "../../styles/banner.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'; 
-import { Carousel } from "bootstrap/dist/js/bootstrap.bundle.min.js";
+import { Carousel as BootstrapCarousel } from 'bootstrap';
 
 export const BannerCarousel = ({ filter, sort, title, id }) => {
   const { store, actions } = useContext(Context);
@@ -22,18 +22,11 @@ export const BannerCarousel = ({ filter, sort, title, id }) => {
     if (store.events && store.events.length > 0) {
       const events = prepareEvents(store.events);
       const shuffled = shuffleArray(events);
-      setShuffledEvents(shuffled.slice(0, 4)); // Limit to 4 events
+      setShuffledEvents(shuffled.slice(0, 4)); 
     }
   }, [store.events]);
 
-  useEffect(() => {
-    const carouselElement = document.getElementById(id);
-    if (carouselElement) {
-      new Carousel(carouselElement, {
-        interval: false, // Disable auto-sliding
-      });
-    }
-  }, [id, shuffledEvents]);
+  
 
   const prepareEvents = (events) => {
     let filteredEvents = filter ? events.filter(filter) : events;
@@ -49,6 +42,25 @@ export const BannerCarousel = ({ filter, sort, title, id }) => {
         <h3 className="visually-hidden">{title}</h3>
         <div id={id} className="carousel slide" data-bs-ride="carousel">
           <div className="carousel-inner">
+  
+            <div className="carousel-item active">
+              <div
+                className="banner-item"
+                style={{
+                  backgroundImage: `url(https://img.freepik.com/foto-gratis/sonriendo-mujeres-jovenes-bailando-festival-holi_23-2148129372.jpg?t=st=1738877638~exp=1738881238~hmac=b539a0d94786e6d8f843ea214e0baa1f60ef4a86a353f1704c6d8d5af579d1d7&w=1380)`,
+                  backgroundSize: "cover",
+                  height: "800px",
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <h2 className="text-center text-white">Banner</h2>
+              </div>
+            </div>
+
+   
             {shuffledEvents.map((event, index) => (
               <div key={event.id} className={`carousel-item ${index === 0 ? "active" : ""}`}>
                 <div
@@ -57,7 +69,7 @@ export const BannerCarousel = ({ filter, sort, title, id }) => {
                     backgroundImage: `url(${event.image || "https://www.svgrepo.com/show/508699/landscape-placeholder.svg"})`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
-                    height: "400px",
+                    height: "800px",
                     width: "100%",
                     position: "relative",
                   }}
@@ -87,36 +99,14 @@ export const BannerCarousel = ({ filter, sort, title, id }) => {
                 </div>
               </div>
             ))}
-            <div className="carousel-item">
-              <div
-                className="banner-item"
-                style={{
-                  backgroundImage: `url(https://img.freepik.com/foto-gratis/sonriendo-mujeres-jovenes-bailando-festival-holi_23-2148129372.jpg?t=st=1738877638~exp=1738881238~hmac=b539a0d94786e6d8f843ea214e0baa1f60ef4a86a353f1704c6d8d5af579d1d7&w=1380)`,
-                  backgroundSize: "cover",
-                  height: "400px",
-                  width: "100%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <h2 className="text-center text-white">Banner</h2>
-              </div>
-            </div>
           </div>
 
+        
           <button
             className="carousel-control-prev"
             type="button"
             data-bs-target={`#${id}`}
             data-bs-slide="prev"
-            style={{
-              position: "absolute",
-              top: "50%",
-              transform: "translateY(-50%)",
-              left: "10px",
-              zIndex: 10,
-            }}
           >
             <span className="carousel-control-prev-icon" aria-hidden="true"></span>
             <span className="visually-hidden">Previous</span>
@@ -126,13 +116,6 @@ export const BannerCarousel = ({ filter, sort, title, id }) => {
             type="button"
             data-bs-target={`#${id}`}
             data-bs-slide="next"
-            style={{
-              position: "absolute",
-              top: "50%",
-              transform: "translateY(-50%)",
-              right: "10px",
-              zIndex: 10,
-            }}
           >
             <span className="carousel-control-next-icon" aria-hidden="true"></span>
             <span className="visually-hidden">Next</span>
@@ -141,4 +124,4 @@ export const BannerCarousel = ({ filter, sort, title, id }) => {
       </div>
     </section>
   );
-}
+};

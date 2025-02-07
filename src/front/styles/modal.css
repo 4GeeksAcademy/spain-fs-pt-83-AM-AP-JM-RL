@@ -70,7 +70,7 @@
 
 button {
     margin-top: 20px;
-    width: 100%;
+
     background-color: #ffffff;
     color: #080710;
     padding: 15px 0;
@@ -80,9 +80,26 @@ button {
     cursor: pointer;
 }
 
+.modal-login-buttons {
+    width: 100%;
+    margin-top: 20px;
+    right:100px;
+    padding: 10px;
+    margin-left: 1px;
+
+}
+
+.modal-register-buttons {
+    width: 100%;
+    margin-top: 20px;
+    right:100px;
+    padding: 10px;
+    margin-left: 1px;
+
+}
+
 button.btn-secondary {
-    margin-top: 10px;
-   
+justify-self: center;
 }
 
 h6 {

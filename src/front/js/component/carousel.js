@@ -66,7 +66,7 @@ export const Carousel = ({ filter, sort, title, id }) => {
                             <p>{event.location}</p>
                             <div className="d-flex justify-content-between align-items-center">
                               <Link to={`/events/${event.id}`} className="btn btn-primary">
-                                Details
+                                Detalles
                               </Link>
                               <i
                                 onClick={() => {

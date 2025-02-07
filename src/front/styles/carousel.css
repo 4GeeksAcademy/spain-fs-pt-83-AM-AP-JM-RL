@@ -1,74 +1,108 @@
-.carousel-container {
+.banner-carousel-container,
+.first-carousel {
+  margin-top: 0 !important;
+}
+
+.card {
+  position: relative;
+  border-radius: 1rem;
+  overflow: hidden;
+  cursor: pointer;
+  height: 400px;
+  width: 100%;
+}
+
+.card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: 0.4s;
+}
+
+.card-title {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  color: #fff;
+  z-index: 2;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  transition: 0.4s;
+  margin: 0;
+}
+
+.card-body {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.7);
+  color: transparent;
+  transition: 0.4s;
+  opacity: 0;
+}
+
+.card:hover .card-body {
+  opacity: 1;
+  color: #fff;
+}
+
+.card:hover .card-title {
+  bottom: calc(35% - 3rem);
+}
+
+.card:hover img {
+  transform: scale(1.1);
+}
+
+.card .date-time {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 3;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+}
 
 
-  }
-  
-  .banner-carousel-container {
+.carousel-item .row {
+  min-height: 420px; 
+}
 
-    margin-top: 0px !important;
 
-    }
+.card-body .btn {
+  font-size: 0.9rem;
 
-  .first-carousel {
-    margin-top: 0px !important;
-  }
+}
 
-  .card {
-    position: relative; 
-  }
-  
-  .card img {
-    width: 100%;
-    height: 400px; 
-    object-fit: cover;
-  }
-  
-  .card .date-time {
-    position: absolute;
-    top: 10px; 
-    right: 10px;
-    background-color: rgba(0, 0, 0, 0.7); 
-    color: #fff; 
-    padding: 5px 10px; 
-    font-size: 14px;
-    text-align: center;
-    border-radius: 5px;
-    line-height: 1.2;
-    z-index: 2; 
-    text-transform: lowercase; 
-  }
-  
 
-  .card-body .btn {
-    font-size: 12px;
-    padding: 5px 10px; 
-  }
-  
-  .card-body i {
-    font-size: 18px;
-    cursor: pointer;
-    margin-left: 10px;
-  }
-  
-  
-  .carousel-control-prev {
-  left: -75px;
-  }
-  
-  .carousel-control-next {
-    right: -75px; 
-  }
-  
+.card-body i {
+  font-size: 1.5rem;
+  position: absolute;
+  bottom: 1.5rem;
+  right: 1.5rem;
+}
 
-  .carousel-control-prev,
-  .carousel-control-next {
-    width: 5%;
-  }
-  
-  .carousel-control-prev-icon,
-  .carousel-control-next-icon {
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 50%; 
-  }
-  
-  
+
+.carousel-control-prev {
+  left: -115px;
+}
+
+.carousel-control-next {
+  right: -115px;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  width: 5%;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+}

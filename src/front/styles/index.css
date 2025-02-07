@@ -1,11 +1,11 @@
 body {
-    background-color: black;
+  background-color: #505050;
+  background-image: linear-gradient(90deg, #505050 0%, #f9f3f3 17%, #f9f4f4 39%, #fbf5f5 60%, #fbf8f8 80%, #ffffff 100%);
+  
+  background-repeat: space repeat;
 }
 
-.home-background {
-    background-color: white;
-    margin-top: 0px !important;
-}
+
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -55,3 +55,89 @@ footer hr,
 footer section {
     margin: 0;
 }
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@900&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+:root {
+  --h: 33;
+	--s: 90%;
+	--l: 90%;
+  font-family: 'Noto Sans', sans-serif;
+
+}
+
+
+.btn {
+  user-select: none;
+  font-size: clamp(1.2rem, 5vw + 1rem, 2.5rem);
+  width: 6em;
+  height: 2em;
+  
+  border-radius: 0.5em;
+
+  
+  box-shadow:
+    0 -0.125em 0.25em #0001,
+    0 0.25em 0.25em hsl(var(--h) var(--s) var(--l) / 0.25),  
+    0 0 0 0.1em hsl(var(--h) var(--s) var(--l) / 0.25),     
+    0 0.175em 0.3em hsl(var(--h) var(--s) var(--l) / 0.25) inset, 
+   
+    0 -0.25em 1em 0.3em hsl(var(--h) var(--s) var(--l) / 0.15) inset, 
+    0 0.6em 0 hsl(var(--h) var(--s) var(--l) / 0.15) inset; 
+
+
+
+  backdrop-filter: blur(0.1em);
+  position: relative;
+  display: grid;
+  place-content: center;
+  color: hsl(var(--h) var(--s) var(--l) / .7);
+  text-shadow: 
+    0.03em 0.03em #fff5,
+    -0.03em -0.03em #0005;
+  cursor: pointer;
+  transition: 0.1s ease;
+  padding-top: 0.2em;
+}
+
+.btn:before {
+  content: '';
+	position: absolute;
+  top: 100%;
+  width: 80%;
+  left: 10%;
+  height: 1.5em;
+  
+}
+
+.btn:after {
+  content: '';
+  inset: 0;
+  top: 0.5em;
+  position: relative;
+  
+}
+.btn:active:after {
+  background-position: -25% 0%;
+}
+
+.btn:active {
+  translate: .01em .25em;
+  box-shadow:
+		0 -0.125em 0.25em #0002,
+		0 0.25em 0.25em hsl(var(--h) var(--s) var(--l) / 0.5),
+		0 0 0 0.1em hsl(var(--h) var(--s) var(--l) / 0.5),
+		0 0.175em 0.3em hsl(var(--h) var(--s) var(--l) / 0.8) inset,
+		0 -0.025em 0.175em hsl(var(--h) var(--s) var(--l) / 0.4) inset,
+		0 -0.25em 1em 0.3em hsl(var(--h) var(--s) var(--l) / 0.3) inset;
+
+  backdrop-filter: blur(0.08em);
+}
+.btn:active:before {
+  height: 1em;
+}
+
+

@@ -142,17 +142,22 @@ export const EventDetail = () => {
             <div className="row mt-3">
               <div className="col-4">
                 <p>
-                  <strong>Location:</strong> {event.location}
+                  <strong>Dónde:</strong> {event.location}
                 </p>
               </div>
               <div className="col-4">
                 <p>
-                  <strong>Date:</strong> {event.date}
+                  <strong>Fecha:</strong> {event.date}
                 </p>
               </div>
               <div className="col-4">
                 <p>
-                  <strong>Time:</strong> {event.time}
+                  <strong>Hora:</strong> {event.time}
+                </p>
+              </div>
+              <div className="col-4">
+                <p>
+                  <strong>Precio:</strong> {event.price === 0 ? "Gratis!" : event.price}
                 </p>
               </div>
             </div>
