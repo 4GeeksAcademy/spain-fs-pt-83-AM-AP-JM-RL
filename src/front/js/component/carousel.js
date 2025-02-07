@@ -43,17 +43,17 @@ export const Carousel = ({ filter, sort, title, id }) => {
                           <div className="date-time">
                             {event.date && event.time
                               ? (() => {
-                                  const dateParts = event.date.split('-');
-                                  const dateObject = new Date(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`);
-                                  const formattedTime = new Date(`1970-01-01T${event.time}Z`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                                const dateParts = event.date.split('-');
+                                const dateObject = new Date(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`);
+                                const formattedTime = new Date(`1970-01-01T${event.time}Z`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-                                  return (
-                                    <>
-                                      <div>{dateObject.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}</div>
-                                      <div>{formattedTime}</div>
-                                    </>
-                                  );
-                                })()
+                                return (
+                                  <>
+                                    <div>{dateObject.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}</div>
+                                    <div>{formattedTime}</div>
+                                  </>
+                                );
+                              })()
                               : 'Invalid Date or Time'}
                           </div>
                           <img
@@ -109,6 +109,7 @@ export const Carousel = ({ filter, sort, title, id }) => {
             <span className="carousel-control-next-icon" aria-hidden="true"></span>
             <span className="visually-hidden">Next</span>
           </button>
+
         </div>
       </div>
     </section>

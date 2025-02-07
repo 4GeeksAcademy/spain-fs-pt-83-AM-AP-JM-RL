@@ -1,45 +1,96 @@
+.user-form-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
 .user-form-card {
-    background-color: #ffffff;
-    border: 1px solid #ced4da;
+    background: #ffffff;
+    overflow: hidden;
 }
 
-.user-form-card h2 {
-    font-family: 'Arial', sans-serif;
-    color: #343a40;
+.gradient-bg {
+    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
 }
 
-.user-form-card .form-group {
-    background-color: #f8f9fa;
-    border: none;
-    padding-bottom: 10px;
+.form-header .btn-back {
+    position: absolute;
+    left: 1.5rem;
+    top: 1.5rem;
+    color: white !important;
 }
 
-.user-form-card .form-control {
-    border-radius: 0.25rem;
+.form-field input,
+.form-field textarea {
+    border: 2px solid #e9ecef;
+    border-radius: 12px !important;
+    padding: 12px 20px;
+    transition: all 0.3s ease;
+}
+
+.form-field input:focus,
+.form-field textarea:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
 }
 
 .image-upload-wrapper {
-    cursor: pointer;
+    border: 2px dashed #dee2e6;
+    background: #f8f9fa;
+    transition: all 0.3s ease;
+    min-height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
 
-.placeholder-image {
+.image-upload-wrapper:hover {
+    border-color: #6366f1;
+    background: rgba(99, 102, 241, 0.05);
+}
+
+.upload-preview {
     max-width: 100%;
-    height: auto;
-    border-radius: 0.25rem;
-    border: 2px solid #6c757d;
+    max-height: 200px;
+    object-fit: cover;
 }
 
-.btn-outline-primary {
-    border-color: #007bff;
-    color: #007bff;
+.btn-save {
+    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    border: none;
+    transition: all 0.3s ease;
 }
 
-.btn-outline-primary:hover {
-    background-color: #007bff;
-    color: white;
+.btn-save:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(168, 85, 247, 0.4);
 }
 
-.btn-success {
-    background-color: #28a745;
-    border-color: #28a745;
+.modal-content {
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.border-dashed {
+    border-style: dashed;
+}
+
+@media (max-width: 768px) {
+    .user-form-card {
+        margin: 1rem;
+    }
+
+    .form-header {
+        padding: 2rem !important;
+    }
+
+    .d-flex.gap-3 {
+        flex-direction: column;
+    }
+
+    .btn-save,
+    .btn-outline-primary {
+        width: 100%;
+    }
 }
