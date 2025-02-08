@@ -1,20 +1,87 @@
-.banner-carousel-control-prev {
-    left: -100px !important;
+.square {
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  width: 100%;
+  max-width: 900px;
+  height: 300px;
+  background-color: aliceblue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  vertical-align: middle;
+  position: relative;
+  margin-left: auto;
+ 
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.square h1 {
+  font-size: 3.375rem;
+  text-shadow: 0.25rem 0.25rem 0.25rem rgba(0, 0, 0, 1);
+  color: white;
+  -webkit-text-stroke: 2px black;
+  font-weight: bolder;
+  width: 100%;
+  margin-left: 1.25rem;
+  z-index: 1;
+}
+
+.right-shape {
+  background-color: black;
+  width: 40%;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  border-top-left-radius: 50%;
+  border-bottom-left-radius: 50%;
+}
+
+.left-shape {
+  background-image: url("https://live.staticflickr.com/8252/8541751950_332723d052_b.jpg");
+  height: 100%;
+  width: 55%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-top-right-radius: 80px;
+  background-size: cover;
+}
+
+@media screen and (max-width: 768px) {
+  .square {
+    height: 200px;
   }
-  
-  .banner-carousel-control-next {
-    right: -100px !important;
+
+  .square h1 {
+    font-size: 2rem;
+    margin-left: 0.625rem;
   }
-  
-  .banner-carousel-control-prev,
-  .banner-carousel-control-next {
-    width: 5%;
-    position: relative;
-    z-index: 10;
+
+  .right-shape {
+    width: 30%;
   }
-  
-  .banner-carousel-control-prev-icon,
-  .banner-carousel-control-next-icon {
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 50%;
+
+  .left-shape {
+    width: 65%;
   }
+}
+
+@media screen and (max-width: 480px) {
+  .square {
+    height: 150px;
+  }
+
+  .square h1 {
+    font-size: 1.5rem;
+    margin-left: 0.3125rem;
+  }
+
+  .right-shape {
+    width: 25%;
+  }
+
+  .left-shape {
+    width: 70%;
+  }
+}

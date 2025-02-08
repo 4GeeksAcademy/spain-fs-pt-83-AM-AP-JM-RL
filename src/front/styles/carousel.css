@@ -1,11 +1,7 @@
-.banner-carousel-container,
-.first-carousel {
-  margin-top: 0 !important;
-}
-
 .carousel-container {
   position: relative;
 }
+
 .carousel-card {
   position: relative;
   border-radius: 1rem;
@@ -71,17 +67,9 @@
   font-size: 0.9rem;
 }
 
-
-.carousel-item .row {
-  min-height: 420px; 
-}
-
-
 .carousel-card-body .btn {
   font-size: 0.9rem;
-
 }
-
 
 .carousel-card-body i {
   font-size: 1.5rem;
@@ -90,20 +78,32 @@
   right: 1.5rem;
 }
 
-
-.carousel-control-prev {
-  left: -140px !important;
-}
-
-.carousel-control-next {
-  right: -140px !important;
+.carousel-item .row {
+  min-height: 420px;
 }
 
 .carousel-control-prev,
 .carousel-control-next {
-  width: 5%;
-  position: relative;
-  z-index: 10;
+  width: 50px !important;
+  height: 50px;
+  background-color: rgba(191, 181, 181, 0.75);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  z-index: 5;
+  cursor: pointer;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+}
+
+.carousel-control-prev {
+  left: 10px !important;
+}
+
+.carousel-control-next {
+  right: 10px !important;
 }
 
 .carousel-control-prev-icon,
@@ -112,3 +112,49 @@
   border-radius: 50%;
 }
 
+
+@media (max-width: 767px) {
+  .carousel-card {
+    height: 300px;
+  }
+
+  .carousel-card-body .btn {
+    font-size: 0.8rem;
+  }
+
+  .carousel-card-body i {
+    font-size: 1.3rem;
+  }
+
+  .carousel-control-prev,
+  .carousel-control-next {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .carousel-card .date-time {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+
+  .carousel-inner {
+    display: block;
+  }
+
+  .carousel-item .row {
+    display: block;
+  }
+}
+
+@media (max-width: 500px) {
+  .carousel-card {
+    height: 250px;
+  }
+
+  .carousel-control-prev,
+  .carousel-control-next {
+    width: 35px !important;
+    height: 35px !important;
+  }
+}

@@ -97,6 +97,7 @@
   border-radius: 0.25rem;
   background-color: #f0f0f0;
   cursor: pointer;
+  margin-top: 10px;
 }
 
 .type-button.active {
@@ -107,7 +108,10 @@
 .arrow-left,
 .arrow-right {
   margin-right: 0.5rem;
+  display: grid;
+  border: 0;
 }
+
 
 
 .filter-by {
@@ -126,7 +130,7 @@
 
 .filter-group input {
   width: 120px;
-  margin-right: 10px;
+
   margin-top: 5px;
 }
 

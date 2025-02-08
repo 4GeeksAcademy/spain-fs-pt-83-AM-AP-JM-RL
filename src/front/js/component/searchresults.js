@@ -16,7 +16,7 @@ export const SearchResults = () => {
         timeRange: { start: "", end: "" },
         dateRange: { start: "", end: "" },
     });
-    
+
 
     const itemsPerPage = 9;
     const query = new URLSearchParams(location.search).get("query");
@@ -25,7 +25,7 @@ export const SearchResults = () => {
 
     const reformatDate = (dateString) => {
         const [day, month, year] = dateString.split("-");
-        return `${year}-${month}-${day}`; 
+        return `${year}-${month}-${day}`;
     };
 
     useEffect(() => {
@@ -75,18 +75,19 @@ export const SearchResults = () => {
 
             if (sortOption === "most_recent") {
                 filtered.sort((a, b) => {
-                    const dateA = reformatDate(a.created_at);
-                    const dateB = reformatDate(b.created_at);
-                    return new Date(dateB) - new Date(dateA); 
+
+                    const dateA = reformatDate(a.date);
+                    const dateB = reformatDate(b.date);
+                    return new Date(dateA) - new Date(dateB);
                 });
                 console.log("Sorting by created_at:", filtered);
             } else if (sortOption === "upcoming") {
                 filtered.sort((a, b) => {
-                    const dateA = reformatDate(a.date);
-                    const dateB = reformatDate(b.date);
-                    return new Date(dateA) - new Date(dateB); 
+                    const dateA = reformatDate(a.created_at);
+                    const dateB = reformatDate(b.created_at);
+                    return new Date(dateA) - new Date(dateB);
                 });
-                console.log("Sorting by upcoming date:", filtered); 
+                console.log("Sorting by upcoming date:", filtered);
             } else if (sortOption === "price_asc") {
                 filtered.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
             } else if (sortOption === "price_desc") {
@@ -104,7 +105,7 @@ export const SearchResults = () => {
 
 
     const handleTypeSelect = (type) => {
-        
+
         setSelectedType((prev) => {
             const newType = prev === type ? "" : type;
             actions.searchEvents({ type: newType, filters });
@@ -146,17 +147,17 @@ export const SearchResults = () => {
             <div className="container">
                 <div className="row">
                     <div className="col-lg-4 mb-3">
-                        <motion.div 
-                         initial={{ opacity: 0, y: -50, scaleX: 0 }} 
-                         animate={{ opacity: 1, y: 0, scaleX: 1 }}  
-                         transition={{
-                           duration: 1,
-                           delay: 0.2
-                         }}
-                         style={{
-                           transformOrigin: 'top',
-                         }}
-                        className="filter-by">
+                        <motion.div
+                            initial={{ opacity: 0, y: -50, scaleX: 0 }}
+                            animate={{ opacity: 1, y: 0, scaleX: 1 }}
+                            transition={{
+                                duration: 1,
+                                delay: 0.2
+                            }}
+                            style={{
+                                transformOrigin: 'top',
+                            }}
+                            className="filter-by">
                             <h4>Filtros</h4>
 
                             <div className="filter-group">
@@ -219,7 +220,7 @@ export const SearchResults = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="row filter-group">
+                            <div className="filter-group">
                                 <div className="row">
                                     <label>Fecha</label>
                                 </div>
@@ -251,12 +252,13 @@ export const SearchResults = () => {
                                 {types.map((type) => (
                                     <button
                                         key={type}
-                                        className={`type-button ${selectedType === type ? "active" : ""} ${type.toLowerCase()}`}
+                                        className={`btn type-button ${selectedType === type ? "active" : ""} ${type.toLowerCase()}`}
                                         onClick={() => handleTypeSelect(type)}
                                     >
                                         {type.charAt(0).toLowerCase() + type.slice(1)}
                                     </button>
                                 ))}
+
                             </div>
 
                         </motion.div>
@@ -264,25 +266,25 @@ export const SearchResults = () => {
 
                     </div>
                     <motion.div
-                              initial={{ opacity: 0, scaleX: 0 }}
-                              animate={{ opacity: 1, scaleX: 1 }}
-                              transition={{
-                                duration: 1,
-                                delay: 0.5
-                              }}
-                              style={{
-                             
-                                transformOrigin: 'right center',
-                             
-                              }} className="col-lg-8">
+                        initial={{ opacity: 0, scaleX: 0 }}
+                        animate={{ opacity: 1, scaleX: 1 }}
+                        transition={{
+                            duration: 1,
+                            delay: 0.5
+                        }}
+                        style={{
+
+                            transformOrigin: 'right center',
+
+                        }} className="col-lg-8">
                         <div className="row justify-content-between">
-                            <div className="col-9">
+                            <div className="col-8">
                                 <h3>
                                     {query ? `Resultados para  "${query}"` : "Eventos"}
                                 </h3>
                             </div>
 
-                            <div className="col-3 text-left d-flex justify-content-end">
+                            <div className="col-4 text-left d-flex justify-content-end">
                                 <button
                                     className="arrow-left btn btn-primary mb-3 mr-1"
                                     onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}
@@ -360,7 +362,8 @@ export const SearchResults = () => {
                                 </div>
                             )}
                         </div>
-                        <div className="col-3 text-left justify-content-end">
+                        <div className="row d-flex text-right justify-content-end">
+                        <div className="col-1">
                             <button
                                 className="arrow-left btn btn-primary mb-3 mr-1"
                                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}
@@ -368,6 +371,8 @@ export const SearchResults = () => {
                             >
                                 <i className="fa fa-arrow-left"></i>
                             </button>
+                            </div>
+                            <div className="col-1">
                             <button
                                 className="arrow-right btn btn-primary mb-3"
                                 onClick={() =>
@@ -381,6 +386,7 @@ export const SearchResults = () => {
                             >
                                 <i className="fa fa-arrow-right"></i>
                             </button>
+                            </div>
                         </div>
                     </motion.div>
                 </div>

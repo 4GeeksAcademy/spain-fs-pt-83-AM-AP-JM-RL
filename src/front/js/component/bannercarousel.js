@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
-import "../../styles/banner.css";
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'; 
 import { Carousel as BootstrapCarousel } from 'bootstrap';
+import { BannerImage } from "./bannerimage";
 
 export const BannerCarousel = ({ filter, sort, title, id }) => {
   const { store, actions } = useContext(Context);
@@ -47,16 +48,13 @@ export const BannerCarousel = ({ filter, sort, title, id }) => {
               <div
                 className="banner-item"
                 style={{
-                  backgroundImage: `url(https://img.freepik.com/foto-gratis/sonriendo-mujeres-jovenes-bailando-festival-holi_23-2148129372.jpg?t=st=1738877638~exp=1738881238~hmac=b539a0d94786e6d8f843ea214e0baa1f60ef4a86a353f1704c6d8d5af579d1d7&w=1380)`,
-                  backgroundSize: "cover",
+                  backgroundColor:" rgb(176, 19, 19)",           
                   height: "800px",
-                  width: "100%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  width: "100%",             
                 }}
               >
-                <h2 className="text-center text-white">Banner</h2>
+                <BannerImage />
+                
               </div>
             </div>
 
