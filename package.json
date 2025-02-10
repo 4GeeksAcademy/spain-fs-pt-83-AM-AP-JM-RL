@@ -80,6 +80,7 @@
 		"fabric": "^6.5.4",
 		"filestack-js": "^3.36.4",
 		"leaflet": "^1.9.4",
+		"lodash.debounce": "^4.0.8",
 		"motion": "^12.4.1",
 		"prop-types": "^15.6.1",
 		"react": "^18.3.1",

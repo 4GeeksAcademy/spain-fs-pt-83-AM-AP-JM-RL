@@ -20,11 +20,19 @@
 }
 
 .title-icon h1 {
-    font-size: 54px;
+    font-size: 36px;
+}
+
+.title-icon h3 {
+    font-size: 18px;
+}
+
+.title-icon p {
+    font-size: 12px;
 }
 
 .title-icon i {
-    font-size: 36px;
+    font-size: 24px;
     justify-self: end;
 }
 

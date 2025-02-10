@@ -54,7 +54,8 @@ const Layout = () => {
 
         <div className="site-margin-color">
            <BackgroundGradient />
-            <div className="site-background-color">
+            <div className="site-background-color" style={{ fontFamily: 'Lucida Sans, Lucida Sans Regular, Lucida Grande, Lucida Sans Unicode, Geneva, Verdana, sans-serif' }}
+            >
                  
                 <BrowserRouter basename={basename}>
                     <ScrollToTop>

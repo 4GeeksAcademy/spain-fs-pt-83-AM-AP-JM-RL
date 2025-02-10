@@ -1,13 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Context } from "../store/appContext";
+import React from "react";
+
 
 import { SearchResults } from "../component/searchresults";
 
 
 
 export const ResultsPage = () => {
-
-  const { store, actions } = useContext(Context);
 
 
     return (
