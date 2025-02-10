@@ -77,6 +77,7 @@
 		"@fortawesome/react-fontawesome": "^0.2.2",
 		"axios": "^1.7.9",
 		"bootstrap": "^5.3.3",
+		"fabric": "^6.5.4",
 		"filestack-js": "^3.36.4",
 		"leaflet": "^1.9.4",
 		"motion": "^12.4.1",

@@ -7,6 +7,8 @@
 .user-profile-card {
     background: #ffffff;
     overflow: hidden;
+    margin-bottom: 2rem !important;
+    padding-bottom: 2rem !important;
 }
 
 .gradient-bg {
@@ -14,8 +16,8 @@
 }
 
 .avatar-container {
-    width: 150px;
-    height: 150px;
+    width: 250px;
+    height: 250px;
     border: 4px solid white;
     border-radius: 50%;
     transition: transform 0.3s ease;

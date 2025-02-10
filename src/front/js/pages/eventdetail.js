@@ -11,6 +11,7 @@ import Button from 'react-bootstrap/Button';
 import { ListGroup } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { BackButton } from "../component/BackButton"
+import { motion } from "motion/react";
 
 export const EventDetail = () => {
   const { store, actions } = useContext(Context);
@@ -118,7 +119,13 @@ export const EventDetail = () => {
       </div>
       <div className="event-card container">
         <div className="row mt-5">
-          <div className="col-lg-6">
+          <motion.div className="col-lg-6"
+           initial={{ opacity: 0, scaleX: 0 }}
+           animate={{ opacity: 1, scaleX: 1 }}
+           transition={{
+             duration: 1,
+             delay: 0.5
+           }}>
 
             <img
               className="img-fluid rounded-start"
@@ -130,9 +137,15 @@ export const EventDetail = () => {
             />
 
 
-          </div>
+          </motion.div>
           <div className="col-lg-6">
-            <div className="title-icon d-flex align-items-center justify-content-between">
+            <motion.div className="title-icon d-flex align-items-center justify-content-between"
+             initial={{ opacity: 0, scaleX: 0 }}
+             animate={{ opacity: 1, scaleX: 1 }}
+             transition={{
+               duration: 1,
+               delay: 0.5
+             }}>
               <h1 className="mb-0">{event.title}</h1>
               <i
                 className={`fa-star ${isFavorite ? "fa-solid text-warning" : "fa-regular"}`}
@@ -145,11 +158,25 @@ export const EventDetail = () => {
                 }}
                 style={{ cursor: "pointer" }}
               ></i>
-            </div>
-            <div className="mt-2">
+            </motion.div>
+            <motion.div className="mt-2"
+             initial={{ opacity: 0, scaleX: 0 }}
+             animate={{ opacity: 1, scaleX: 1 }}
+             transition={{
+               duration: 1,
+               delay: 0.5
+             }}>
               <h3>{event.description}</h3>
-            </div>
-            <div className="row mt-3">
+            </motion.div>
+            <motion.div 
+                 initial={{ opacity: 0, scaleX: 0 }}
+                 animate={{ opacity: 1, scaleX: 1 }}
+                 transition={{
+                   duration: 1,
+                   delay: 0.5
+                 }}
+
+            className="row mt-3">
               <div className="col-3">
                 <p>
                   <strong>Dónde:</strong> {event.location}
@@ -170,9 +197,15 @@ export const EventDetail = () => {
                   <strong>Precio:</strong> {event.price === 0 ? "Gratis!" : `${event.price} Euros`}
                 </p>
               </div>
-            </div>
+            </motion.div>
             
-            <div className="row">
+            <motion.div className="row"
+             initial={{ opacity: 0, scaleX: 0 }}
+             animate={{ opacity: 1, scaleX: 1 }}
+             transition={{
+               duration: 1,
+               delay: 0.5
+             }}>
               <div className="mt-3">
                 {store.isAuthenticated ? (
                   event.user_id === store.userDetails.id ? (
@@ -188,8 +221,14 @@ export const EventDetail = () => {
 
               </div>
 
-            </div>
-            <div className="row">
+            </motion.div>
+            <motion.div className="row event-buttons"
+             initial={{ opacity: 0, scaleX: 0 }}
+             animate={{ opacity: 1, scaleX: 1 }}
+             transition={{
+               duration: 1,
+               delay: 0.5
+             }}>
               <div className="col-4">
                 <Button className="attendies-button" variant="info" onClick={() => setShowRegistrations(true)}>Registrados</Button>
               </div>
@@ -207,12 +246,17 @@ export const EventDetail = () => {
 
 
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
         <div className="row mt-5">
-          <div className="col-12">
-            <MapContainer center={citiesCoordinates[event.location] || [0, 0]} zoom={15} style={{ height: "400px", width: "100%" }}>
+          <motion.div className="col-12" initial={{ opacity: 0, scaleX: 0 }}
+             animate={{ opacity: 1, scaleX: 1 }}
+             transition={{
+               duration: 1,
+               delay: 0.5
+             }}>
+            <MapContainer center={citiesCoordinates[event.location] || [0, 0]} zoom={15} style={{ height: "300px", width: "100%" }}>
               <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
               {citiesCoordinates[event.location] && (
                 <Marker position={citiesCoordinates[event.location]} icon={legalIcon}>
@@ -220,7 +264,7 @@ export const EventDetail = () => {
                 </Marker>
               )}
             </MapContainer>
-          </div>
+          </motion.div>
         </div>
       </div>
 

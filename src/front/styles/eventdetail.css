@@ -4,6 +4,19 @@
 
 .event-card img {
     padding: 10px;
+   
+}
+
+.event-buttons button {
+    width: 130px;
+    height: 40px;
+}
+
+@media (max-width: 640px) {
+    .event-buttons button {
+        width: 100px; 
+        height: 30px; 
+    }
 }
 
 .title-icon h1 {

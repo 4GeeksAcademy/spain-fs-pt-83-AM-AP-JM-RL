@@ -91,24 +91,25 @@ export const Carousel = ({ filter, sort, title, id }) => {
             )}
           </div>
 
-          <button
+          <div
             className="carousel-control-prev"
-            type="button"
+            role="button"
             data-bs-target={`#${id}`}
             data-bs-slide="prev"
           >
             <span className="carousel-control-prev-icon" aria-hidden="true"></span>
             <span className="visually-hidden">Previous</span>
-          </button>
-          <button
+          </div>
+          <div
             className="carousel-control-next"
-            type="button"
+            role="button"
             data-bs-target={`#${id}`}
             data-bs-slide="next"
           >
             <span className="carousel-control-next-icon" aria-hidden="true"></span>
             <span className="visually-hidden">Next</span>
-          </button>
+          </div>
+
 
         </div>
       </div>
