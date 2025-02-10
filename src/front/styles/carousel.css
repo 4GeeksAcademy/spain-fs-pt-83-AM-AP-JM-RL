@@ -1,6 +1,17 @@
 .carousel-container {
   position: relative;
+  
 }
+
+.carousel-container h3{font-size: 2.375rem;
+  text-shadow: 0.2rem 0.2rem 0.2rem rgba(0, 0, 0, 1);
+  color: white;
+  -webkit-text-stroke: 2px black;
+  font-weight: bolder;
+  width: 100%;
+  margin-left: 1.25rem;
+  z-index: 1;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;}
 
 .carousel-card {
   position: relative;
@@ -115,7 +126,12 @@
 
 @media (max-width: 767px) {
   .carousel-card {
-    height: 300px;
+    height: 400px;
+    width: 300px;
+  }
+
+  .carousel-card img {
+    height: 400px;
   }
 
   .carousel-card-body .btn {

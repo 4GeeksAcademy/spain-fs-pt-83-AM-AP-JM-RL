@@ -1,9 +1,4 @@
-body {
-  background-color: #505050;
-  background-image: linear-gradient(90deg, #505050 0%, #f9f3f3 17%, #f9f4f4 39%, #fbf5f5 60%, #fbf8f8 80%, #ffffff 100%);
-  
-  background-repeat: space repeat;
-}
+
 
 
 .modal-overlay {
@@ -140,4 +135,118 @@ footer section {
   height: 1em;
 }
 
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
 
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; 
+}
+
+#root, .your-container-class {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.image-upload-wrapper {
+height: 600px;
+}
+
+.create-event-button {
+  margin-bottom: 20px;
+}
+
+@media screen and (max-width: 768px) {
+  .image-upload-wrapper {
+    height: 300px;
+    }
+}
+
+footer {
+  background-color: #ffffff;
+  padding: 2rem 1rem;
+}
+
+footer .row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+footer .col-md-3, footer .col-md-2, footer .col-md-4 {
+  margin-bottom: 1.5rem;
+}
+
+footer h6 {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+footer .text-white {
+  color: #333;
+  text-decoration: none;
+}
+
+footer .text-white:hover {
+  color: #007bff;
+}
+
+footer .fa-home, footer .fa-envelope, footer .fa-phone, footer .fa-print {
+  margin-right: 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  footer .row {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  footer .col-md-3, footer .col-md-2, footer .col-md-4 {
+    width: 100%;
+    text-align: center;
+  }
+
+  footer .text-white {
+    font-size: 0.9rem;
+  }
+
+  footer h6 {
+    font-size: 1rem;
+  }
+
+  footer .fa-home, footer .fa-envelope, footer .fa-phone, footer .fa-print {
+    margin-right: 0.5rem;
+  }
+
+  footer .p-3 {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  footer h6 {
+    font-size: 0.9rem;
+  }
+
+  footer .text-blue {
+    font-size: 0.8rem;
+  }
+
+  footer .fa-home, footer .fa-envelope, footer .fa-phone, footer .fa-print {
+    font-size: 0.9rem;
+  }
+
+  footer .col-md-3, footer .col-md-2, footer .col-md-4 {
+    text-align: center;
+    width: 100%;
+  }
+}

@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
-
+import { Link } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js'; 
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { Carousel as BootstrapCarousel } from 'bootstrap';
 import { BannerImage } from "./bannerimage";
 
@@ -23,11 +23,11 @@ export const BannerCarousel = ({ filter, sort, title, id }) => {
     if (store.events && store.events.length > 0) {
       const events = prepareEvents(store.events);
       const shuffled = shuffleArray(events);
-      setShuffledEvents(shuffled.slice(0, 4)); 
+      setShuffledEvents(shuffled.slice(0, 4));
     }
   }, [store.events]);
 
-  
+
 
   const prepareEvents = (events) => {
     let filteredEvents = filter ? events.filter(filter) : events;
@@ -41,33 +41,33 @@ export const BannerCarousel = ({ filter, sort, title, id }) => {
     <section className="banner-carousel-container">
       <div className="container-fluid px-0">
         <h3 className="visually-hidden">{title}</h3>
-        <div id={id} className="carousel slide" data-bs-ride="carousel">
+        <div id={id} className="carousel slide" data-bs-ride="carousel" data-bs-interval="4000">
           <div className="carousel-inner">
-  
+
             <div className="carousel-item active">
               <div
                 className="banner-item"
                 style={{
-                  backgroundColor:" rgb(176, 19, 19)",           
-                  height: "800px",
-                  width: "100%",             
+                  backgroundColor: " rgb(177, 14, 206)",
+                  height: "50rem",
+                  width: "100%",
                 }}
               >
                 <BannerImage />
-                
+
               </div>
             </div>
 
-   
+
             {shuffledEvents.map((event, index) => (
-              <div key={event.id} className="carousel-item">
+              <div key={event.id} className="carousel-item banner-carousel-card">
                 <div
                   className="event-card"
                   style={{
                     backgroundImage: `url(${event.image || "https://www.svgrepo.com/show/508699/landscape-placeholder.svg"})`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
-                    height: "800px",
+                    height: "50rem",
                     width: "100%",
                     position: "relative",
                   }}
@@ -76,23 +76,29 @@ export const BannerCarousel = ({ filter, sort, title, id }) => {
                     position: "absolute",
                     bottom: "0",
                     left: "0",
+                    height: "300px",
                     right: "0",
                     padding: "20px",
                     background: "rgba(0,0,0,0.5)",
                     color: "white",
                   }}>
-                    <h2 className="event-title">{event.title}</h2>
-                    <h4 className="event-location">{event.location}</h4>
-                    <h6 className="event-datetime">
+                    <div className="col-6">
+                    <h1 className="event-title">{event.title}</h1>
+                    <h3 className="event-location">{event.location}</h3>
+                    <h5 className="event-datetime">
                       {event.date && event.time
                         ? (() => {
-                            const dateParts = event.date.split("-");
-                            const dateObject = new Date(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`);
-                            const formattedTime = new Date(`1970-01-01T${event.time}Z`).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-                            return `${dateObject.toLocaleDateString("es-ES", { day: "numeric", month: "short" })} ${formattedTime}`;
-                          })()
+                          const dateParts = event.date.split("-");
+                          const dateObject = new Date(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`);
+                          const formattedTime = new Date(`1970-01-01T${event.time}Z`).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+                          return `${dateObject.toLocaleDateString("es-ES", { day: "numeric", month: "short" })} ${formattedTime}`;
+                        })()
                         : "Invalid Date or Time"}
-                    </h6>
+                    </h5>
+                    <Link to={`/events/${event.id}`} className="btn btn-primary">
+                      Detalles
+                    </Link>
+                    </div>
                   </div>
                 </div>
               </div>

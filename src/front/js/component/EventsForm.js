@@ -113,7 +113,7 @@ export const EventsForm = () => {
                     </div>
                 </div>
                 <div className="col-12">
-                    <button className="btn btn-success w-50">Crear evento</button>
+                    <button className="btn btn-success w-50 create-event-button">Crear evento</button>
                 </div>
             </form>
         </div>

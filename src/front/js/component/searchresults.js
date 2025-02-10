@@ -341,7 +341,7 @@ export const SearchResults = () => {
                                                 <h6 className="search-card-location">{event.location}</h6>
                                                 <div className="d-flex justify-content-between">
                                                     <Link to={`/events/${event.id}`} className="btn btn-primary btn-sm">
-                                                        Details
+                                                        Detalles
                                                     </Link>
                                                     <i
                                                         onClick={() => {

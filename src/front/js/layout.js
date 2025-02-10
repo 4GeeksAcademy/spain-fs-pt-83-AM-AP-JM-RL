@@ -18,6 +18,7 @@ import { UserForm } from "./component/UserForm";
 import { UserDetails } from "./component/UserDetails";
 import { SearchResults } from "./component/searchresults";
 import { BackButton } from "./component/BackButton";
+import { BackgroundGradient } from "./component/backgroundgradient";
 
 
 //create your first component
@@ -52,7 +53,9 @@ const Layout = () => {
 
 
         <div className="site-margin-color">
+           <BackgroundGradient />
             <div className="site-background-color">
+                 
                 <BrowserRouter basename={basename}>
                     <ScrollToTop>
                         <Navbar onLoginClick={handleOpenLogin} />
@@ -73,9 +76,10 @@ const Layout = () => {
                     <ModalLogin show={isLoginModalOpen} onClose={handleCloseLogin} onRegisterClick={handleOpenRegister} />
                     <ModalRegister show={isRegisterModalOpen} onClose={handleCloseRegister} />
                 </BrowserRouter>
-
+ 
                 <Footer />
             </div>
+        
         </div>
     );
 };
