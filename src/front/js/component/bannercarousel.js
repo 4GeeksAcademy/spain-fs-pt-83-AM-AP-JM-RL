@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -9,6 +9,8 @@ import { BannerImage } from "./bannerimage";
 export const BannerCarousel = ({ filter, sort, title, id }) => {
   const { store, actions } = useContext(Context);
   const [shuffledEvents, setShuffledEvents] = useState([]);
+  const carouselRef = useRef(null);  // Ref to the carousel
+  const carouselInstanceRef = useRef(null);  // Ref to the bootstrap carousel instance
 
   const shuffleArray = (array) => {
     const shuffled = [...array];
@@ -27,7 +29,22 @@ export const BannerCarousel = ({ filter, sort, title, id }) => {
     }
   }, [store.events]);
 
+  useEffect(() => {
+    // Initialize the carousel when the component mounts
+    if (carouselRef.current && !carouselInstanceRef.current) {
+      carouselInstanceRef.current = new BootstrapCarousel(carouselRef.current, {
+        ride: "carousel",
+        interval: 3000,
+      });
+    }
 
+    // Cleanup: destroy the carousel instance when the component unmounts
+    return () => {
+      if (carouselInstanceRef.current) {
+        carouselInstanceRef.current.dispose();
+      }
+    };
+  }, [shuffledEvents]);
 
   const prepareEvents = (events) => {
     let filteredEvents = filter ? events.filter(filter) : events;
@@ -41,9 +58,14 @@ export const BannerCarousel = ({ filter, sort, title, id }) => {
     <section className="banner-carousel-container">
       <div className="container-fluid px-0">
         <h3 className="visually-hidden">{title}</h3>
-        <div id={id} className="carousel slide" data-bs-ride="carousel" data-bs-interval="4000">
+        <div
+          id={id}
+          className="carousel slide"
+          data-bs-ride="carousel"
+          data-bs-interval="3000"
+          ref={carouselRef}  // Attach the ref to the carousel container
+        >
           <div className="carousel-inner">
-
             <div className="carousel-item active">
               <div
                 className="banner-item"
@@ -54,12 +76,10 @@ export const BannerCarousel = ({ filter, sort, title, id }) => {
                 }}
               >
                 <BannerImage />
-
               </div>
             </div>
 
-
-            {shuffledEvents.map((event, index) => (
+            {shuffledEvents.map((event) => (
               <div key={event.id} className="carousel-item banner-carousel-card">
                 <div
                   className="event-card"
@@ -72,32 +92,42 @@ export const BannerCarousel = ({ filter, sort, title, id }) => {
                     position: "relative",
                   }}
                 >
-                  <div className="event-info" style={{
-                    position: "absolute",
-                    bottom: "0",
-                    left: "0",
-                    height: "300px",
-                    right: "0",
-                    padding: "20px",
-                    background: "rgba(0,0,0,0.5)",
-                    color: "white",
-                  }}>
+                  <div
+                    className="event-info"
+                    style={{
+                      position: "absolute",
+                      bottom: "0",
+                      left: "0",
+                      height: "300px",
+                      right: "0",
+                      padding: "20px",
+                      background: "rgba(0,0,0,0.5)",
+                      color: "white",
+                    }}
+                  >
                     <div className="col-6">
-                    <h1 className="event-title">{event.title}</h1>
-                    <h3 className="event-location">{event.location}</h3>
-                    <h5 className="event-datetime">
-                      {event.date && event.time
-                        ? (() => {
-                          const dateParts = event.date.split("-");
-                          const dateObject = new Date(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`);
-                          const formattedTime = new Date(`1970-01-01T${event.time}Z`).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-                          return `${dateObject.toLocaleDateString("es-ES", { day: "numeric", month: "short" })} ${formattedTime}`;
-                        })()
-                        : "Invalid Date or Time"}
-                    </h5>
-                    <Link to={`/events/${event.id}`} className="btn btn-primary">
-                      Detalles
-                    </Link>
+                      <h1 className="event-title">{event.title}</h1>
+                      <h3 className="event-location">{event.location}</h3>
+                      <h5 className="event-datetime">
+                        {event.date && event.time
+                          ? (() => {
+                              const dateParts = event.date.split("-");
+                              const dateObject = new Date(
+                                `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`
+                              );
+                              const formattedTime = new Date(
+                                `1970-01-01T${event.time}Z`
+                              ).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+                              return `${dateObject.toLocaleDateString("es-ES", {
+                                day: "numeric",
+                                month: "short",
+                              })} ${formattedTime}`;
+                            })()
+                          : "Invalid Date or Time"}
+                      </h5>
+                      <Link to={`/events/${event.id}`} className="btn btn-primary">
+                        Detalles
+                      </Link>
                     </div>
                   </div>
                 </div>
