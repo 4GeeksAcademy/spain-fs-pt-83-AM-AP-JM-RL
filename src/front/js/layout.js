@@ -16,7 +16,6 @@ import { ResultsPage } from "./pages/resultspage";
 import { Footer } from "./component/footer";
 import { UserForm } from "./component/UserForm";
 import { UserDetails } from "./component/UserDetails";
-import { SearchResults } from "./component/searchresults";
 import { BackButton } from "./component/BackButton";
 import { BackgroundGradient } from "./component/backgroundgradient";
 
@@ -66,7 +65,7 @@ const Layout = () => {
                             <Route element={<UserForm />} path="/user-form" />
                             <Route element={<EventsForm />} path="/events-form" />
                             <Route element={<UserDetails />} path="/user-details" />
-                            <Route element={<h1>Not found!</h1>} path="*" />
+                            <Route element={<h1><br/>... Not found!<br/></h1>} path="*" />
                             <Route element={<EventDetail />} path="/events/:id" />
                             <Route element={<ResultsPage />} path="/results" />
 
@@ -76,11 +75,12 @@ const Layout = () => {
                     </ScrollToTop>
                     <ModalLogin show={isLoginModalOpen} onClose={handleCloseLogin} onRegisterClick={handleOpenRegister} />
                     <ModalRegister show={isRegisterModalOpen} onClose={handleCloseRegister} />
+                    <Footer />
                 </BrowserRouter>
  
-                <Footer />
+           
             </div>
-        
+           
         </div>
     );
 };
