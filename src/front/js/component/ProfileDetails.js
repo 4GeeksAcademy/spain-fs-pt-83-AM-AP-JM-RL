@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import { useParams } from "react-router-dom";
-import { BackButton } from "./BackButton";
 import { toast } from "react-toastify";
 
 export const ProfileDetails = () => {
@@ -38,9 +37,7 @@ export const ProfileDetails = () => {
                 <div className="card mt-5 shadow-sm rounded-lg" style={{
                     width: '50vw'
                 }}>
-                    <div className="ms-1">
-                        <BackButton />
-                    </div>
+
                     <div className="row g-0">
                         <div className="col-md-6 d-flex justify-content-center align-items-center">
                             <img

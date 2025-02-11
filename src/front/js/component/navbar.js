@@ -27,7 +27,7 @@ export const Navbar = ({ onLoginClick, onRegisterClick }) => {
 
 	return (
 		<>
-			<nav className="navbar navbar-light bg-light d-flex">
+			<nav className="navbar navbar-expand navbar-light bg-light d-flex">
 				<Link to="/" className="home"><FaHome size={24} color="black" /></Link>
 				<Link to="/results" className="btn btn-secondary">todos</Link>
 				<SearchBar />

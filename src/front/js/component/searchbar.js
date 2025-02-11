@@ -48,7 +48,7 @@ export const SearchBar = () => {
     if (input.trim() !== "") {
       navigate(`/results?query=${encodeURIComponent(input)}`);
       setInput("");
-      setShowDropdown(false); 
+      setShowDropdown(false);
     }
   };
 
@@ -58,24 +58,25 @@ export const SearchBar = () => {
       setShowDropdown(false);
     }
   };
-  
+
 
   return (
     <div className="search-bar" style={{ position: "relative" }}>
-      <div className="input-wrapper">
-        <input
-          placeholder="Search..."
-          value={input}
-          onKeyDown={handleKeyDown} 
-          onChange={(e) => handleInputChange(e.target.value)}
-          onFocus={() => setShowDropdown(results.length > 0)} 
-        />
-        <i
-          className="fa-solid fa-magnifying-glass"
-          onClick={handleSearchIconClick}
-          style={{ cursor: "pointer" }}
-        ></i>
-      </div>
+
+      <input
+        className="search-input w-75"
+        placeholder="Search..."
+        value={input}
+        onKeyDown={handleKeyDown}
+        onChange={(e) => handleInputChange(e.target.value)}
+        onFocus={() => setShowDropdown(results.length > 0)}
+      />
+      <i
+        className="fa-solid fa-magnifying-glass"
+        onClick={handleSearchIconClick}
+        style={{ cursor: "pointer" }}
+      ></i>
+
 
       {showDropdown && (
         <div className="dropdown">

@@ -4,6 +4,16 @@
     padding: 0 1rem;
 }
 
+@media (max-width: 768px) {
+    .btn-save {
+        width: 10px;
+    }
+
+    small {
+        font-size: 10px;
+    }
+}
+
 .user-form-card {
     background: #ffffff;
     overflow: hidden;

@@ -17,7 +17,6 @@ import { Footer } from "./component/footer";
 import { UserForm } from "./component/UserForm";
 import { UserDetails } from "./component/UserDetails";
 import { SearchResults } from "./component/searchresults";
-import { BackButton } from "./component/BackButton";
 import { BackgroundGradient } from "./component/backgroundgradient";
 
 
@@ -53,10 +52,10 @@ const Layout = () => {
 
 
         <div className="site-margin-color">
-           <BackgroundGradient />
+            <BackgroundGradient />
             <div className="site-background-color" style={{ fontFamily: 'Lucida Sans, Lucida Sans Regular, Lucida Grande, Lucida Sans Unicode, Geneva, Verdana, sans-serif' }}
             >
-                 
+
                 <BrowserRouter basename={basename}>
                     <ScrollToTop>
                         <Navbar onLoginClick={handleOpenLogin} />
@@ -77,10 +76,10 @@ const Layout = () => {
                     <ModalLogin show={isLoginModalOpen} onClose={handleCloseLogin} onRegisterClick={handleOpenRegister} />
                     <ModalRegister show={isRegisterModalOpen} onClose={handleCloseRegister} />
                 </BrowserRouter>
- 
+
                 <Footer />
             </div>
-        
+
         </div>
     );
 };
