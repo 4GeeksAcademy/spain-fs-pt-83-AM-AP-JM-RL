@@ -16,7 +16,6 @@ import { ResultsPage } from "./pages/resultspage";
 import { Footer } from "./component/footer";
 import { UserForm } from "./component/UserForm";
 import { UserDetails } from "./component/UserDetails";
-import { BackButton } from "./component/BackButton";
 import { BackgroundGradient } from "./component/backgroundgradient";
 
 
