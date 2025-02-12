@@ -92,6 +92,7 @@
   flex-wrap: wrap;
   gap: 0.5rem;
   margin-left: 10px;
+  z-index: 1000;
 }
 
 .type-button {
