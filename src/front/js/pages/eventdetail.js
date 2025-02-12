@@ -10,6 +10,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { ListGroup } from "react-bootstrap";
 import { toast } from "react-toastify";
+import { BackButton } from "../component/BackButton"
 import { motion } from "motion/react";
 
 export const EventDetail = () => {
@@ -113,6 +114,9 @@ export const EventDetail = () => {
 
   return (
     <>
+      <div className="ms-3">
+        <BackButton />
+      </div>
       <div className="event-card container">
         <div className="row mt-5">
           <motion.div className="col-lg-6"
@@ -207,9 +211,9 @@ export const EventDetail = () => {
                   event.user_id === store.userDetails.id ? (
                     <p className="text-danger">Eres el creador del evento y no puedes registrarte</p>
                   ) : isRegistered ? (
-                    <Button variant="danger" onClick={handleCandelRegister}>Cancelar registro</Button>
+                    <Button className="text-nowrap w-100" variant="danger" onClick={handleCandelRegister}>Cancelar registro</Button>
                   ) : (
-                    <Button variant="success" onClick={handleRegister}>RSVP</Button>
+                    <Button className="w-100" variant="success" onClick={handleRegister}>Registrarse en este evento</Button>
                   )
                 ) : (
                   <p>Inicia sesion para registrarse en este evento</p>
