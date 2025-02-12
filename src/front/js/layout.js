@@ -6,7 +6,7 @@ import { BackendURL } from "./component/backendURL";
 import { Home } from "./pages/home";
 import injectContext from "./store/appContext";
 
-import { Navbar } from "./component/navbar";
+import { NavbarComponent } from "./component/navbar";
 import { ModalLogin } from "./component/ModalLogin";
 import { ModalRegister } from "./component/ModalRegister";
 import { ProfileDetails } from "./component/ProfileDetails";
@@ -58,7 +58,7 @@ const Layout = () => {
                  
                 <BrowserRouter basename={basename}>
                     <ScrollToTop>
-                        <Navbar onLoginClick={handleOpenLogin} />
+                        <NavbarComponent onLoginClick={handleOpenLogin} />
                         <Routes>
                             <Route element={<Home />} path="/" />
                             <Route element={<ProfileDetails />} path="/profile/:event_id" />
