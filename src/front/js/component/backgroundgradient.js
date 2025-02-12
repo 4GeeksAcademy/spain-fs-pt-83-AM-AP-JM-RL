@@ -12,7 +12,7 @@ const COLORS = [
 export const BackgroundGradient = () => {
     const color = useMotionValue(COLORS[0]);
     const gradientSize = useMotionValue(125); 
-    const backgroundImage = useMotionTemplate`radial-gradient(${gradientSize}% ${gradientSize}% at 50% 0%, white 50%, ${color})`;
+    const backgroundImage = useMotionTemplate`radial-gradient(${gradientSize}% ${gradientSize}% at 60% 0%, white 40%, ${color})`;
 
     useEffect(() => {
       
