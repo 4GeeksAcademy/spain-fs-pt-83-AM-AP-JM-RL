@@ -226,7 +226,7 @@ export const SearchResults = () => {
                             <h4>Filtros</h4>
 
                             <div className="filter-group">
-                                <div className="row">
+                                <div className="row sort">
                                     <label>Ordenar</label>
                                     <select className="form-control" value={sortOption} onChange={handleSortChange}>
                                         <option value="">...</option>
@@ -284,7 +284,7 @@ export const SearchResults = () => {
                                 </div>
                             </div>
 
-                            <div className="row">
+                            <div className="row type-filter">
                                 <label>Tipo</label>
                             </div>
                             <div className="filter-buttons">
@@ -316,7 +316,7 @@ export const SearchResults = () => {
                                     {query ? `Resultados para  "${query}"` : "Eventos"}
                                 </h3>
                             </div>
-                            <div className="col-4 text-left d-flex justify-content-end">
+                            <div className="col-4 text-left  d-flex justify-content-end">
                                 <button
                                     className="arrow-left btn btn-primary mb-3 mr-1"
                                     onClick={handlePrevPage}
@@ -336,6 +336,22 @@ export const SearchResults = () => {
                         <div className="row">
                             <List items={paginatedResults} startIndex={startIndex} itemsPerPage={itemsPerPage} />
                         </div>
+                        <div className="row text-left bottom-buttons d-flex justify-content-end">
+                                <button
+                                    className="arrow-left btn btn-primary mb-3 mr-1"
+                                    onClick={handlePrevPage}
+                                    disabled={currentPage === 0}
+                                >
+                                    <i className="fa fa-arrow-left"></i>
+                                </button>
+                                <button
+                                    className="arrow-right btn btn-primary mb-3"
+                                    onClick={handleNextPage}
+                                    disabled={(currentPage + 1) * itemsPerPage >= paginatedResults.length}
+                                >
+                                    <i className="fa fa-arrow-right"></i>
+                                </button>
+                            </div>
                     </motion.div>
                 </div>
             </div>

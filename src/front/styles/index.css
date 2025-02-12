@@ -11,7 +11,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1000;
+    z-index: 500;
 }
 
 .modal-content-index {
@@ -172,6 +172,7 @@ height: 600px;
 footer {
   background-color: #ffffff;
   padding: 2rem 1rem;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 footer .row {
@@ -203,7 +204,7 @@ footer .fa-home, footer .fa-envelope, footer .fa-phone, footer .fa-print {
   margin-right: 1rem;
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
   footer .row {
     flex-direction: column;

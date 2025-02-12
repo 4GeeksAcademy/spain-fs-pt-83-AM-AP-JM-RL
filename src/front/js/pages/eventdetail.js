@@ -202,14 +202,14 @@ export const EventDetail = () => {
                 duration: 1,
                 delay: 0.5
               }}>
-              <div className="mt-3">
+              <div className="registrarte mt-3">
                 {store.isAuthenticated ? (
                   event.user_id === store.userDetails.id ? (
                     <p className="text-danger">Eres el creador del evento y no puedes registrarte</p>
                   ) : isRegistered ? (
                     <Button variant="danger" onClick={handleCandelRegister}>Cancelar registro</Button>
                   ) : (
-                    <Button variant="success" onClick={handleRegister}>Registrarse al evento</Button>
+                    <Button variant="success" onClick={handleRegister}>RSVP</Button>
                   )
                 ) : (
                   <p>Inicia sesion para registrarse en este evento</p>

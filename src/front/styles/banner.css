@@ -1,12 +1,13 @@
+.banner-carousel-container {
+  z-index: 900;
+}
+
 .banner-carousel-card {
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   font-size: 3.375rem;
   text-shadow: 0.25rem 0.25rem 0.25rem rgba(0, 0, 0, 1);
   color: white;
-
-
 }
-
 
 .square {
   border-top-left-radius: 20px;
@@ -75,6 +76,7 @@
   .left-shape {
     width: 65%;
   }
+  
 }
 
 @media screen and (max-width: 480px) {

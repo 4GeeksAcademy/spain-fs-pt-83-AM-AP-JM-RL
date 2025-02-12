@@ -1,10 +1,12 @@
 import React from "react";
+import { Link } from 'react-router-dom';
+import { ModalLogin } from "./ModalLogin";
 
 export const Footer = () => {
   return (
     <footer
       className="text-center text-lg-start text-black"
-      style={{ backgroundColor: "#ffffff" }}
+      style={{ backgroundColor: "rgba(255, 255, 255, 0)" }}
     >
       <div>
         <section>
@@ -12,7 +14,7 @@ export const Footer = () => {
             <div className="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
               <h6 className="text-uppercase mb-4 font-weight-bold">Nombre de la empresa</h6>
               <p>
-                Somos una plataforma para descubrir, organizar y asistir a eventos en Madrid. 
+                Somos una plataforma para descubrir, organizar y asistir a eventos en Madrid.
                 Ya sea para aprender algo nuevo, conocer gente o simplemente divertirse, ¡tenemos algo para ti!
               </p>
             </div>
@@ -22,24 +24,19 @@ export const Footer = () => {
             <div className="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
               <h6 className="text-uppercase mb-4 font-weight-bold">Productos</h6>
               <p>
-                <a className="text-blue" href="#!">
+                <Link className="text-blue" to="/results">
                   Eventos en vivo
-                </a>
+                </Link>
               </p>
               <p>
-                <a className="text-blue" href="#!">
-                  Webinars
-                </a>
-              </p>
-              <p>
-                <a className="text-blue" href="#!">
+                <Link className="text-blue" to="/results">
                   Talleres y cursos
-                </a>
+                </Link>
               </p>
               <p>
-                <a className="text-blue" href="#!">
+                <Link className="text-blue" to="/results">
                   Eventos de networking
-                </a>
+                </Link>
               </p>
             </div>
 
@@ -48,24 +45,19 @@ export const Footer = () => {
             <div className="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
               <h6 className="text-uppercase mb-4 font-weight-bold">Enlaces útiles</h6>
               <p>
-                <a className="text-blue" href="#!">
+                <Link className="text-blue" to="*">
                   Tu cuenta
-                </a>
+                </Link>
               </p>
               <p>
-                <a className="text-blue" href="#!">
+                <Link className="text-blue" to={"*"}>
                   Convertirse en organizador
-                </a>
+                </Link>
               </p>
               <p>
-                <a className="text-blue" href="#!">
-                  Precios de entradas
-                </a>
-              </p>
-              <p>
-                <a className="text-blue" href="#!">
+                <Link className="text-blue" to="*">
                   Ayuda
-                </a>
+                </Link>
               </p>
             </div>
 
@@ -77,13 +69,10 @@ export const Footer = () => {
                 <i className="fas fa-home mr-3"></i> Madrid, España, 28001
               </p>
               <p>
-                <i className="fas fa-envelope mr-3"></i> contacto@eventosmadrid.com
+                <i className="fas fa-envelope mr-3"></i> contacto@eventos.com
               </p>
               <p>
                 <i className="fas fa-phone mr-3"></i> +34 91 234 5678
-              </p>
-              <p>
-                <i className="fas fa-print mr-3"></i> +34 91 234 5679
               </p>
             </div>
           </div>
@@ -95,44 +84,10 @@ export const Footer = () => {
           <div className="col-md-7 col-lg-8 text-center text-md-start">
             <div className="p-3">
               © 2025 Copyright:
-              <a className="text-blue" href="https://www.eventosmadrid.com/">
-                EventosMadrid.com
-              </a>
+              <Link className="text-blue" to="/">
+                Eventos.com
+              </Link>
             </div>
-          </div>
-
-          <div className="col-md-5 col-lg-4 ml-lg-0 text-center text-md-end">
-            <a
-              className="btn btn-outline-light btn-floating m-1"
-              role="button"
-              href="#!"
-            >
-              <i className="fab fa-facebook-f"></i>
-            </a>
-
-            <a
-              className="btn btn-outline-light btn-floating m-1"
-              role="button"
-              href="#!"
-            >
-              <i className="fab fa-twitter"></i>
-            </a>
-
-            <a
-              className="btn btn-outline-light btn-floating m-1"
-              role="button"
-              href="#!"
-            >
-              <i className="fab fa-google"></i>
-            </a>
-
-            <a
-              className="btn btn-outline-light btn-floating m-1"
-              role="button"
-              href="#!"
-            >
-              <i className="fab fa-instagram"></i>
-            </a>
           </div>
         </section>
       </div>
