@@ -72,17 +72,17 @@ export const Navbar = ({ onLoginClick, onRegisterClick }) => {
 				</Offcanvas.Body>
 			</Offcanvas>
 
-			<Modal show={showLogoutModal} onHide={() => setShowLogoutModal(false)} centered>
-				<div className="modal-form">
+			<Modal className="modal-form" show={showLogoutModal} onHide={() => setShowLogoutModal(false)} centered>
+				
 					<Modal.Body className="text-center">
 						<p>¿Deseas cerrar sesión?</p>
 					</Modal.Body>
 					<Modal.Footer className="justify-content-center">
 						<Button variant="secondary" onClick={() => setShowLogoutModal(false)}>Cancelar</Button>
 						<Button variant="danger" onClick={() => { handleLogout(); setShowOffcanvas(false); setShowLogoutModal(false) }}
-						>Cerrar Sesión</Button>
+						>Cerrar</Button>
 					</Modal.Footer>
-				</div>
+				
 			</Modal>
 
 			<ToastContainer

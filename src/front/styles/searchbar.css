@@ -3,6 +3,7 @@
     max-width: 200px;
     margin: auto;
     position: relative;
+    overflow: visible;
   }
   
   .input-wrapper {
@@ -18,9 +19,10 @@
     border: 1px solid #ccc;
     border-radius: 6px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    max-height: 200px;
+ width: 300px;
     overflow-y: auto;
-    z-index: 1000;
+    z-index: 1500;
+    overflow: visible;
   }
   
   .dropdown-item {

@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from 'react-router-dom';
+import { ModalLogin } from "./ModalLogin";
 
 export const Footer = () => {
   return (
@@ -44,17 +45,17 @@ export const Footer = () => {
             <div className="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
               <h6 className="text-uppercase mb-4 font-weight-bold">Enlaces útiles</h6>
               <p>
-                <Link className="text-blue" to="/result">
+                <Link className="text-blue" to="*">
                   Tu cuenta
                 </Link>
               </p>
               <p>
-                <Link className="text-blue" to="/result">
+                <Link className="text-blue" to={"*"}>
                   Convertirse en organizador
                 </Link>
               </p>
               <p>
-                <Link className="text-blue" to="/result">
+                <Link className="text-blue" to="*">
                   Ayuda
                 </Link>
               </p>
