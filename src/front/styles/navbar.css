@@ -2,7 +2,7 @@
     height: 70px;
     padding: 0 20px; 
     background-color: rgba(255, 255, 255, 0.13); 
-    backdrop-filter: blur(10px); 
+    /*backdrop-filter: blur(10px); */
     border: 2px solid rgba(255, 255, 255, 0.1); 
     box-shadow: 0 0 20px rgba(8, 7, 16, 0.3); 
     display: flex;
@@ -155,4 +155,88 @@
 
 .offcanvas-logout:hover {
     background-color: #c82333;
+}
+
+.mobile-menu-button {
+    display: none; 
+    background-color: transparent;
+    border: none;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+.mobile-menu-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.mobile-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    background-color: white;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 20px rgba(8, 7, 16, 0.3);
+    border-radius: 10px;
+    position: fixed; 
+    top: 70px; 
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.mobile-menu-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.mobile-menu-link {
+    color: #000;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.mobile-menu-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.mobile-menu-icon {
+    font-size: 1.2rem;
+}
+
+.mobile-searchbar {
+    width: 100%;
+    padding: 0 10px;
+}
+
+.user-profile-mobile {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.profile-image-mobile {
+    width: 60px; 
+    height: 60px; 
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 991.98px) {
+    .mobile-menu-button {
+        display: block;
+    }
+
+    .d-lg-flex {
+        display: none !important; 
+    }
 }
