@@ -1,14 +1,29 @@
 .navbar {
     height: 70px;
-    padding: 0 20px; 
-    background-color: rgba(255, 255, 255, 0.13); 
-    border: 2px solid rgba(255, 255, 255, 0.1); 
-    box-shadow: 0 0 20px rgba(8, 7, 16, 0.3); 
+    padding: 0 20px;
+    background-color: rgba(255, 255, 255, 0.13);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 20px rgba(8, 7, 16, 0.3);
     display: flex;
-    align-items: center; 
+    align-items: center;
     justify-content: space-between;
-    padding-top: 10px; 
-    padding-bottom: 10px; 
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+
+    .search-input {
+        margin-left: 20px;
+    }
+
+    .fa-solid {
+        display: none;
+    }
+
+    .profile-image {
+        display: none;
+    }
 }
 
 .navbar .home {
@@ -51,7 +66,7 @@
 }
 
 .navbar .settings-button:hover {
-    background-color: rgba(255, 255, 255, 0.1); 
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .navbar .btn {
@@ -59,7 +74,7 @@
     height: 40px;
     width: auto;
     max-width: 150px;
-    border-radius: 20px; 
+    border-radius: 20px;
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
@@ -157,7 +172,7 @@
 }
 
 .mobile-menu-button {
-    display: none; 
+    display: none;
     background-color: transparent;
     border: none;
     padding: 8px;
@@ -183,8 +198,8 @@
     border: 2px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 0 20px rgba(8, 7, 16, 0.3);
     border-radius: 10px;
-    position: fixed; 
-    top: 70px; 
+    position: fixed;
+    top: 70px;
     left: 0;
     right: 0;
     z-index: 1000;
@@ -227,8 +242,8 @@
 }
 
 .profile-image-mobile {
-    width: 60px; 
-    height: 60px; 
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid rgba(255, 255, 255, 0.1);
@@ -240,6 +255,6 @@
     }
 
     .d-lg-flex {
-        display: none !important; 
+        display: none !important;
     }
 }

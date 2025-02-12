@@ -3,7 +3,6 @@ import { Context } from "../store/appContext";
 import "../../styles/UserForm.css";
 import { useNavigate } from "react-router-dom";
 import * as filestack from "filestack-js";
-import { BackButton } from "./BackButton";
 import { Button, Modal, Row, Col } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -116,7 +115,7 @@ export const UserForm = () => {
             <div className="container user-form-container animate__animated animate__fadeIn">
                 <div className="user-form-card rounded-4 shadow-lg">
                     <div className="form-header gradient-bg p-5 rounded-top-4">
-                        <BackButton variant="light" />
+
                         <h1 className="text-white text-center mb-0">
                             <FontAwesomeIcon icon={faUser} className="me-2" />
                             Editar Perfil
@@ -204,7 +203,6 @@ export const UserForm = () => {
                                 </div>
                             </Col>
 
-                            {/* Biografía Full Width */}
                             <Col xs={12}>
                                 <FormField
                                     icon={faComment}
@@ -231,11 +229,12 @@ export const UserForm = () => {
                             </div>
                             <div className="ms-1">
                                 <Button
-                                    variant="outline-primary"
+
+                                    variant="primary"
                                     onClick={handleShowPasswordChange}
-                                    className="px-5 rounded-pill w-100"
+                                    className="rounded-pill w-100"
                                 >
-                                    <small>Cambiar Contraseña</small>
+                                    <small className="text-nowrap">Cambiar Contraseña</small>
                                 </Button>
 
                             </div>
