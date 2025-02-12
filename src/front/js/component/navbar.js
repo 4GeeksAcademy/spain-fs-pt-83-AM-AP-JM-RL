@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
-import { FaHome, FaCog, FaUser, FaCalendarPlus, FaSignOutAlt, FaBars } from "react-icons/fa";
+import { FaHome, FaCog, FaUser, FaCalendarPlus, FaSignOutAlt, FaBars, FaCalendarAlt } from "react-icons/fa";
 import { SearchBar } from "./searchbar";
 import "../../styles/navbar.css";
 import "../../styles/modal.css";
@@ -143,39 +143,54 @@ export const NavbarComponent = ({ onLoginClick, onRegisterClick }) => {
                 </div>
 
                 {showMobileMenu && (
-                    <div className="mobile-menu d-lg-none">
-                        <div className="mobile-menu-section">
-                            <Link to="/" className="mobile-menu-link" onClick={toggleMobileMenu}><FaHome className="mobile-menu-icon" /> Home</Link>
-                            <Link to="/results" className="mobile-menu-link" onClick={toggleMobileMenu}>Mostrar Eventos</Link>
-                            <div className="mobile-searchbar">
-                                <SearchBar />
-                            </div>
-                        </div>
+    <div className="mobile-menu d-lg-none">
+        {/* Imagen de perfil si el usuario está autenticado */}
+        {store.isAuthenticated && (
+            <div className="user-profile-mobile text-center">
+                <Image src={store.userDetails.image} className="profile-image-mobile" roundedCircle />
+            </div>
+        )}
+        
+        {store.isAuthenticated && <hr />} {/* Divider */}
 
-                        <div className="mobile-menu-section">
-                            {!store.isAuthenticated ? (
-                                <button className="btn btn-primary w-100" onClick={onLoginClick}>Login</button>
-                            ) : (
-                                <>
-                                    <div className="user-profile-mobile">
-                                        <Image src={store.userDetails.image} className="profile-image-mobile" roundedCircle />
-                                    </div>
-                                    <Link to="/user-details" className="mobile-menu-link" onClick={toggleMobileMenu}><FaUser className="mobile-menu-icon" /> Mi Perfil</Link>
-                                    {!store.userDetails.first_name || !store.userDetails.last_name ? (
-                                        <p className="text-danger text-center">Para poder crear un evento necesitas rellenar tu nombre y apellidos en el perfil</p>
-                                    ) : (
-                                        <Link to="/events-form" className="mobile-menu-link" onClick={toggleMobileMenu}><FaCalendarPlus className="mobile-menu-icon" /> Crear Evento</Link>
-                                    )}
-                                </>
-                            )}
-                        </div>
+        <div className="mobile-menu-section">
+            <Link to="/" className="mobile-menu-link" onClick={toggleMobileMenu}>
+                <FaHome className="mobile-menu-icon" /> Home
+            </Link>
+            <Link to="/results" className="mobile-menu-link" onClick={toggleMobileMenu}>
+                <FaCalendarAlt className="mobile-menu-icon" /> Mostrar Eventos
+            </Link>
+            {store.isAuthenticated && (
+                <Link to="/user-details" className="mobile-menu-link" onClick={toggleMobileMenu}>
+                    <FaUser className="mobile-menu-icon" /> Mi Perfil
+                </Link>
+            )}
+            {store.isAuthenticated && store.userDetails.first_name && store.userDetails.last_name ? (
+                <Link to="/events-form" className="mobile-menu-link" onClick={toggleMobileMenu}>
+                    <FaCalendarPlus className="mobile-menu-icon" /> Crear Evento
+                </Link>
+            ) : store.isAuthenticated ? (
+                <p className="text-danger text-center">Para poder crear un evento necesitas rellenar tu nombre y apellidos en el perfil</p>
+            ) : null}
+            <div className="mobile-searchbar">
+                <SearchBar />
+            </div>
+        </div>
 
-                        {store.isAuthenticated && (
-                            <div className="mobile-menu-section">
-                                <Button variant="danger" className="w-100" onClick={() => { handleLogout(); toggleMobileMenu(); }}>Cerrar Sesión</Button>
-                            </div>
-                        )}
-                    </div>
+        {store.isAuthenticated && <hr />} {/* Divider */}
+
+        <div className="mobile-menu-section text-center">
+            {!store.isAuthenticated ? (
+                <button className="btn btn-primary w-50" onClick={() => { onLoginClick(); toggleMobileMenu(); }}>
+                    Login
+                </button>
+            ) : (
+                <Button variant="danger" className="w-100" onClick={() => { handleLogout(); toggleMobileMenu(); }}>
+                    Cerrar Sesión
+                </Button>
+            )}
+        </div>
+    </div>
                 )}
             </nav>
 
