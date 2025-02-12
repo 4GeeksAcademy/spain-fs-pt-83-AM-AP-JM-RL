@@ -12,6 +12,10 @@
     height: 40px;
 }
 
+.registrarte button {
+    width: 100px;
+}
+
 @media (max-width: 640px) {
     .event-buttons button {
         width: 100px; 
