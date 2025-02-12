@@ -9,6 +9,7 @@
     justify-content: space-between;
     padding-top: 10px; 
     padding-bottom: 10px; 
+    z-index: 10000;
 }
 
 .navbar .home {
