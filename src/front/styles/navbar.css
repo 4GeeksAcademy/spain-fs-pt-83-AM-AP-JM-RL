@@ -7,23 +7,10 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
+    padding-top: 10px; 
+    padding-bottom: 10px; 
+    z-index: 10000;
 
-@media (max-width: 768px) {
-
-    .search-input {
-        margin-left: 20px;
-    }
-
-    .fa-solid {
-        display: none;
-    }
-
-    .profile-image {
-        display: none;
-    }
 }
 
 .navbar .home {
