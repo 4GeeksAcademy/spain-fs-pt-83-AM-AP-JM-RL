@@ -9,8 +9,8 @@ import { BannerImage } from "./bannerimage";
 export const BannerCarousel = ({ filter, sort, title, id }) => {
   const { store, actions } = useContext(Context);
   const [shuffledEvents, setShuffledEvents] = useState([]);
-  const carouselRef = useRef(null);  // Ref to the carousel
-  const carouselInstanceRef = useRef(null);  // Ref to the bootstrap carousel instance
+  const carouselRef = useRef(null);
+  const carouselInstanceRef = useRef(null); 
 
   const shuffleArray = (array) => {
     const shuffled = [...array];
@@ -30,7 +30,7 @@ export const BannerCarousel = ({ filter, sort, title, id }) => {
   }, [store.events]);
 
   useEffect(() => {
-    // Initialize the carousel when the component mounts
+
     if (carouselRef.current && !carouselInstanceRef.current) {
       carouselInstanceRef.current = new BootstrapCarousel(carouselRef.current, {
         ride: "carousel",
@@ -38,7 +38,7 @@ export const BannerCarousel = ({ filter, sort, title, id }) => {
       });
     }
 
-    // Cleanup: destroy the carousel instance when the component unmounts
+
     return () => {
       if (carouselInstanceRef.current) {
         carouselInstanceRef.current.dispose();
@@ -63,7 +63,7 @@ export const BannerCarousel = ({ filter, sort, title, id }) => {
           className="carousel slide"
           data-bs-ride="carousel"
           data-bs-interval="3000"
-          ref={carouselRef}  // Attach the ref to the carousel container
+          ref={carouselRef} 
         >
           <div className="carousel-inner">
             <div className="carousel-item active">
