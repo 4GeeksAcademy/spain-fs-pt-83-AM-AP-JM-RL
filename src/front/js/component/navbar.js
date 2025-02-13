@@ -36,7 +36,7 @@ export const NavbarComponent = ({ onLoginClick, onRegisterClick }) => {
 
     return (
         <>
-{/*
+            {/*
             {[false, 'sm', 'md', 'lg', 'xl', 'xxl'].map((expand) => (
                 <Navbar key={expand} expand={expand} className="bg-body-tertiary mb-3">
                     <Container fluid>
@@ -88,7 +88,7 @@ export const NavbarComponent = ({ onLoginClick, onRegisterClick }) => {
                 </Navbar>
             ))}
                 */}
-{/*
+            {/*
             <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
                 <Container>
                     <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
@@ -117,7 +117,7 @@ export const NavbarComponent = ({ onLoginClick, onRegisterClick }) => {
             </Navbar>
 */}
             {/*---------- Cambiar estilos a react botstrap ------*/}
-            
+
             <nav className="navbar navbar-light bg-light d-flex">
                 <Button variant="light" className="d-lg-none mobile-menu-button" onClick={toggleMobileMenu}><FaBars size={24} /></Button>
 
@@ -193,7 +193,7 @@ export const NavbarComponent = ({ onLoginClick, onRegisterClick }) => {
     </div>
                 )}
             </nav>
-            
+
 
             <Offcanvas show={showOffcanvas} onHide={() => setShowOffcanvas(false)} placement="end" className="custom-offcanvas">
                 <Offcanvas.Header closeButton className="offcanvas-header">

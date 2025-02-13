@@ -120,12 +120,12 @@ export const EventDetail = () => {
       <div className="event-card container">
         <div className="row mt-5">
           <motion.div className="col-lg-6"
-           initial={{ opacity: 0, scaleX: 0 }}
-           animate={{ opacity: 1, scaleX: 1 }}
-           transition={{
-             duration: 1,
-             delay: 0.5
-           }}>
+            initial={{ opacity: 0, scaleX: 0 }}
+            animate={{ opacity: 1, scaleX: 1 }}
+            transition={{
+              duration: 1,
+              delay: 0.5
+            }}>
 
             <img
               className="img-fluid rounded-start"
@@ -140,12 +140,12 @@ export const EventDetail = () => {
           </motion.div>
           <div className="col-lg-6">
             <motion.div className="title-icon d-flex align-items-center justify-content-between"
-             initial={{ opacity: 0, scaleX: 0 }}
-             animate={{ opacity: 1, scaleX: 1 }}
-             transition={{
-               duration: 1,
-               delay: 0.5
-             }}>
+              initial={{ opacity: 0, scaleX: 0 }}
+              animate={{ opacity: 1, scaleX: 1 }}
+              transition={{
+                duration: 1,
+                delay: 0.5
+              }}>
               <h1 className="mb-0">{event.title}</h1>
               <i
                 className={`fa-star ${isFavorite ? "fa-solid text-warning" : "fa-regular"}`}
@@ -160,23 +160,23 @@ export const EventDetail = () => {
               ></i>
             </motion.div>
             <motion.div className="mt-2"
-             initial={{ opacity: 0, scaleX: 0 }}
-             animate={{ opacity: 1, scaleX: 1 }}
-             transition={{
-               duration: 1,
-               delay: 0.5
-             }}>
+              initial={{ opacity: 0, scaleX: 0 }}
+              animate={{ opacity: 1, scaleX: 1 }}
+              transition={{
+                duration: 1,
+                delay: 0.5
+              }}>
               <h3>{event.description}</h3>
             </motion.div>
-            <motion.div 
-                 initial={{ opacity: 0, scaleX: 0 }}
-                 animate={{ opacity: 1, scaleX: 1 }}
-                 transition={{
-                   duration: 1,
-                   delay: 0.5
-                 }}
+            <motion.div
+              initial={{ opacity: 0, scaleX: 0 }}
+              animate={{ opacity: 1, scaleX: 1 }}
+              transition={{
+                duration: 1,
+                delay: 0.5
+              }}
 
-            className="row mt-3">
+              className="row mt-3">
               <div className="col-3">
                 <p>
                   <strong>Dónde:</strong> {event.location}
@@ -198,22 +198,22 @@ export const EventDetail = () => {
                 </p>
               </div>
             </motion.div>
-            
+
             <motion.div className="row"
-             initial={{ opacity: 0, scaleX: 0 }}
-             animate={{ opacity: 1, scaleX: 1 }}
-             transition={{
-               duration: 1,
-               delay: 0.5
-             }}>
+              initial={{ opacity: 0, scaleX: 0 }}
+              animate={{ opacity: 1, scaleX: 1 }}
+              transition={{
+                duration: 1,
+                delay: 0.5
+              }}>
               <div className="registrarte mt-3">
                 {store.isAuthenticated ? (
                   event.user_id === store.userDetails.id ? (
                     <p className="text-danger">Eres el creador del evento y no puedes registrarte</p>
                   ) : isRegistered ? (
-                    <Button variant="danger" onClick={handleCandelRegister}>Cancelar registro</Button>
+                    <Button className="text-nowrap w-100" variant="danger" onClick={handleCandelRegister}>Cancelar registro</Button>
                   ) : (
-                    <Button variant="success" onClick={handleRegister}>RSVP</Button>
+                    <Button className="w-100" variant="success" onClick={handleRegister}>Registrarse en este evento</Button>
                   )
                 ) : (
                   <p>Inicia sesion para registrarse en este evento</p>
@@ -223,12 +223,12 @@ export const EventDetail = () => {
 
             </motion.div>
             <motion.div className="row event-buttons"
-             initial={{ opacity: 0, scaleX: 0 }}
-             animate={{ opacity: 1, scaleX: 1 }}
-             transition={{
-               duration: 1,
-               delay: 0.5
-             }}>
+              initial={{ opacity: 0, scaleX: 0 }}
+              animate={{ opacity: 1, scaleX: 1 }}
+              transition={{
+                duration: 1,
+                delay: 0.5
+              }}>
               <div className="col-4">
                 <Button className="attendies-button" variant="info" onClick={() => setShowRegistrations(true)}>Registrados</Button>
               </div>
@@ -251,11 +251,11 @@ export const EventDetail = () => {
         </div>
         <div className="row mt-5">
           <motion.div className="col-12" initial={{ opacity: 0, scaleX: 0 }}
-             animate={{ opacity: 1, scaleX: 1 }}
-             transition={{
-               duration: 1,
-               delay: 0.5
-             }}>
+            animate={{ opacity: 1, scaleX: 1 }}
+            transition={{
+              duration: 1,
+              delay: 0.5
+            }}>
             <MapContainer center={citiesCoordinates[event.location] || [0, 0]} zoom={15} style={{ height: "300px", width: "100%" }}>
               <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
               {citiesCoordinates[event.location] && (
