@@ -16,7 +16,6 @@ import { ResultsPage } from "./pages/resultspage";
 import { Footer } from "./component/footer";
 import { UserForm } from "./component/UserForm";
 import { UserDetails } from "./component/UserDetails";
-import { BackButton } from "./component/BackButton";
 import { BackgroundGradient } from "./component/backgroundgradient";
 
 
@@ -52,10 +51,10 @@ const Layout = () => {
 
 
         <div className="site-margin-color">
-           <BackgroundGradient />
+            <BackgroundGradient />
             <div className="site-background-color" style={{ fontFamily: 'Lucida Sans, Lucida Sans Regular, Lucida Grande, Lucida Sans Unicode, Geneva, Verdana, sans-serif' }}
             >
-                 
+
                 <BrowserRouter basename={basename}>
                     <ScrollToTop>
                         <NavbarComponent onLoginClick={handleOpenLogin} />
@@ -65,7 +64,7 @@ const Layout = () => {
                             <Route element={<UserForm />} path="/user-form" />
                             <Route element={<EventsForm />} path="/events-form" />
                             <Route element={<UserDetails />} path="/user-details" />
-                            <Route element={<h1><br/>... Not found!<br/></h1>} path="*" />
+                            <Route element={<h1><br />... Not found!<br /></h1>} path="*" />
                             <Route element={<EventDetail />} path="/events/:id" />
                             <Route element={<ResultsPage />} path="/results" />
 
@@ -77,10 +76,10 @@ const Layout = () => {
                     <ModalRegister show={isRegisterModalOpen} onClose={handleCloseRegister} />
                     <Footer />
                 </BrowserRouter>
- 
-           
+
+
             </div>
-           
+
         </div>
     );
 };
