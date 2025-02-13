@@ -34,9 +34,13 @@ export const NavbarComponent = ({ onLoginClick, onRegisterClick }) => {
         setShowMobileMenu(!showMobileMenu);
     };
 
+    const closeMobileMenu = () => {
+        setShowMobileMenu(false);
+    };
+
     return (
         <>
-{/*
+            {/*
             {[false, 'sm', 'md', 'lg', 'xl', 'xxl'].map((expand) => (
                 <Navbar key={expand} expand={expand} className="bg-body-tertiary mb-3">
                     <Container fluid>
@@ -88,7 +92,7 @@ export const NavbarComponent = ({ onLoginClick, onRegisterClick }) => {
                 </Navbar>
             ))}
                 */}
-{/*
+            {/*
             <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
                 <Container>
                     <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
@@ -117,7 +121,7 @@ export const NavbarComponent = ({ onLoginClick, onRegisterClick }) => {
             </Navbar>
 */}
             {/*---------- Cambiar estilos a react botstrap ------*/}
-            
+
             <nav className="navbar navbar-light bg-light d-flex">
                 <Button variant="light" className="d-lg-none mobile-menu-button" onClick={toggleMobileMenu}><FaBars size={24} /></Button>
 
@@ -142,58 +146,112 @@ export const NavbarComponent = ({ onLoginClick, onRegisterClick }) => {
                     </div>
                 </div>
 
+                <Offcanvas show={showMobileMenu} onHide={closeMobileMenu} placement="start" className="custom-offcanvas">
+                    <Offcanvas.Header closeButton className="offcanvas-header">
+                        <Offcanvas.Title className="offcanvas-title">Menu</Offcanvas.Title>
+                    </Offcanvas.Header>
+                    <Offcanvas.Body className="offcanvas-body">
+                        {store.isAuthenticated && (
+                            <div className="user-profile-mobile text-center">
+                                <Image src={store.userDetails.image} className="profile-image-mobile" roundedCircle />
+                            </div>
+                        )}
+
+                        {store.isAuthenticated && <hr />}
+
+                        <div className="mobile-menu-section">
+                            <Link to="/" className="mobile-menu-link" onClick={closeMobileMenu}>
+                                <FaHome className="mobile-menu-icon" /> Home
+                            </Link>
+                            <Link to="/results" className="mobile-menu-link" onClick={closeMobileMenu}>
+                                <FaCalendarAlt className="mobile-menu-icon" /> Mostrar Eventos
+                            </Link>
+                            {store.isAuthenticated && (
+                                <Link to="/user-details" className="mobile-menu-link" onClick={closeMobileMenu}>
+                                    <FaUser className="mobile-menu-icon" /> Mi Perfil
+                                </Link>
+                            )}
+                            {store.isAuthenticated && store.userDetails.first_name && store.userDetails.last_name ? (
+                                <Link to="/events-form" className="mobile-menu-link" onClick={closeMobileMenu}>
+                                    <FaCalendarPlus className="mobile-menu-icon" /> Crear Evento
+                                </Link>
+                            ) : store.isAuthenticated ? (
+                                <p className="text-danger text-center">Para poder crear un evento necesitas rellenar tu nombre y apellidos en el perfil</p>
+                            ) : null}
+                            <div className="mobile-searchbar">
+                                <SearchBar />
+                            </div>
+                        </div>
+
+                        {store.isAuthenticated && <hr />}
+
+                        <div className="mobile-menu-section text-center">
+                            {!store.isAuthenticated ? (
+                                <button className="btn btn-primary w-50" onClick={() => { onLoginClick(); closeMobileMenu(); }}>
+                                    Login
+                                </button>
+                            ) : (
+                                <Button variant="danger" className="w-100" onClick={() => { handleLogout(); closeMobileMenu(); }}>
+                                    Cerrar Sesión
+                                </Button>
+                            )}
+                        </div>
+                    </Offcanvas.Body>
+                </Offcanvas>
+{/*
                 {showMobileMenu && (
-    <div className="mobile-menu d-lg-none">
-        {/* Imagen de perfil si el usuario está autenticado */}
-        {store.isAuthenticated && (
-            <div className="user-profile-mobile text-center">
-                <Image src={store.userDetails.image} className="profile-image-mobile" roundedCircle />
-            </div>
-        )}
-        
-        {store.isAuthenticated && <hr />} {/* Divider */}
+                    <div className="mobile-menu d-lg-none">
+                        {/* Imagen de perfil si el usuario está autenticado 
+                        {store.isAuthenticated && (
+                            <div className="user-profile-mobile text-center">
+                                <Image src={store.userDetails.image} className="profile-image-mobile" roundedCircle />
+                            </div>
+                        )}
 
-        <div className="mobile-menu-section">
-            <Link to="/" className="mobile-menu-link" onClick={toggleMobileMenu}>
-                <FaHome className="mobile-menu-icon" /> Home
-            </Link>
-            <Link to="/results" className="mobile-menu-link" onClick={toggleMobileMenu}>
-                <FaCalendarAlt className="mobile-menu-icon" /> Mostrar Eventos
-            </Link>
-            {store.isAuthenticated && (
-                <Link to="/user-details" className="mobile-menu-link" onClick={toggleMobileMenu}>
-                    <FaUser className="mobile-menu-icon" /> Mi Perfil
-                </Link>
-            )}
-            {store.isAuthenticated && store.userDetails.first_name && store.userDetails.last_name ? (
-                <Link to="/events-form" className="mobile-menu-link" onClick={toggleMobileMenu}>
-                    <FaCalendarPlus className="mobile-menu-icon" /> Crear Evento
-                </Link>
-            ) : store.isAuthenticated ? (
-                <p className="text-danger text-center">Para poder crear un evento necesitas rellenar tu nombre y apellidos en el perfil</p>
-            ) : null}
-            <div className="mobile-searchbar">
-                <SearchBar />
-            </div>
-        </div>
+                        {store.isAuthenticated && <hr />} {/* Divider 
 
-        {store.isAuthenticated && <hr />} {/* Divider */}
+                        <div className="mobile-menu-section">
+                            <Link to="/" className="mobile-menu-link" onClick={toggleMobileMenu}>
+                                <FaHome className="mobile-menu-icon" /> Home
+                            </Link>
+                            <Link to="/results" className="mobile-menu-link" onClick={toggleMobileMenu}>
+                                <FaCalendarAlt className="mobile-menu-icon" /> Mostrar Eventos
+                            </Link>
+                            {store.isAuthenticated && (
+                                <Link to="/user-details" className="mobile-menu-link" onClick={toggleMobileMenu}>
+                                    <FaUser className="mobile-menu-icon" /> Mi Perfil
+                                </Link>
+                            )}
+                            {store.isAuthenticated && store.userDetails.first_name && store.userDetails.last_name ? (
+                                <Link to="/events-form" className="mobile-menu-link" onClick={toggleMobileMenu}>
+                                    <FaCalendarPlus className="mobile-menu-icon" /> Crear Evento
+                                </Link>
+                            ) : store.isAuthenticated ? (
+                                <p className="text-danger text-center">Para poder crear un evento necesitas rellenar tu nombre y apellidos en el perfil</p>
+                            ) : null}
+                            <div className="mobile-searchbar">
+                                <SearchBar />
+                            </div>
+                        </div>
 
-        <div className="mobile-menu-section text-center">
-            {!store.isAuthenticated ? (
-                <button className="btn btn-primary w-50" onClick={() => { onLoginClick(); toggleMobileMenu(); }}>
-                    Login
-                </button>
-            ) : (
-                <Button variant="danger" className="w-100" onClick={() => { handleLogout(); toggleMobileMenu(); }}>
-                    Cerrar Sesión
-                </Button>
-            )}
-        </div>
-    </div>
+                        {store.isAuthenticated && <hr />} {/* Divider 
+
+                        <div className="mobile-menu-section text-center">
+                            {!store.isAuthenticated ? (
+                                <button className="btn btn-primary w-50" onClick={() => { onLoginClick(); toggleMobileMenu(); }}>
+                                    Login
+                                </button>
+                            ) : (
+                                <Button variant="danger" className="w-100" onClick={() => { handleLogout(); toggleMobileMenu(); }}>
+                                    Cerrar Sesión
+                                </Button>
+                            )}
+                        </div>
+                    </div>
                 )}
+                */}
             </nav>
-            
+
 
             <Offcanvas show={showOffcanvas} onHide={() => setShowOffcanvas(false)} placement="end" className="custom-offcanvas">
                 <Offcanvas.Header closeButton className="offcanvas-header">
@@ -216,15 +274,15 @@ export const NavbarComponent = ({ onLoginClick, onRegisterClick }) => {
             </Offcanvas>
 
             <Modal className="modal-form" show={showLogoutModal} onHide={() => setShowLogoutModal(false)} centered>
-                
-                    <Modal.Body className="text-center">
-                        <p>¿Deseas cerrar sesión?</p>
-                    </Modal.Body>
-                    <Modal.Footer className="justify-content-center">
-                        <Button variant="secondary" onClick={() => setShowLogoutModal(false)}>Cancelar</Button>
-                        <Button variant="danger" onClick={() => { handleLogout(); setShowOffcanvas(false); setShowLogoutModal(false); }}>Cerrar</Button>
-                    </Modal.Footer>
-                
+
+                <Modal.Body className="text-center">
+                    <p>¿Deseas cerrar sesión?</p>
+                </Modal.Body>
+                <Modal.Footer className="justify-content-center">
+                    <Button variant="secondary" onClick={() => setShowLogoutModal(false)}>Cancelar</Button>
+                    <Button variant="danger" onClick={() => { handleLogout(); setShowOffcanvas(false); setShowLogoutModal(false); }}>Cerrar</Button>
+                </Modal.Footer>
+
             </Modal>
 
             <ToastContainer

@@ -9,7 +9,6 @@
     justify-content: space-between;
     padding-top: 10px; 
     padding-bottom: 10px; 
-    z-index: 10000;
 }
 
 .navbar .home {
@@ -85,12 +84,13 @@
 }
 
 .custom-offcanvas {
-    background-color: rgba(255, 255, 255, 0.13);
+    background-color: rgba(22, 21, 21, 0.616);
     backdrop-filter: blur(10px);
     border: 2px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
     border-radius: 10px;
     width: 400px;
+
 }
 
 .offcanvas-header {
@@ -103,7 +103,7 @@
 .offcanvas-title {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #000;
+    color: white;
 }
 
 .offcanvas-body {
@@ -121,7 +121,7 @@
 }
 
 .offcanvas-link {
-    color: #000;
+    color: white;
     text-decoration: none;
     padding: 10px;
     border-radius: 5px;
@@ -198,7 +198,7 @@
 }
 
 .mobile-menu-link {
-    color: #000;
+    color: white;
     text-decoration: none;
     padding: 10px;
     border-radius: 5px;
