@@ -4,12 +4,13 @@
 
 .event-card img {
     padding: 10px;
-   
+
 }
 
 .event-buttons button {
     width: 130px;
     height: 40px;
+
 }
 
 .registrarte button {
@@ -18,10 +19,10 @@
 
 @media (max-width: 640px) {
     .event-buttons button {
-        width: 100px; 
-        height: 30px; 
+        width: 100px;
+        height: 30px;
     }
-} 
+}
 
 .title-icon h1 {
     font-size: 36px;
@@ -64,4 +65,3 @@
     padding: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-
