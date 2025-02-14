@@ -125,15 +125,37 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (response.ok) {
 						const data = await response.json();
 						const store = getStore();
-						toast.success(data.message)
+						toast.success(data.message); // Coma añadida
 						setStore({ events: [...store.events, data] });
 					} else {
 						const errorData = await response.json();
-						toast.error(errorData.error)
+						toast.error(errorData.error); // Coma añadida
 						console.error("Error creating event:", errorData.message);
 					}
 				} catch (error) {
 					console.error("Error creating event:", error);
+				}
+			},
+
+			deleteEvent: async (eventId) => {
+				const token = sessionStorage.getItem('access_token')
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}api/events/${eventId}`, {
+						method: 'DELETE',
+						headers: {
+							'Content-Type': "application/json",
+							"Authorization": "Bearer " + token
+						}
+					})
+					const data = await response.json()
+					if (response.ok) {
+						toast.success(data.message)
+						setStore({ events: [getStore().events.filter(event => event.id != eventId)] })
+					} else {
+						toast.error(data.error)
+					}
+				} catch (error) {
+					toast.error(error.message)
 				}
 			},
 
@@ -212,10 +234,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 
 
-			removeFavorite: async (event_id) => {
+			removeFavorite: async (id) => {
 				const token = sessionStorage.getItem("access_token");
 				try {
-					const response = await fetch(`${process.env.BACKEND_URL}/api/events/${event_id}/favorites`, {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/events/${id}/favorites`, {
 						method: "DELETE",
 						headers: {
 							"Content-Type": "application/json",

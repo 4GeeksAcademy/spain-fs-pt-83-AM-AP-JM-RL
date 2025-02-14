@@ -10,7 +10,6 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { ListGroup } from "react-bootstrap";
 import { toast } from "react-toastify";
-import { BackButton } from "../component/BackButton"
 import { motion } from "motion/react";
 
 export const EventDetail = () => {
@@ -114,9 +113,6 @@ export const EventDetail = () => {
 
   return (
     <>
-      <div className="ms-3">
-        <BackButton />
-      </div>
       <div className="event-card container">
         <div className="row mt-5">
           <motion.div className="col-lg-6"
@@ -209,7 +205,14 @@ export const EventDetail = () => {
               <div className="registrarte mt-3">
                 {store.isAuthenticated ? (
                   event.user_id === store.userDetails.id ? (
-                    <p className="text-danger">Eres el creador del evento y no puedes registrarte</p>
+                    <div className="w-100 text-center">
+                      <button onClick={() => {
+                        const question = prompt('Quieres eliminar el evento? si/no')
+                        if (question.toLowerCase() === 'si') {
+                          actions.deleteEvent(id)
+                          navigate('/')
+                        } else return;
+                      }} className="btn btn-danger text-nowrap w-25">Eliminar evento</button></div>
                   ) : isRegistered ? (
                     <Button className="text-nowrap w-100" variant="danger" onClick={handleCandelRegister}>Cancelar registro</Button>
                   ) : (
@@ -229,15 +232,15 @@ export const EventDetail = () => {
                 duration: 1,
                 delay: 0.5
               }}>
-              <div className="col-4">
+              <div className="col-4 text-center">
                 <Button className="attendies-button" variant="info" onClick={() => setShowRegistrations(true)}>Registrados</Button>
               </div>
-              <div className="col-4">
+              <div className="col-4 text-center">
                 <Button className="Comments-button" variant="primary" onClick={handleShow}>
                   Comentarios
                 </Button>
               </div>
-              <div className="col-4">
+              <div className="col-4 text-center">
                 <Link to={`/profile/${event.id}`}>
                   <Button className="created-by-button btn btn-primary">
                     Creador

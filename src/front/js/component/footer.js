@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from 'react-router-dom';
-import { ModalLogin } from "./ModalLogin";
+import { Context } from "../store/appContext";
+import { toast } from "react-toastify";
 
 export const Footer = () => {
+
+  const { store } = useContext(Context)
   return (
     <footer
       className="text-center text-lg-start text-black"
@@ -45,14 +48,24 @@ export const Footer = () => {
             <div className="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
               <h6 className="text-uppercase mb-4 font-weight-bold">Enlaces útiles</h6>
               <p>
-                <Link className="text-blue" to="*">
+                {store.isAuthenticated ? <Link className="text-blue" to="/user-details">
                   Tu cuenta
-                </Link>
+                </Link> : <Link onClick={() => {
+                  toast.error('Debes iniciar sesión primero')
+                }} className="text-blue" to="/">
+                  Tu cuenta
+                </Link>}
+
               </p>
               <p>
-                <Link className="text-blue" to={"*"}>
+                {store.isAuthenticated ? <Link className="text-blue" to={"/events-form"}>
                   Convertirse en organizador
-                </Link>
+                </Link> : <Link onClick={() => {
+                  toast.error('Debes iniciar sesión primero')
+                }} className="text-blue" to={"/"}>
+                  Convertirse en organizador
+                </Link>}
+
               </p>
               <p>
                 <Link className="text-blue" to="*">
