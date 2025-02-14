@@ -10,7 +10,6 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { ListGroup } from "react-bootstrap";
 import { toast } from "react-toastify";
-import { BackButton } from "../component/BackButton"
 import { motion } from "motion/react";
 
 export const EventDetail = () => {
@@ -114,9 +113,6 @@ export const EventDetail = () => {
 
   return (
     <>
-      <div className="ms-3">
-        <BackButton />
-      </div>
       <div className="event-card container">
         <div className="row mt-5">
           <motion.div className="col-lg-6"
